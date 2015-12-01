@@ -1,14 +1,17 @@
-package Kmap;
+package kr.ac.kaist.kmap;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
- * Created by Woo on 2015. 12. 1..
+ * Created by woo on 2015-12-01.
  */
 public class Initializer {
-    private static final String baseDir = "/home/woo/dev/dbpedia2015-04/en/";
-    private static final String filename_categries = "article-categories_en.nt";
-    private static final String filename_redirects = "redirects_en.nt";
+    public static final String baseDir = "/home/woo/dev/dbpedia2015-04/en/";
+    public static final String filename_categries = "article-categories_en.nt";
+    public static final String filename_redirects = "redirects_en.nt";
 
     public void Initialize() throws IOException {
         Initializer init = new Initializer();
@@ -20,9 +23,9 @@ public class Initializer {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
         String inputLine;
 
-        while((inputLine = reader.readLine()) != null) {
+        while ((inputLine = reader.readLine()) != null) {
             // Ignore comment lines.
-            if(inputLine.startsWith("#"))
+            if (inputLine.startsWith("#"))
                 continue;
 
             String[] strArr = inputLine.split(" ", 4);
