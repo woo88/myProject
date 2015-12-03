@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class Category {
     // "category": [instances]
-    private Map<String, HashSet<String>> map = new DefaultHashMap<>(HashSet.class);
+    private Map<String, Set<String>> map = new DefaultHashMap<>(HashSet.class);
 
     public Category(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
@@ -66,7 +66,7 @@ public class Category {
         return s;
     }
 
-    public HashSet<String> getInstanceSet(String key) {
+    public Set<String> getInstanceSet(String key) {
         return map.get(key);
     }
 

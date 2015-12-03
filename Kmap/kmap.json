@@ -38,13 +38,21 @@
       "id": "1",
       "source": "2",
       "target": "6",
-      "value": 0
+      "value": 0,
+      "variables": {
+        "page-links": 0,
+        "share-same-instace": 0
+      }
     },
     {
       "id": "2",
       "source": "5",
       "target": "4",
-      "value": 0
+      "value": 0,
+      "variables": {
+        "page-links": 0,
+        "share-same-instace": 0
+      }
     }
   ]
 }
