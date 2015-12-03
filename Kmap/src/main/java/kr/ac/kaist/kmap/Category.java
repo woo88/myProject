@@ -10,13 +10,15 @@ import java.util.Map;
 /**
  * Created by woo on 2015-12-01.
  */
-public class Initializer {
-    private void ReadNT(String filename) throws IOException {
+public class Category {
+    // "category": [instances]
+    private Map<String, HashSet<String>> map = new DefaultHashMap<>(HashSet.class);
+
+    public Category(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
         String inputLine;
 
-        // "category": [instances]
-        Map<String, HashSet<String>> map = new DefaultHashMap<>(HashSet.class);
+        System.out.println("start reading categories");
 
         while((inputLine = reader.readLine()) != null) {
             // Ignore comment lines.
@@ -32,15 +34,13 @@ public class Initializer {
         }
 
         reader.close();
-
-        System.out.println(map.get("Climate_forcing"));
+        System.out.println("number of categories: " + map.size());
+        System.out.println("finish reading categories");
     }
 
     /**
      * <http://dbpedia.org/resource/
      * <http://dbpedia.org/resource/Category:
-     * @param s
-     * @return
      */
     public String RemovePrefix(String s) {
         String txt = "/Category:";
@@ -58,5 +58,9 @@ public class Initializer {
         }
 
         return s;
+    }
+
+    public HashSet<String> getInstanceSet(String key) {
+        return map.get(key);
     }
 }
