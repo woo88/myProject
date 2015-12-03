@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by woo on 2015-12-01.
@@ -20,6 +21,7 @@ public class Category {
 
         System.out.println("start reading categories");
 
+//        int i = 0;
         while((inputLine = reader.readLine()) != null) {
             // Ignore comment lines.
             if(inputLine.startsWith("#"))
@@ -31,11 +33,15 @@ public class Category {
             String o = RemovePrefix(strArr[2]);
 
             map.get(o).add(s);
+
+//            i++;
+//            if(i > 2000000)
+//                break;
         }
 
         reader.close();
-        System.out.println("number of categories: " + map.size());
-        System.out.println("finish reading categories");
+        System.out.println("\tnumber of categories: " + map.size());
+        System.out.println("\tfinish reading categories");
     }
 
     /**
@@ -62,5 +68,13 @@ public class Category {
 
     public HashSet<String> getInstanceSet(String key) {
         return map.get(key);
+    }
+
+    public Set<String> getCategories() {
+        return map.keySet();
+    }
+
+    public Integer getCategorySize(String category) {
+        return map.get(category).size();
     }
 }

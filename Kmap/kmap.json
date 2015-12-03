@@ -7,7 +7,8 @@
       "value": 0,
       "variables": {
         "instances": 0,
-        "redirect": 0,
+        "redirects": 0,
+        "infobox": 0,
         "types": 0,
         "page-length": 0,
         "freebase": 0,

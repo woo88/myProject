@@ -47,8 +47,8 @@ public class Redirect {
             setRedirect(o);
         }
         reader.close();
-        System.out.println("number of instances including redirects: " + map.size());
-        System.out.println("finish reading redirects");
+        System.out.println("\tnumber of instances including redirects: " + map.size());
+        System.out.println("\tfinish reading redirects");
     }
 
     private void setRedirect(String key) {
@@ -61,6 +61,11 @@ public class Redirect {
     }
 
     public Integer getRedirect(String key) {
-        return map.get(key);
+        Integer i = map.get(key);
+        if(i == null) {
+            return 0;
+        } else {
+            return i;
+        }
     }
 }

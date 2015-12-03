@@ -36,7 +36,7 @@ public class Infobox {
             if(idx > -1) {
                 s = s.substring(idx + txt.length(), s.length()-1);
             } else {
-                System.out.println("there is no prefix /resource/");
+                System.out.println("[ERRO] there is no prefix /resource/");
                 System.out.println(s);
                 break;
             }
@@ -44,8 +44,8 @@ public class Infobox {
             setInfobox(s);
         }
         reader.close();
-        System.out.println("number of instances including infobox: " + map.size());
-        System.out.println("finish reading infobox-properties");
+        System.out.println("\tnumber of instances including infobox: " + map.size());
+        System.out.println("\tfinish reading infobox-properties");
     }
 
     private void setInfobox(String key) {
@@ -58,6 +58,11 @@ public class Infobox {
     }
 
     public Integer getInfobox(String key) {
-        return map.get(key);
+        Integer i = map.get(key);
+        if(i == null) {
+            return 0;
+        } else {
+            return i;
+        }
     }
 }
