@@ -1,5 +1,7 @@
 package kr.ac.kaist.kmap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.util.*;
 
@@ -7,7 +9,6 @@ import java.util.*;
  * Created by Woo on 2015. 12. 4..
  */
 public class Edges {
-    private ArrayList<Map<String, Object>> edges = new ArrayList<>();
     private static String filename;
     private static Map<String, Set<String>> pageLinkMap = new DefaultHashMap<>(HashSet.class);
     private Map<String, Integer> edgeSizeMap= new HashMap<>();
@@ -17,38 +18,15 @@ public class Edges {
         this.filename = filename;
     }
 
-    public static void main(String[] args) {
-        setPageLinkMap("<http://dbpedia.org/resource/AcademyAwards>" +
-                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
-                " <http://dbpedia.org/resource/Academy_Awards>" +
-                " .");
-        setPageLinkMap("<http://dbpedia.org/resource/AcademicElitism>" +
-                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
-                " <http://dbpedia.org/resource/Ivory_tower>" +
-                " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
-                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
-                " <http://dbpedia.org/resource/File:Albedo-e_hg.svg>" +
-                " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
-                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
-                " <http://dbpedia.org/resource/Latin>" +
-                " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
-                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
-                " <http://dbpedia.org/resource/Diffuse_reflection>" +
-                " .");
-
-        System.out.println(getPageLinkMap("AcademyAwards"));
-        System.out.println(getPageLinkMap("AcademicElitism"));
-        System.out.println(getPageLinkMap("Albedo"));
-
-
-    }
-
-    public void putEdges(HashMap resultMap, String key, ArrayList<Map<String, Object>> nodes) throws IOException {
+    public void putEdges(String key, ArrayList<Map<String, Object>> nodes) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
         String inputLine;
+        Map<String, Set<String>> instance_id;
+        ArrayList<Map<String, Object>> edges;
+        HashMap resultMap;
+
+        resultMap = new HashMap();
+        App.putTimeSlot(resultMap);
 
         System.out.println("start reading page-links");
 
@@ -63,24 +41,44 @@ public class Edges {
 //        System.out.println("\tnumber of instances including interlanguage information: " + map.size());
         System.out.println("\tfinish reading page-links");
 
-        setCategoryIdMap(nodes);
-        setEdgeSizeMap();
+        instance_id = setCategoryIdMap(nodes);
+        edges = setEdgeSizeMap(instance_id);
 
         resultMap.put(key, edges);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("edges.json"), resultMap);
     }
 
-    private void setCategoryIdMap(ArrayList<Map<String, Object>> nodes) {
+    private Map<String, Set<String>> setCategoryIdMap(ArrayList<Map<String, Object>> nodes) throws IOException {
+        Category cat;
         Map<String, Set<String>> categoryIdMap = new DefaultHashMap<>(HashMap.class);
+        Map<String, String> label_id = new HashMap();
+
+        // Map<category, id>
+        for(Map<String, Object> node : nodes) {
+            label_id.put(String.valueOf(node.get("label")), String.valueOf(node.get("id")));
+        }
+
+        cat = new Category();
+        cat.setFileName(App.baseDir + App.filename_categories);
+        cat.setMap("instance");
+
+        for(String instance : cat.getKeySet()) {
+            for(String category : cat.getValueSet(instance)) {
+                categoryIdMap.get(instance).add(label_id.get(category));
+            }
+        }
+
+        return categoryIdMap;
     }
 
-
-    private void setEdgeSizeMap() throws IOException {
+    private ArrayList<Map<String, Object>> setEdgeSizeMap(Map<String, Set<String>> instance_id) throws IOException {
         String s; // category ID for FROM plus category ID for TO
 
         for(String from : pageLinkMap.keySet()) {
-            Set<String> fromCategorySet = getCategoryIdSet(from);
+            Set<String> fromCategorySet = instance_id.get(from);
             for(String to : pageLinkMap.get(from)) {
-                Set<String> toCategorySet = getCategoryIdSet(to);
+                Set<String> toCategorySet = instance_id.get(to);
                 for(String fromCategory : fromCategorySet) {
                     for(String toCategory : toCategorySet) {
                         // skip if FROM and TO are the same category
@@ -121,6 +119,7 @@ public class Edges {
             edge.put("variables", variables);
             edges.add(edge);
         }
+        return edges;
     }
 
     private Set<String> getCategoryIdSet(String instance) {
@@ -164,5 +163,34 @@ public class Edges {
 
     private static Set<String> getPageLinkMap(String s) {
         return pageLinkMap.get(s);
+    }
+
+    public static void main(String[] args) {
+        setPageLinkMap("<http://dbpedia.org/resource/AcademyAwards>" +
+                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
+                " <http://dbpedia.org/resource/Academy_Awards>" +
+                " .");
+        setPageLinkMap("<http://dbpedia.org/resource/AcademicElitism>" +
+                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
+                " <http://dbpedia.org/resource/Ivory_tower>" +
+                " .");
+        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
+                " <http://dbpedia.org/resource/File:Albedo-e_hg.svg>" +
+                " .");
+        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
+                " <http://dbpedia.org/resource/Latin>" +
+                " .");
+        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+                " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
+                " <http://dbpedia.org/resource/Diffuse_reflection>" +
+                " .");
+
+        System.out.println(getPageLinkMap("AcademyAwards"));
+        System.out.println(getPageLinkMap("AcademicElitism"));
+        System.out.println(getPageLinkMap("Albedo"));
+
+
     }
 }

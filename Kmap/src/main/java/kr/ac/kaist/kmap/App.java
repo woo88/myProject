@@ -10,8 +10,8 @@ import java.util.*;
  *
  */
 public class App {
-    private static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
-    private static final String filename_categories = "article-categories_en.nt";
+    protected static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
+    protected static final String filename_categories = "article-categories_en.nt";
     private static final String filename_redirects = "redirects_en.nt";
     private static final String filename_infobox = "infobox-properties_en.nt";
     private static final String filename_types = "instance-types_en.nt";
@@ -24,12 +24,32 @@ public class App {
     private static final String filename_page_links = "page-links_en.nt";
     private static final String TIME_SLOT = "2015-04";
 
-    private static HashMap resultMap = new HashMap();
+//    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello World!!!");
+        ArrayList<Map<String, Object>> nodes;
 
-        Category cat = new Category(baseDir + filename_categories);
+//        resultMap.put("timeslot", TIME_SLOT);
+        nodes = GenerateNodes();
+//        resultMap.put("nodes", nodes);
+//        resultMap.put("edges", "test");
+        GenerateEdges(nodes);
+
+//        StringBuffer sbuf = new StringBuffer();
+//        ObjectMapper mapper = new ObjectMapper();
+
+//        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
+    }
+
+    private static ArrayList<Map<String, Object>> GenerateNodes() throws IOException {
+        HashMap resultMap = new HashMap();
+        putTimeSlot(resultMap);
+
+        ArrayList<Map<String, Object>> nodes = new ArrayList<>();
+        Category cat = new Category();
+        cat.setFileName(baseDir + filename_categories);
+        cat.setMap("category");
+
         Redirect red = new Redirect(baseDir + filename_redirects);
         Infobox ib = new Infobox(baseDir + filename_infobox);
         Type type = new Type(baseDir + filename_types);
@@ -50,24 +70,24 @@ public class App {
          * "yago-intances": 0,
          * "yago-types": 0
          */
-        ArrayList<Map<String, Object>> nodes = new ArrayList<>();
+
         int i = 0; // node ID
-        for(String category : cat.getCategories()) {
+        for(String category : cat.getKeySet()) {
             Map<String, Integer> variables = new HashMap<>();
-            int instances_point = cat.getCategorySize(category);
+            int instances_point = cat.getValueSetSize(category);
             int redirect_point = 0;
             int infobox_point = 0;
             int type_point;
             int length_point = 0;
             int interlanguage_point = 0;
 
-            for(String instance : cat.getInstanceSet(category)){
+            for(String instance : cat.getValueSet(category)){
                 redirect_point += red.getRedirect(instance);
                 infobox_point += ib.getInfobox(instance);
                 length_point += pl.getPageLength(instance);
                 interlanguage_point += il.getValue(instance);
             }
-            type_point = type.getIntersection(cat.getInstanceSet(category)).size();
+            type_point = type.getIntersection(cat.getValueSet(category)).size();
 
             variables.put("instances", instances_point);
             variables.put("redirects", redirect_point);
@@ -94,16 +114,18 @@ public class App {
 
             nodes.add(node);
         }
-
-        resultMap.put("timeslot", TIME_SLOT);
         resultMap.put("nodes", nodes);
-//        map.put("edges", "test");
-        Edges e = new Edges(baseDir + filename_page_links);
-        e.putEdges(resultMap, "edges", nodes);
-
-//        StringBuffer sbuf = new StringBuffer();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("nodes.json"), resultMap);
+        return nodes;
+    }
 
-        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
+    protected static void putTimeSlot(HashMap resultMap) {
+        resultMap.put("timeslot", TIME_SLOT);
+    }
+
+    private static void GenerateEdges(ArrayList<Map<String, Object>> nodes) throws IOException {
+        Edges e = new Edges(baseDir + filename_page_links);
+        e.putEdges("edges", nodes);
     }
 }
