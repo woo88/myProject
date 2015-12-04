@@ -18,7 +18,7 @@ public class Edges {
         this.filename = filename;
     }
 
-    public void putEdges(String key, ArrayList<Map<String, Object>> nodes) throws IOException {
+    public void putEdges(String key, Map<String, String> label_id) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
         String inputLine;
         Map<String, Set<String>> instance_id;
@@ -41,7 +41,7 @@ public class Edges {
 //        System.out.println("\tnumber of instances including interlanguage information: " + map.size());
         System.out.println("\tfinish reading page-links");
 
-        instance_id = setCategoryIdMap(nodes);
+        instance_id = setCategoryIdMap(label_id);
         edges = setEdgeSizeMap(instance_id);
 
         resultMap.put(key, edges);
@@ -49,15 +49,9 @@ public class Edges {
         mapper.writerWithDefaultPrettyPrinter().writeValue(new File("edges.json"), resultMap);
     }
 
-    private Map<String, Set<String>> setCategoryIdMap(ArrayList<Map<String, Object>> nodes) throws IOException {
+    private Map<String, Set<String>> setCategoryIdMap(Map<String, String> label_id) throws IOException {
         Category cat;
         Map<String, Set<String>> categoryIdMap = new DefaultHashMap<>(HashMap.class);
-        Map<String, String> label_id = new HashMap();
-
-        // Map<category, id>
-        for(Map<String, Object> node : nodes) {
-            label_id.put(String.valueOf(node.get("label")), String.valueOf(node.get("id")));
-        }
 
         cat = new Category();
         cat.setFileName(App.baseDir + App.filename_categories);
