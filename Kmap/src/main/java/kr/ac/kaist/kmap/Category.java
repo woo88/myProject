@@ -15,7 +15,7 @@ import java.util.Set;
 public class Category {
     // "category": [instances]
     private Map<String, Set<String>> map = new DefaultHashMap<>(HashSet.class);
-    private String filename;
+    private String filename = App.baseDir + App.filename_categories;
 
     public void setMap(String s) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
