@@ -10,15 +10,14 @@ import java.util.*;
  */
 public class Edges {
     private static String filename;
-    private static Map<String, Set<String>> pageLinkMap = new DefaultHashMap<>(HashSet.class);
-    private Map<String, Integer> edgeSizeMap= new HashMap<>();
-
+    private Map<String, Integer> edgeSizeMap;
 
     public Edges(String filename) {
         this.filename = filename;
     }
 
-    public void putEdges(String key, Map<String, String> label_id) throws IOException {
+    public void putEdges(String key) throws IOException {
+        HashMap<String, Set<String>> pageLinkMap;
         BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
         String inputLine;
         Map<String, Set<String>> instance_id;
@@ -30,49 +29,61 @@ public class Edges {
 
         System.out.println("start reading page-links");
 
+        pageLinkMap = new DefaultHashMap<>(HashSet.class);
         while((inputLine = reader.readLine()) != null) {
             // Ignore comment lines.
             if(inputLine.startsWith("#")) {
                 continue;
             }
-            setPageLinkMap(inputLine);
+            setPageLinkMap(pageLinkMap, inputLine);
         }
         reader.close();
 //        System.out.println("\tnumber of instances including interlanguage information: " + map.size());
         System.out.println("\tfinish reading page-links");
 
-        instance_id = setCategoryIdMap(label_id);
-        edges = setEdgeSizeMap(instance_id);
+        instance_id = setCategoryIdMap();
+        edges = setEdgeSizeMap(pageLinkMap, instance_id);
+        instance_id = null;
 
         resultMap.put(key, edges);
+        edges = null;
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(new File("edges.json"), resultMap);
     }
 
-    private Map<String, Set<String>> setCategoryIdMap(Map<String, String> label_id) throws IOException {
+    private Map<String, Set<String>> setCategoryIdMap() throws IOException {
         Category cat;
-        Map<String, Set<String>> categoryIdMap = new DefaultHashMap<>(HashMap.class);
+        Nodes nod;
+        Map<String, Set<String>> categoryIdMap;
 
         cat = new Category();
         cat.setFileName(App.baseDir + App.filename_categories);
         cat.setMap("instance");
 
+        nod = new Nodes();
+        nod.setNodeIdMap();
+
+        categoryIdMap = new DefaultHashMap<>(HashMap.class);
         for(String instance : cat.getKeySet()) {
             for(String category : cat.getValueSet(instance)) {
-                categoryIdMap.get(instance).add(label_id.get(category));
+                categoryIdMap.get(instance).add(nod.getId(category));
             }
         }
 
         return categoryIdMap;
     }
 
-    private ArrayList<Map<String, Object>> setEdgeSizeMap(Map<String, Set<String>> instance_id) throws IOException {
+    private ArrayList<Map<String, Object>> setEdgeSizeMap(HashMap<String, Set<String>> pageLinkMap, Map<String, Set<String>> instance_id) throws IOException {
         String s; // category ID for FROM plus category ID for TO
+        Set<String> fromCategorySet;
+        Set<String> toCategorySet;
 
+        edgeSizeMap= new HashMap<>();
         for(String from : pageLinkMap.keySet()) {
-            Set<String> fromCategorySet = instance_id.get(from);
+            fromCategorySet = instance_id.get(from);
             for(String to : pageLinkMap.get(from)) {
-                Set<String> toCategorySet = instance_id.get(to);
+                toCategorySet = instance_id.get(to);
                 for(String fromCategory : fromCategorySet) {
                     for(String toCategory : toCategorySet) {
                         // skip if FROM and TO are the same category
@@ -89,22 +100,26 @@ public class Edges {
                 }
             }
         }
+        pageLinkMap = null;
 
         //
 
         ArrayList<Map<String, Object>> edges = new ArrayList<>();
         String[] strArr;
+        Map<String, Object> edge;
+        Map<String, Integer> variables;
         int share_point;
+        int edgeSize;
         for(String from_to : edgeSizeMap.keySet()) {
-            Map<String, Object> edge = new HashMap<>();
-            Map<String, Integer> variables = new HashMap<>();
+            edge = new HashMap<>();
+            variables = new HashMap<>();
 
             variables.put("page-links", edgeSizeMap.get(from_to));
             variables.put("share-same-instance", 0);
 
             strArr = from_to.split("-", 2);
             share_point = 0;
-            int edgeSize = edgeSizeMap.get(from_to) + share_point;
+            edgeSize = edgeSizeMap.get(from_to) + share_point;
 
             edge.put("id", "0");
             edge.put("source", strArr[0]);
@@ -113,6 +128,7 @@ public class Edges {
             edge.put("variables", variables);
             edges.add(edge);
         }
+        edgeSizeMap = null;
         return edges;
     }
 
@@ -120,7 +136,7 @@ public class Edges {
         return null;
     }
 
-    private static void setPageLinkMap(String s) {
+    private static void setPageLinkMap(HashMap<String, Set<String>> pageLinkMap, String s) {
         String[] strArr = s.split(" ", 4);
         String from = strArr[0];
         String to = strArr[2];
@@ -155,36 +171,38 @@ public class Edges {
         pageLinkMap.get(from).add(to);
     }
 
-    private static Set<String> getPageLinkMap(String s) {
-        return pageLinkMap.get(s);
-    }
+//    private static Set<String> getToSet(String s) {
+//        return pageLinkMap.get(s);
+//    }
 
     public static void main(String[] args) {
-        setPageLinkMap("<http://dbpedia.org/resource/AcademyAwards>" +
+        HashMap<String, Set<String>> pageLinkMap;
+
+        pageLinkMap = new DefaultHashMap<>(HashSet.class);
+        setPageLinkMap(pageLinkMap, "<http://dbpedia.org/resource/AcademyAwards>" +
                 " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
                 " <http://dbpedia.org/resource/Academy_Awards>" +
                 " .");
-        setPageLinkMap("<http://dbpedia.org/resource/AcademicElitism>" +
+        setPageLinkMap(pageLinkMap, "<http://dbpedia.org/resource/AcademicElitism>" +
                 " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
                 " <http://dbpedia.org/resource/Ivory_tower>" +
                 " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+        setPageLinkMap(pageLinkMap, "<http://dbpedia.org/resource/Albedo>" +
                 " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
                 " <http://dbpedia.org/resource/File:Albedo-e_hg.svg>" +
                 " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+        setPageLinkMap(pageLinkMap, "<http://dbpedia.org/resource/Albedo>" +
                 " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
                 " <http://dbpedia.org/resource/Latin>" +
                 " .");
-        setPageLinkMap("<http://dbpedia.org/resource/Albedo>" +
+        setPageLinkMap(pageLinkMap, "<http://dbpedia.org/resource/Albedo>" +
                 " <http://dbpedia.org/ontology/wikiPageWikiLink>" +
                 " <http://dbpedia.org/resource/Diffuse_reflection>" +
                 " .");
 
-        System.out.println(getPageLinkMap("AcademyAwards"));
-        System.out.println(getPageLinkMap("AcademicElitism"));
-        System.out.println(getPageLinkMap("Albedo"));
-
-
+        System.out.println(pageLinkMap.keySet());
+        System.out.println(pageLinkMap.get("AcademyAwards"));
+        System.out.println(pageLinkMap.get("AcademicElitism"));
+        System.out.println(pageLinkMap.get("Albedo"));
     }
 }

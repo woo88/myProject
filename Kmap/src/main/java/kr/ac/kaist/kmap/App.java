@@ -27,13 +27,12 @@ public class App {
 //    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
-        Map<String, String> label_id;
+//        GenerateNodes();
+        GenerateEdges();
 
 //        resultMap.put("timeslot", TIME_SLOT);
-        label_id = GenerateNodes();
 //        resultMap.put("nodes", nodes);
 //        resultMap.put("edges", "test");
-        GenerateEdges(label_id);
 
 //        StringBuffer sbuf = new StringBuffer();
 //        ObjectMapper mapper = new ObjectMapper();
@@ -41,12 +40,11 @@ public class App {
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
     }
 
-    private static Map<String, String> GenerateNodes() throws IOException {
+    private static void GenerateNodes() throws IOException {
         HashMap resultMap = new HashMap();
         putTimeSlot(resultMap);
 
         ArrayList<Map<String, Object>> nodes = new ArrayList<>();
-        Map<String, String> label_id;
         Category cat = new Category();
         cat.setFileName(baseDir + filename_categories);
         cat.setMap("category");
@@ -73,7 +71,6 @@ public class App {
          */
 
         int i = 0; // node ID
-        label_id = new HashMap<>();
         for(String category : cat.getKeySet()) {
             Map<String, Integer> variables = new HashMap<>();
             int instances_point = cat.getValueSetSize(category);
@@ -115,21 +112,18 @@ public class App {
             node.put("variables", variables);
 
             nodes.add(node);
-
-            label_id.put(category, String.valueOf(i));
         }
         resultMap.put("nodes", nodes);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(new File("nodes.json"), resultMap);
-        return label_id;
     }
 
     protected static void putTimeSlot(HashMap resultMap) {
         resultMap.put("timeslot", TIME_SLOT);
     }
 
-    private static void GenerateEdges(Map<String, String> label_id) throws IOException {
+    private static void GenerateEdges() throws IOException {
         Edges e = new Edges(baseDir + filename_page_links);
-        e.putEdges("edges", label_id);
+        e.putEdges("edges");
     }
 }
