@@ -21,7 +21,7 @@ public class App {
     private static final String filename_nytimes = "nytimes_links.nt";
     private static final String filename_yago_links = "yago_links.nt";
     private static final String filename_yago_types = "yago_types.nt";
-    private static final String filename_page_links = "page-links_en.nt";
+    protected static final String filename_page_links = "page-links_en.nt";
     private static final String TIME_SLOT = "2015-04";
 
 //    private static HashMap resultMap = new HashMap();
@@ -120,6 +120,7 @@ public class App {
 
     protected static void putTimeSlot(HashMap resultMap) {
         resultMap.put("timeslot", TIME_SLOT);
+        System.out.println("put timeslot information");
     }
 
     private static void GenerateEdges() throws IOException {

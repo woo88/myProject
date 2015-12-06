@@ -23,7 +23,7 @@ public class Category {
         String k;
         String v;
 
-        System.out.println("start reading categories");
+        System.out.println("start reading " + App.filename_categories);
 
 //        int i = 0;
         while((inputLine = reader.readLine()) != null) {
@@ -49,8 +49,8 @@ public class Category {
         }
 
         reader.close();
-        System.out.println("\tnumber of categories: " + map.size());
-        System.out.println("\tfinish reading categories");
+        System.out.println("\tnumber of " + s + ": " + map.size());
+        System.out.println("\tfinished");
     }
 
     /**
