@@ -2,7 +2,6 @@ package kr.ac.kaist.kmap;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Woo on 2015. 12. 5..
@@ -21,7 +20,7 @@ public class Nodes {
         node_id = new HashMap<>();
         for(String category : cat.getKeySet()) {
             i++;
-            node_id.put(category, String.valueOf(i));
+            node_id.put(category, Integer.toString(i));
         }
     }
 
