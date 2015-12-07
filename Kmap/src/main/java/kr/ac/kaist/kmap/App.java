@@ -1,5 +1,6 @@
 package kr.ac.kaist.kmap;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
@@ -10,8 +11,10 @@ import java.util.*;
  *
  */
 public class App {
-    protected static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
-    protected static final String filename_categories = "article-categories_en.nt";
+//    protected static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
+    protected static final String baseDir = "/home/woo88/dbpedia/2014/en/";
+//    protected static final String filename_categories = "article-categories_en.nt";
+    protected static final String filename_categories = "article_categories_en.nt";
     private static final String filename_redirects = "redirects_en.nt";
     private static final String filename_infobox = "infobox-properties_en.nt";
     private static final String filename_types = "instance-types_en.nt";
@@ -21,8 +24,10 @@ public class App {
     private static final String filename_nytimes = "nytimes_links.nt";
     private static final String filename_yago_links = "yago_links.nt";
     private static final String filename_yago_types = "yago_types.nt";
-    protected static final String filename_page_links = "page-links_en.nt";
-    private static final String TIME_SLOT = "2015-04";
+//    protected static final String filename_page_links = "page-links_en.nt";
+    protected static final String filename_page_links = "page_links_en.nt";
+//    private static final String TIME_SLOT = "2015-04";
+    private static final String TIME_SLOT = "2014";
 
 //    private static HashMap resultMap = new HashMap();
 
@@ -131,5 +136,44 @@ public class App {
         e.setBaseDir(baseDir);
         e.setInputFileName(filename_page_links);
         e.generateEdges();
+    }
+
+    public static void writeJson(Map<String, Set<String>> map, String s) {
+        ObjectMapper mapper = new ObjectMapper();
+        File f = new File(App.baseDir + "res/" + s);
+
+        try {
+            mapper.writeValue(f, map);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isFile(String targetFileName) {
+        File f = new File(baseDir + "res/" + targetFileName);
+
+        if(f.isFile()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static Map<String, Set<String>> readJson(String targetFileName) {
+        Map<String, Set<String>> map = null;
+        ObjectMapper mapper = new ObjectMapper();
+        File f = new File(App.baseDir + "res/" + targetFileName);
+
+        // read JSON from a file
+        try {
+            map = new DefaultHashMap<>(HashSet.class);
+            map = mapper.readValue(
+                    f,
+                    new TypeReference<Map<String, Set<String>>>() {
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 }

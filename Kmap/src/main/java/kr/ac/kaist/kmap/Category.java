@@ -1,9 +1,6 @@
 package kr.ac.kaist.kmap;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -13,44 +10,74 @@ import java.util.Set;
  * Created by woo on 2015-12-01.
  */
 public class Category {
-    // "category": [instances]
-    private Map<String, Set<String>> map = new DefaultHashMap<>(HashSet.class);
-    private String filename = App.baseDir + App.filename_categories;
+    private Map<String, Set<String>> map = null;
+    private static String filename = null;
+    private static String targetFileName = null;
 
     public void setMap(String s) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
-        String inputLine;
-        String k;
-        String v;
+        int keyIdx;
+        int valueIdx;
 
-        System.out.println("start reading " + App.filename_categories);
-
-//        int i = 0;
-        while((inputLine = reader.readLine()) != null) {
-            // Ignore comment lines.
-            if(inputLine.startsWith("#"))
-                continue;
-
-            String[] strArr = inputLine.split(" ", 4);
-            if(Objects.equals(s, "category")) {
-                k = RemovePrefix(strArr[2]);
-                v = RemovePrefix(strArr[0]);
-            } else if(Objects.equals(s, "instance")) {
-                k = RemovePrefix(strArr[0]);
-                v = RemovePrefix(strArr[2]);
-            } else {
-                return;
-            }
-            map.get(k).add(v);
-
-//            i++;
-//            if(i > 2000000)
-//                break;
+        if(Objects.equals(filename, null)) {
+            filename = App.baseDir + App.filename_categories;
         }
 
+
+        if(Objects.equals(s, "category")) {
+            targetFileName = "categoryToInstances.json";
+            keyIdx = 2;
+            valueIdx = 0;
+        } else if(Objects.equals(s, "instance")) {
+            targetFileName = "instanceToCategories.json";
+            keyIdx = 0;
+            valueIdx = 2;
+        } else {
+            return;
+        }
+
+        if(App.isFile(targetFileName)) {
+           map = App.readJson(targetFileName);
+        } else {
+            readData(keyIdx, valueIdx, s);
+        }
+    }
+
+    private void readData(int keyIdx, int valueIdx, String s) throws IOException {
+        BufferedReader reader = null;
+        String inputLine = null;
+
+        System.out.println("start reading " + filename);
+
+        reader = new BufferedReader(new FileReader(new File(filename)));
+        map = new DefaultHashMap<>(HashSet.class);
+        while((inputLine = reader.readLine()) != null) {
+            // Ignore comment lines.
+            if(inputLine.startsWith("#")) {
+                System.out.println("\tskip the line: " + inputLine);
+                continue;
+            }
+
+            String[] strArr = inputLine.split(" ", 4);
+            String k = RemovePrefix(strArr[keyIdx]);
+            String v = RemovePrefix(strArr[valueIdx]);
+            map.get(k).add(v);
+        }
         reader.close();
         System.out.println("\tnumber of " + s + ": " + map.size());
         System.out.println("\tfinished");
+
+        App.writeJson(map, targetFileName);
+    }
+
+    private boolean checkExistingFile(String s) {
+        if(Objects.equals(s, "category")) {
+
+        } else if(Objects.equals(s, "instance")) {
+
+        } else {
+
+        }
+        return false;
     }
 
     /**
@@ -83,11 +110,11 @@ public class Category {
         return map.keySet();
     }
 
-    public Integer getValueSetSize(String category) {
-        return map.get(category).size();
+    public Integer getValueSetSize(String key) {
+        return map.get(key).size();
     }
 
     public void setFileName(String filename) {
-        this.filename = filename;
+        Category.filename = filename;
     }
 }

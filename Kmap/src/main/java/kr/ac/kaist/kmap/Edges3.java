@@ -11,8 +11,11 @@ import java.util.*;
  * Created by woo on 2015-12-07.
  */
 public class Edges3 {
-    private static String baseDir;
-    private static String inputFileName;
+    private static String baseDir = null;
+    private static String inputFileName = null;
+    private static String outFileName = "category-links_en.txt";
+    private static String sortedOutFileName = "sorted_category-links_en.txt";
+    private static String reducedOutFileName = "result_category-links_en.txt";
 
     public static void setBaseDir(String baseDir) {
         Edges3.baseDir = baseDir;
@@ -24,10 +27,10 @@ public class Edges3 {
 
     public static void generateEdges() throws IOException {
         // setPageLinkToCategoryLink()
-//        setPageLinkToCategoryLink();
+        setPageLinkToCategoryLink();
 
         // external sort
-//        sortCategoryLinks();
+        sortCategoryLinks();
 
         // reducing
         countCategoryLinks();
@@ -39,15 +42,32 @@ public class Edges3 {
         String inputLine = null;
         String prevLine = null;
         int count = 1;
+        String[] strArr = null;
+        int sharedInstanceNumber = 0;
+        Map<String, Set<String>> categoryidToInstances = null;
+        int total = 0;
 
-        reader = new BufferedReader(new FileReader(new File(baseDir + "res/sorted_category-links_en.txt")));
-        writer = new BufferedWriter(new FileWriter(new File(baseDir + "res/result_category-links_en.txt")));
+        categoryidToInstances = setCategoryidToInstances();
+
+        reader = new BufferedReader(new FileReader(new File(baseDir + "res/" + sortedOutFileName)));
+        writer = new BufferedWriter(new FileWriter(new File(baseDir + "res/" + reducedOutFileName)));
         prevLine = reader.readLine();
         while((inputLine = reader.readLine()) != null) {
             if(Objects.equals(inputLine, prevLine)) {
                 count++;
             } else {
-                writer.write(prevLine + "," + count); writer.newLine();
+                strArr = prevLine.split("-", 2);
+                Set<String> fromInstances = categoryidToInstances.get(strArr[0]);
+                Set<String> toInstances = categoryidToInstances.get(strArr[1]);
+                fromInstances.retainAll(toInstances);
+                sharedInstanceNumber = fromInstances.size();
+                if(sharedInstanceNumber != 0) {
+                    System.out.print(prevLine + ":" + sharedInstanceNumber + ", ");
+                }
+                total = count + sharedInstanceNumber;
+//                writer.write(strArr[0] + "," + strArr[1] + "," + count + "," + sharedInstanceNumber + "," + total);
+                writer.write(strArr[0] + " " + strArr[1] + " " + total + " " + count + " " + sharedInstanceNumber);
+                writer.newLine();
                 count = 1;
             }
             prevLine = inputLine;
@@ -56,19 +76,80 @@ public class Edges3 {
         writer.close();
     }
 
+    private static Map<String, Set<String>> setCategoryidToInstances() throws IOException {
+        Map<String, Set<String>> categoryidToInstances = null;
+        File f = null;
+        ObjectMapper mapper = null;
+
+        f = new File(baseDir + "res/categoryidToInstances.json");
+        if(f.isFile()) {
+            System.out.println("start reading " + baseDir + "res/categoryidToInstances.json");
+            mapper = new ObjectMapper();
+            // read JSON from a file
+            try {
+                categoryidToInstances = mapper.readValue(
+                        f,
+                        new TypeReference<Map<String, Set<String>>>() {
+                        });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return categoryidToInstances;
+        }
+
+        Category cat;
+        Nodes nod;
+
+        cat = new Category();
+        try {
+            cat.setMap("category");
+//            cat.setMap("instance");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        nod = new Nodes();
+        try {
+            nod.setNodeIdMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("start generating Map<\"category id\", Set<\"instances\">>");
+        categoryidToInstances = new DefaultHashMap<>(HashSet.class);
+        for(String category : cat.getKeySet()) {
+            String id = nod.getId(category);
+            for(String instance : cat.getValueSet(category)) {
+                categoryidToInstances.get(id).add(instance);
+            }
+        }
+
+        mapper = new ObjectMapper();
+        // write JSON to a file
+        try {
+            mapper.writeValue(f, categoryidToInstances);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("\tMap size: " + categoryidToInstances.size());
+        System.out.println("\tfinished");
+        return categoryidToInstances;
+    }
+
     private static void sortCategoryLinks() throws IOException {
         ExternalSort sort = new ExternalSort();
         boolean verbose = true;
         boolean distinct = false;
-        int maxtmpfiles = 10;
+        int maxtmpfiles = 1024;
         Charset cs = Charset.defaultCharset();
         String inputfile = null, outputfile = null;
         File tempFileStore = null;
         boolean usegzip = false;
         int headersize = 0;
 
-        inputfile = baseDir + "res/category-links_en.txt";
-        outputfile = baseDir + "res/sorted_category-links_en.txt";
+        inputfile = baseDir + "res/" + outFileName;
+        outputfile = baseDir + "res/" + sortedOutFileName;
         tempFileStore = new File(baseDir + "res/tmp/");
 
         Comparator<String> comparator = sort.defaultcomparator;
@@ -82,16 +163,16 @@ public class Edges3 {
     }
 
     private static void setPageLinkToCategoryLink() throws IOException {
-        BufferedReader reader;
-        String inputLine;
-        BufferedWriter writer;
+        BufferedReader reader = null;
+        String inputLine = null;
+        BufferedWriter writer = null;
 
         // generate Map<"instance", Set<"category id">>
         Map<String, Set<String>> instanceToCategoryidSet = setInstanceToCategoryidSet();
 
         System.out.println("start reading " + inputFileName);
         reader = new BufferedReader(new FileReader(new File(baseDir + inputFileName)));
-        writer = new BufferedWriter(new FileWriter(new File(baseDir + "res/category-links_en.txt")));
+        writer = new BufferedWriter(new FileWriter(new File(baseDir + "res/" + outFileName)));
         while((inputLine = reader.readLine()) != null) {
             // ignore comment lines.
             if(inputLine.startsWith("#")) {
@@ -129,27 +210,13 @@ public class Edges3 {
 
     private static Map<String, Set<String>> setInstanceToCategoryidSet() {
         Map<String, Set<String>> instanceToCategoryidSet = null;
-        File f;
-        ObjectMapper mapper;
+        Category cat = null;
+        Nodes nod = null;
 
-        f = new File(baseDir + "res/instanceToCategoryidSet.json");
-        if(f.isFile()) {
-            System.out.println("start reading " + baseDir + "res/instanceToCategoryidSet.json");
-            mapper = new ObjectMapper();
-            // read JSON from a file
-            try {
-                instanceToCategoryidSet = mapper.readValue(
-                        f,
-                        new TypeReference<Map<String, Set<String>>>() {
-                        });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(App.isFile("instanceToCategoryidSet.json")) {
+            instanceToCategoryidSet = App.readJson("instanceToCategoryidSet.json");
             return instanceToCategoryidSet;
         }
-
-        Category cat;
-        Nodes nod;
 
         cat = new Category();
         try {
@@ -173,16 +240,11 @@ public class Edges3 {
             }
         }
 
-        mapper = new ObjectMapper();
-        // write JSON to a file
-        try {
-            mapper.writeValue(f, instanceToCategoryidSet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        App.writeJson(instanceToCategoryidSet, "instanceToCategoryidSet.json");
 
         System.out.println("\tMap size: " + instanceToCategoryidSet.size());
         System.out.println("\tfinished");
+
         return instanceToCategoryidSet;
     }
 
