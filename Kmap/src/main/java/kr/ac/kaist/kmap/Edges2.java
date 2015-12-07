@@ -67,7 +67,7 @@ public class Edges2 {
                 if(lineNumber >= splitLineNumber) {
                     curLineNumber += lineNumber;
                     lineNumber = 0;
-                    System.out.print("\t" + curLineNumber + ": ");
+                    System.out.print(curLineNumber + ": ");
 
                     // store in disk
 //                    mapper = new ObjectMapper();
@@ -84,6 +84,7 @@ public class Edges2 {
                     }
                     out.close();
                     catPairToCount = new HashMap<>();
+                    System.out.print(fileNo + ".txt, ");
                     fileNo++;
                 }
 

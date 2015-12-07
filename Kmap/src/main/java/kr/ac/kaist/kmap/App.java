@@ -127,7 +127,7 @@ public class App {
 //        Edges e = new Edges(baseDir + filename_page_links);
 //        e.putEdges("edges");
 
-        Edges2 e = new Edges2();
+        Edges3 e = new Edges3();
         e.setBaseDir(baseDir);
         e.setInputFileName(filename_page_links);
         e.generateEdges();
