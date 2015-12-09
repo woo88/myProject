@@ -10,7 +10,7 @@ import java.util.StringJoiner;
  */
 public class App {
     private static String inputVectors = "data/vectors.txt";
-    private static String outVectors = "data/lda_vectors.5D.txt";
+    private static String outVectors = "data/lda_vectors.10D.txt";
 
     private static String inputCorpus= "data/word2vec_sentence.txt";
     private static String outCorpus = "data/lda_corpus.txt";
@@ -73,7 +73,7 @@ public class App {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputVectors)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outVectors)));
         while((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ", 7);
+            String[] strArr = inputLine.split(" ", 12);
             StringJoiner joiner = new StringJoiner(" ");
 
             if(strArr[1].length() == 0) {
@@ -86,6 +86,11 @@ public class App {
             joiner.add(strArr[3]);
             joiner.add(strArr[4]);
             joiner.add(strArr[5]);
+            joiner.add(strArr[6]);
+            joiner.add(strArr[7]);
+            joiner.add(strArr[8]);
+            joiner.add(strArr[9]);
+            joiner.add(strArr[10]);
             writer.write(joiner.toString()); writer.newLine();
             i++;
         }
