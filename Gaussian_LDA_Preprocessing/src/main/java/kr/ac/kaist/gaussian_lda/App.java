@@ -10,7 +10,7 @@ import java.util.StringJoiner;
  */
 public class App {
     private static String inputVectors = "data/vectors.txt";
-    private static String outVectors = "data/lda_vectors.txt";
+    private static String outVectors = "data/lda_vectors.5D.txt";
 
     private static String inputCorpus= "data/word2vec_sentence.txt";
     private static String outCorpus = "data/lda_corpus.txt";
@@ -70,14 +70,21 @@ public class App {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputVectors)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outVectors)));
         while((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ", 2);
+            String[] strArr = inputLine.split(" ", 7);
+            StringJoiner joiner = new StringJoiner(" ");
 
             if(strArr[1].length() == 0) {
                 System.out.print(strArr[0] + ", ");
             }
 
             wordToIdx.put(strArr[0], Integer.toString(i));
-            writer.write(i + " " + strArr[1]); writer.newLine();
+            joiner.add(Integer.toString(i));
+            joiner.add(strArr[1]);
+            joiner.add(strArr[2]);
+            joiner.add(strArr[3]);
+            joiner.add(strArr[4]);
+            joiner.add(strArr[5]);
+            writer.write(joiner.toString()); writer.newLine();
             i++;
         }
         reader.close();
