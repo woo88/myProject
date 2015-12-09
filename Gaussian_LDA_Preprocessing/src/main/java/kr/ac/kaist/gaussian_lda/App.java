@@ -1,10 +1,8 @@
 package kr.ac.kaist.gaussian_lda;
 
-import com.sun.deploy.util.StringUtils;
-
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by Woo on 2015. 12. 10..
@@ -26,7 +24,7 @@ public class App {
         genCorpus(wordToIdx);
     }
 
-    private static void genCorpus(HashMap wordToIdx) throws IOException {
+    private static void genCorpus(HashMap<String, String> wordToIdx) throws IOException {
         String inputLine = null;
         int i = 0;
 
@@ -38,13 +36,13 @@ public class App {
 
             String[] strArr = inputLine.split(" ");
 
-            List list = null;
+            StringJoiner joiner = new StringJoiner(" ");
             for(String word : strArr) {
-                list.add(wordToIdx.get(word));
+                joiner.add(wordToIdx.get(word));
             }
-            writer.write(StringUtils.join(list, " ")); writer.newLine();
+            writer.write(joiner.toString()); writer.newLine();
 
-            if(i < 10) System.out.println(StringUtils.join(list, " "));
+            if(i < 10) System.out.println(joiner.toString());
             i++;
         }
         reader.close();
