@@ -1,8 +1,7 @@
-package ac.kr.kaist.gaussian_lda;
+package kr.ac.kaist.gaussian_lda;
 
 /**
- * Hello world!
- *
+ * Created by Woo on 2015. 12. 10..
  */
 public class App {
     private static String inputCorpus= "/home";
