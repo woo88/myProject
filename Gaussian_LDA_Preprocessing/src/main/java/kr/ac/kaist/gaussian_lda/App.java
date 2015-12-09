@@ -48,10 +48,13 @@ public class App {
 
                 joiner.add(s);
             }
-            writer.write(joiner.toString()); writer.newLine();
 
-            if(joiner.length() == 0)
+            if(joiner.length() == 0) {
                 System.out.println(i + ": " + inputLine);
+                continue;
+            }
+
+            writer.write(joiner.toString()); writer.newLine();
             i++;
         }
         reader.close();
