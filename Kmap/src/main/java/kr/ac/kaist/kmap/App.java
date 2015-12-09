@@ -37,8 +37,11 @@ public class App {
         SortedSet<String> allCategories = null;
         allCategories = readAllCategories();
 
+        System.out.println(allCategories.first());
+        System.out.println(allCategories.last());
+
 //        GenerateNodes();
-        GenerateEdges();
+//        GenerateEdges();
 
 //        resultMap.put("timeslot", TIME_SLOT);
 //        resultMap.put("nodes", nodes);
@@ -58,16 +61,27 @@ public class App {
         fileList.add("2015-04/en/article-categories_en.nt");
         SortedSet<String> allCategories = new TreeSet();
 
+        System.out.println("Start generating vocabulary of categories");
         for(Object filePath : fileList) {
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + filePath)));
             String inputLine;
+            System.out.print(filePath + ", ");
             while((inputLine = reader.readLine()) != null) {
                 String[] strArr = inputLine.split(" ");
-                String tmp = removePrefix(strArr[2], "/resource/");
-            }
+                String vocab = removePrefix(strArr[2], "/resource/");
 
+                if(vocab.startsWith("File:")) continue;
+
+                allCategories.add(vocab);
+            }
+            reader.close();
         }
-        return null;
+        System.out.println();
+        System.out.println("Vocabulary size: " + allCategories.size());
+        System.out.println("Done");
+        System.out.println();
+
+        return allCategories;
     }
 
     protected static String removePrefix(String s, String prefix) {
