@@ -50,8 +50,7 @@ public class App {
             }
             writer.write(joiner.toString()); writer.newLine();
 
-            if(i < 20) System.out.println(joiner.toString());
-            if(Objects.equals(joiner.toString(), "null"))
+            if(Objects.equals(joiner.toString(), null))
                 System.out.println(i + ": " + inputLine);
             i++;
         }
