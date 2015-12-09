@@ -32,6 +32,11 @@ public class App {
 //    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
+        // id, timeslot, types, instances, redirects
+
+        SortedSet allCategories = new TreeSet();
+        allCategories = readAllCategories();
+
 //        GenerateNodes();
         GenerateEdges();
 
@@ -43,6 +48,31 @@ public class App {
 //        ObjectMapper mapper = new ObjectMapper();
 
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
+    }
+
+    private static SortedSet readAllCategories() throws IOException {
+        String baseDir = "/home/woo88/dbpedia/";
+        ArrayList fileList = new ArrayList();
+        fileList.add("3.9/en/article_categories_en.nt");
+        fileList.add("2014/en/article_categories_en.nt");
+        fileList.add("2015-04/en/article-categories_en.nt");
+        SortedSet allCategories = new TreeSet();
+
+        for(Object filePath : fileList) {
+            BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + filePath)));
+            String inputLine;
+            while((inputLine = reader.readLine()) != null) {
+                ArrayList soList = getSOlist(inputLine);
+            }
+
+        }
+        return null;
+    }
+
+    private static ArrayList getSOlist(String inputLine) {
+        String[] strArr = inputLine.split(" ");
+
+        return null;
     }
 
     private static void GenerateNodes() throws IOException {

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Gaussian_LDA_Preprocessing/Gaussian_LDA_Preprocessing.iml" filepath="$PROJECT_DIR$/Gaussian_LDA_Preprocessing/Gaussian_LDA_Preprocessing.iml" />
       <module fileurl="file://$PROJECT_DIR$/Kmap/Kmap.iml" filepath="$PROJECT_DIR$/Kmap/Kmap.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/myProject.iml" filepath="$PROJECT_DIR$/.idea/myProject.iml" />
     </modules>

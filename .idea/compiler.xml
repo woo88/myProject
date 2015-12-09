@@ -24,8 +24,16 @@
         <processorPath useClasspath="true" />
         <module name="Kmap" />
       </profile>
+      <profile default="false" name="Annotation profile for Gaussian_LDA_Preprocessing" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="Gaussian_LDA_Preprocessing" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Gaussian_LDA_Preprocessing" target="1.8" />
       <module name="Kmap" target="1.8" />
       <module name="Test" target="1.5" />
     </bytecodeTargetLevel>

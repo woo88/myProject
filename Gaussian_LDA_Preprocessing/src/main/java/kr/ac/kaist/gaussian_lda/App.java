@@ -15,7 +15,7 @@ public class App {
     private static String outCorpus = "data/lda_corpus.txt";
 
     public static void main( String[] args ) throws IOException {
-        HashMap wordToIdx;
+        HashMap<String, String> wordToIdx;
 
         // convert word to index for vectors file
         wordToIdx = genVectors();
@@ -53,7 +53,7 @@ public class App {
 
     private static HashMap genVectors() throws IOException {
         String inputLine = null;
-        HashMap wordToIdx = new HashMap();
+        HashMap<String, String> wordToIdx = new HashMap();
         int i = 1;
 
         System.out.println("Reading vectors file");
@@ -67,8 +67,8 @@ public class App {
                 System.out.print(strArr[0] + ", ");
             }
 
-            wordToIdx.put(strArr[0], i);
-            writer.write(Integer.toString(i) + " " + strArr[1]); writer.newLine();
+            wordToIdx.put(strArr[0], Integer.toString(i));
+            writer.write(i + " " + strArr[1]); writer.newLine();
             i++;
         }
         reader.close();
