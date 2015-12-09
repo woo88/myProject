@@ -78,7 +78,6 @@ public class App {
             }
 
             wordToIdx.put(strArr[0], Integer.toString(i));
-            joiner.add(Integer.toString(i));
             joiner.add(strArr[1]);
             joiner.add(strArr[2]);
             joiner.add(strArr[3]);
