@@ -2,6 +2,7 @@ package kr.ac.kaist.gaussian_lda;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -42,7 +43,9 @@ public class App {
             }
             writer.write(joiner.toString()); writer.newLine();
 
-            if(i < 10) System.out.println(joiner.toString());
+            if(i < 20) System.out.println(joiner.toString());
+            if(Objects.equals(joiner.toString(), null))
+                System.out.println(i + ": " + inputLine);
             i++;
         }
         reader.close();
