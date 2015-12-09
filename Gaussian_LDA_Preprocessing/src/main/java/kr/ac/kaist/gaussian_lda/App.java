@@ -37,6 +37,7 @@ public class App {
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputCorpus)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outCorpus)));
         while((inputLine = reader.readLine()) != null) {
+            if(inputLine.trim().isEmpty()) continue;
 
             String[] strArr = inputLine.split(" ");
 
