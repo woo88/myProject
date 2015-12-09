@@ -21,6 +21,9 @@ public class App {
         // convert word to index for vectors file
         wordToIdx = genVectors();
 
+        System.out.println("data: " + wordToIdx.get("data"));
+        System.out.println("information: " + wordToIdx.get("information"));
+
         // convert word to index for corpus file
         genCorpus(wordToIdx);
     }
