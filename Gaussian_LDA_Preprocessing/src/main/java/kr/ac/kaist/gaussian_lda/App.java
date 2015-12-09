@@ -1,15 +1,20 @@
 package kr.ac.kaist.gaussian_lda;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Woo on 2015. 12. 10..
  */
 public class App {
-    private static String inputCorpus= "data/word2vec_sentence.txt";
     private static String inputVectors = "data/vectors.txt";
-    private static String outVectors = "data/lda_vectors";
+    private static String outVectors = "data/lda_vectors.txt";
+
+    private static String inputCorpus= "data/word2vec_sentence.txt";
+    private static String outCorpus = "data/lda_corpus.txt";
 
     public static void main( String[] args ) throws IOException {
         HashMap wordToIdx;
@@ -21,8 +26,31 @@ public class App {
         genCorpus(wordToIdx);
     }
 
-    private static void genCorpus(HashMap wordToIdx) {
+    private static void genCorpus(HashMap wordToIdx) throws IOException {
+        String inputLine = null;
+        int i = 0;
 
+        System.out.println("Reading corpus file");
+
+        BufferedReader reader = new BufferedReader(new FileReader(new File(inputCorpus)));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outCorpus)));
+        while((inputLine = reader.readLine()) != null) {
+
+            String[] strArr = inputLine.split(" ");
+
+            List list = null;
+            for(String word : strArr) {
+                list.add(wordToIdx.get(word));
+            }
+            writer.write(StringUtils.join(list, " ")); writer.newLine();
+
+            if(i < 10) System.out.println(StringUtils.join(list, " "));
+            i++;
+        }
+        reader.close();
+        writer.close();
+
+        System.out.println("finished");
     }
 
     private static HashMap genVectors() throws IOException {
@@ -42,8 +70,8 @@ public class App {
             }
 
             wordToIdx.put(strArr[0], i);
-            i++;
             writer.write(Integer.toString(i) + " " + strArr[1]); writer.newLine();
+            i++;
         }
         reader.close();
         writer.close();
