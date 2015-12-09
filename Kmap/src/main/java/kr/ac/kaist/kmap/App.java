@@ -34,7 +34,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         // id, timeslot, types, instances, redirects
 
-        SortedSet allCategories = new TreeSet();
+        SortedSet<String> allCategories = null;
         allCategories = readAllCategories();
 
 //        GenerateNodes();
@@ -50,29 +50,35 @@ public class App {
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
     }
 
-    private static SortedSet readAllCategories() throws IOException {
+    private static SortedSet<String> readAllCategories() throws IOException {
         String baseDir = "/home/woo88/dbpedia/";
         ArrayList fileList = new ArrayList();
         fileList.add("3.9/en/article_categories_en.nt");
         fileList.add("2014/en/article_categories_en.nt");
         fileList.add("2015-04/en/article-categories_en.nt");
-        SortedSet allCategories = new TreeSet();
+        SortedSet<String> allCategories = new TreeSet();
 
         for(Object filePath : fileList) {
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + filePath)));
             String inputLine;
             while((inputLine = reader.readLine()) != null) {
-                ArrayList soList = getSOlist(inputLine);
+                String[] strArr = inputLine.split(" ");
+                String tmp = removePrefix(strArr[2], "/resource/");
             }
 
         }
         return null;
     }
 
-    private static ArrayList getSOlist(String inputLine) {
-        String[] strArr = inputLine.split(" ");
-
-        return null;
+    protected static String removePrefix(String s, String prefix) {
+        int idx = s.indexOf(prefix);
+        if(idx > -1) {
+            s = s.substring(idx + prefix.length(), s.length()-1);
+        } else {
+            System.out.println("[ERRO] there is no prefix " + prefix);
+            System.out.println("\tin " + s);
+        }
+        return s;
     }
 
     private static void GenerateNodes() throws IOException {

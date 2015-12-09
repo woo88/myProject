@@ -188,9 +188,9 @@ public class Edges3 {
             if(idx > -1) { // skip if the resource is a file
                 continue;
             } else { // remove prefix
-                to = removePrefix(to, "/resource/");
+                to = App.removePrefix(to, "/resource/");
             }
-            from = removePrefix(from, "/resource/");
+            from = App.removePrefix(from, "/resource/");
 
             if(instanceToCategoryidSet.get(from) == null || instanceToCategoryidSet.get(to) == null) continue;
 
@@ -246,16 +246,5 @@ public class Edges3 {
         System.out.println("\tfinished");
 
         return instanceToCategoryidSet;
-    }
-
-    private static String removePrefix(String s, String prefix) {
-        int idx = s.indexOf(prefix);
-        if(idx > -1) {
-            s = s.substring(idx + prefix.length(), s.length()-1);
-        } else {
-            System.out.println("[ERRO] there is no prefix /resource/");
-            System.out.println(s);
-        }
-        return s;
     }
 }
