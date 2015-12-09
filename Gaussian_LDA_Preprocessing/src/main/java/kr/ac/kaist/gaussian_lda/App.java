@@ -50,7 +50,7 @@ public class App {
             }
             writer.write(joiner.toString()); writer.newLine();
 
-            if(Objects.equals(joiner.toString(), null))
+            if(joiner.length() == 0)
                 System.out.println(i + ": " + inputLine);
             i++;
         }
