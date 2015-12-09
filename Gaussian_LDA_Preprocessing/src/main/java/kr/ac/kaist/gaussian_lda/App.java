@@ -39,7 +39,10 @@ public class App {
 
             StringJoiner joiner = new StringJoiner(" ");
             for(String word : strArr) {
-                joiner.add(wordToIdx.get(word));
+                String s = wordToIdx.get(word);
+                if(Objects.equals(s, null)) continue;
+
+                joiner.add(s);
             }
             writer.write(joiner.toString()); writer.newLine();
 
