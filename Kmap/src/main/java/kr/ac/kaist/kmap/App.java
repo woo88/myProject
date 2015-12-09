@@ -67,6 +67,12 @@ public class App {
             String inputLine;
             System.out.print(filePath + ", ");
             while((inputLine = reader.readLine()) != null) {
+                // ignore comment lines.
+                if(inputLine.startsWith("#")) {
+                    System.out.println("\tskip this line: " + inputLine);
+                    continue;
+                }
+
                 String[] strArr = inputLine.split(" ");
                 String vocab = removePrefix(strArr[2], "/resource/");
 
