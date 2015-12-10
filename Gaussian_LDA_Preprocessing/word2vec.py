@@ -34,6 +34,7 @@ def main2():
 
     # word_to_vec = cPickle.load(open('data/word_to_vec_pkl'))
     print word_to_vec[0][0]
+    word_to_vec.tofile(open('output/word2vec_vectors.5d'))
 
 
 def readBowData():
