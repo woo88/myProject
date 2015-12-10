@@ -4,6 +4,7 @@
 import cPickle
 from collections import defaultdict
 import numpy as np
+from gensim.models.word2vec import Word2Vec
 
 # gloveFile = "/home/woo88/cs774/glove/glove.6B.50d.txt"
 gloveFile = "/home/woo88/cs774/vectors.txt"
