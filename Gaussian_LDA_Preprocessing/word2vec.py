@@ -28,14 +28,14 @@ def main():
 
 def main2():
     bow = cPickle.load(open('data/bow.pkl'))
-    M = 5
+    M = 10
     m = Word2Vec.load('data/word2vecmodels/model%d.mm' % (M))
     word_to_vec = np.array([m[bow[i]] for i in xrange(len(bow))])
 
     # word_to_vec = cPickle.load(open('data/word_to_vec_pkl'))
     # print word_to_vec[0][5]
     # print word_to_vec[0][6]
-    np.savetxt('output/word2vec_vectors.5d', word_to_vec, delimiter=' ')
+    np.savetxt('output/word2vec_vectors.10d', word_to_vec, delimiter=' ')
 
 
 def readBowData():
