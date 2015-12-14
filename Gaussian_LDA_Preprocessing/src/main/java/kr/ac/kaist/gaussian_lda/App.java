@@ -74,8 +74,9 @@ public class App {
             }
 
             if(joiner.length() == 0) {
-                System.out.println(i + ": " + inputLine);
-                throw new NullPointerException();
+//                System.out.println(i + ": " + inputLine);
+//                throw new NullPointerException();
+                continue;
             }
 
             writer.write(joiner.toString()); writer.newLine();
