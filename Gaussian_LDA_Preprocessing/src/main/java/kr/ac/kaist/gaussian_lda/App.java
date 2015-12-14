@@ -68,17 +68,14 @@ public class App {
             StringJoiner joiner = new StringJoiner(" ");
             for(String word : strArr) {
                 int idx = vocabList.indexOf(word);
-                if(idx == -1) {
-                    System.out.print(word + ", ");
-                    throw new NullPointerException();
-                }
+                if(idx == -1) continue;
 
                 joiner.add(Integer.toString(idx));
             }
 
             if(joiner.length() == 0) {
                 System.out.println(i + ": " + inputLine);
-                return;
+                throw new NullPointerException();
             }
 
             writer.write(joiner.toString()); writer.newLine();
