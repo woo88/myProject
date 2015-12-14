@@ -40,7 +40,7 @@ def main2():
 
 def main3():
     bow = cPickle.load(open('data/bow.pkl'))
-    assert isinstance(bow, "woods")
+    assert isinstance(bow, list)
 
     output = open('data/bow.txt', 'w')
     for token in bow:
