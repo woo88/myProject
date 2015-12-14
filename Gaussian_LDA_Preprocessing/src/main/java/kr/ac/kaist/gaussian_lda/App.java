@@ -1,6 +1,7 @@
 package kr.ac.kaist.gaussian_lda;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -9,27 +10,49 @@ import java.util.StringJoiner;
  * Created by Woo on 2015. 12. 10..
  */
 public class App {
+    private static String vocabFile = "data/bow.txt";
+
 //    private static String inputVectors = "data/vectors.txt";
     private static String inputVectors = "data/vectors.glove.5d.txt";
     private static String outVectors = "data/vectors.glove.5d.lda.txt";
 
     private static String inputCorpus= "data/word2vec_sentence.txt";
-    private static String outCorpus = "data/corpus.lda.txt";
+    private static String outCorpus = "data/corpus.train";
 
     public static void main( String[] args ) throws IOException {
         HashMap<String, String> wordToIdx;
+        ArrayList<String> vocabList;
+
+        // get word index from bow.txt
+        vocabList = getVocabList();
+
+        System.out.println("[Index] enabling: " + vocabList.indexOf("enabling"));
 
         // convert word to index for vectors file
-        wordToIdx = genVectors();
-
-        System.out.println("data: " + wordToIdx.get("data"));
-        System.out.println("information: " + wordToIdx.get("information"));
+        genVectors(vocabList);
 
         // convert word to index for corpus file
-        genCorpus(wordToIdx);
+        genCorpus(vocabList);
     }
 
-    private static void genCorpus(HashMap<String, String> wordToIdx) throws IOException {
+    private static ArrayList<String> getVocabList() throws IOException {
+        String inputLine = null;
+        ArrayList<String> vocabList = new ArrayList<>();
+
+        System.out.println("Reading bow file");
+
+        BufferedReader reader = new BufferedReader(new FileReader(new File(vocabFile)));
+        while((inputLine = reader.readLine()) != null) {
+            if(inputLine.trim().isEmpty()) continue;
+
+            vocabList.add(inputLine.trim());
+        }
+        reader.close();
+
+        return vocabList;
+    }
+
+    private static void genCorpus(ArrayList<String> vocabList) throws IOException {
         String inputLine = null;
         int i = 0;
 
@@ -44,15 +67,17 @@ public class App {
 
             StringJoiner joiner = new StringJoiner(" ");
             for(String word : strArr) {
-                String s = wordToIdx.get(word);
-                if(Objects.equals(s, null)) continue;
+                int idx = vocabList.indexOf(word);
+                if(idx == -1) {
+                    System.out.print(word + ", ");
+                }
 
-                joiner.add(s);
+                joiner.add(Integer.toString(idx));
             }
 
             if(joiner.length() == 0) {
                 System.out.println(i + ": " + inputLine);
-                continue;
+                return;
             }
 
             writer.write(joiner.toString()); writer.newLine();
@@ -64,44 +89,32 @@ public class App {
         System.out.println("finished");
     }
 
-    private static HashMap genVectors() throws IOException {
+    private static void genVectors(ArrayList<String> vocabList) throws IOException {
         String inputLine = null;
-        HashMap<String, String> wordToIdx = new HashMap();
-        int i = 1;
+        HashMap<String, String> wordToVec = new HashMap();
 
         System.out.println("Reading vectors file");
 
         BufferedReader reader = new BufferedReader(new FileReader(new File(inputVectors)));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outVectors)));
         while((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ", 12);
-            StringJoiner joiner = new StringJoiner(" ");
+            String[] strArr = inputLine.split(" ", 2);
 
             if(strArr[1].length() == 0) {
                 System.out.print(strArr[0] + ", ");
             }
 
-            wordToIdx.put(strArr[0], Integer.toString(i));
-            joiner.add(strArr[1]);
-            joiner.add(strArr[2]);
-            joiner.add(strArr[3]);
-            joiner.add(strArr[4]);
-            joiner.add(strArr[5]);
-            joiner.add(strArr[6]);
-            joiner.add(strArr[7]);
-            joiner.add(strArr[8]);
-            joiner.add(strArr[9]);
-            joiner.add(strArr[10]);
-            writer.write(joiner.toString()); writer.newLine();
-            i++;
+            wordToVec.put(strArr[0], strArr[1]);
         }
         reader.close();
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outVectors)));
+        for(String word : vocabList) {
+            writer.write(wordToVec.get(word)); writer.newLine();
+        }
         writer.close();
 
         System.out.println();
         System.out.println("finished");
         System.out.println();
-
-        return wordToIdx;
     }
 }

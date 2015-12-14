@@ -37,7 +37,7 @@ def main2():
     # print word_to_vec[0][6]
     np.savetxt('output/word2vec_vectors.10d', word_to_vec, delimiter=' ')
 
-
+# convert bow.pkl to bow.txt
 def main3():
     bow = cPickle.load(open('data/bow.pkl'))
     assert isinstance(bow, list)
