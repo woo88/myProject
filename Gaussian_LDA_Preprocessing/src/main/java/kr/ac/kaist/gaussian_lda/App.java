@@ -70,6 +70,7 @@ public class App {
                 int idx = vocabList.indexOf(word);
                 if(idx == -1) {
                     System.out.print(word + ", ");
+                    throw new NullPointerException();
                 }
 
                 joiner.add(Integer.toString(idx));
