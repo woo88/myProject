@@ -13,8 +13,8 @@ public class App {
     private static String vocabFile = "data/bow.txt";
 
 //    private static String inputVectors = "data/vectors.txt";
-    private static String inputVectors = "data/vectors.glove.5d.txt";
-    private static String outVectors = "data/vectors.glove.5d.lda.txt";
+    private static String inputVectors = "data/vectors.glove.10d.txt";
+    private static String outVectors = "data/vectors.glove.10d.lda.txt";
 
     private static String inputCorpus= "data/word2vec_sentence.txt";
     private static String outCorpus = "data/corpus.train";
@@ -32,7 +32,7 @@ public class App {
         genVectors(vocabList);
 
         // convert word to index for corpus file
-        genCorpus(vocabList);
+//        genCorpus(vocabList);
     }
 
     private static ArrayList<String> getVocabList() throws IOException {
