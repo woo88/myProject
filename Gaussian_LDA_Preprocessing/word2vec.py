@@ -38,6 +38,13 @@ def main2():
     np.savetxt('output/word2vec_vectors.10d', word_to_vec, delimiter=' ')
 
 
+def main3():
+    bow = cPickle.load(open('data/bow.pkl'))
+    print type(bow)
+    print bow[0]
+    print bow[1]
+
+
 def readBowData():
     bow = cPickle.load(open(bowFile, 'rb'))
     return bow
@@ -64,4 +71,4 @@ def writeFile(wordTovectors):
     output.close()
 
 if __name__ == '__main__':
-    main2()
+    main3()

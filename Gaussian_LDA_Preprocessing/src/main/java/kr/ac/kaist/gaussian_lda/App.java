@@ -9,11 +9,12 @@ import java.util.StringJoiner;
  * Created by Woo on 2015. 12. 10..
  */
 public class App {
-    private static String inputVectors = "data/vectors.txt";
-    private static String outVectors = "data/lda_vectors.10D.txt";
+//    private static String inputVectors = "data/vectors.txt";
+    private static String inputVectors = "data/vectors.glove.5d.txt";
+    private static String outVectors = "data/vectors.glove.5d.lda.txt";
 
     private static String inputCorpus= "data/word2vec_sentence.txt";
-    private static String outCorpus = "data/lda_corpus.txt";
+    private static String outCorpus = "data/corpus.lda.txt";
 
     public static void main( String[] args ) throws IOException {
         HashMap<String, String> wordToIdx;
