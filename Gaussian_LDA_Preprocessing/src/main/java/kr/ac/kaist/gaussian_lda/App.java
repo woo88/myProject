@@ -101,7 +101,7 @@ public class App {
 
             if(strArr[1].length() == 0) {
                 System.out.print(strArr[0] + ", ");
-                return;
+                throw new NullPointerException();
             }
 
             wordToVec.put(strArr[0], strArr[1]);
