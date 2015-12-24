@@ -37,8 +37,7 @@ public class App {
         SortedSet<String> allCategories = null;
         allCategories = readAllCategories();
 
-        System.out.println(allCategories.first());
-        System.out.println(allCategories.last());
+        // write vocabularies to file
 
 //        GenerateNodes();
 //        GenerateEdges();
@@ -68,10 +67,7 @@ public class App {
             System.out.print(filePath + ", ");
             while((inputLine = reader.readLine()) != null) {
                 // ignore comment lines.
-                if(inputLine.startsWith("#")) {
-                    System.out.println("\tskip this line: " + inputLine);
-                    continue;
-                }
+                if(inputLine.startsWith("#")) continue;
 
                 String[] strArr = inputLine.split(" ");
                 String vocab = removePrefix(strArr[2], "/resource/");
