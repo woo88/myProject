@@ -82,9 +82,12 @@ public class App {
                 if(inputLine.startsWith("#")) continue;
 
                 String[] strArr = inputLine.split(" ");
-                String vocab = removePrefix(strArr[2], "/resource/");
+                String vocab = removePrefix(strArr[2], "/Category:");
 
-                if(vocab.startsWith("File:")) continue;
+                if(vocab.startsWith("File:")) {
+                    System.out.print("File: ");
+                    continue;
+                }
 
                 allCategories.add(vocab);
             }
