@@ -84,11 +84,6 @@ public class App {
                 String[] strArr = inputLine.split(" ");
                 String vocab = removePrefix(strArr[2], "/Category:");
 
-                if(vocab.startsWith("File:")) {
-                    System.out.print("File: ");
-                    continue;
-                }
-
                 allCategories.add(vocab);
             }
             reader.close();
