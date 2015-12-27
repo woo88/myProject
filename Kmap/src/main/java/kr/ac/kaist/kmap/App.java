@@ -34,11 +34,14 @@ public class App {
     public static void main(String[] args) throws IOException {
         // id, timeslot, types, instances, redirects
 
-        SortedSet<String> allCategories = null;
-        allCategories = readAllCategories();
+        // if there is no vocab.kmap
+        if(!checkFile("output/vocab.kmap")) {
+            SortedSet<String> allCategories = null;
+            allCategories = readAllCategories();
 
-        // write vocabularies to file
-        writeVocab(allCategories);
+            // write vocabularies to file
+            writeVocab(allCategories);
+        }
 
 //        GenerateNodes();
 //        GenerateEdges();
@@ -51,6 +54,16 @@ public class App {
 //        ObjectMapper mapper = new ObjectMapper();
 
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
+    }
+
+    private static boolean checkFile(String s) {
+        File f = new File(s);
+        if(f.isFile()) {
+            System.out.println("File exists: " + s);
+            System.out.println(f.length());
+            return true;
+        }
+        return false;
     }
 
     private static void writeVocab(SortedSet<String> allCategories) throws IOException {
