@@ -38,6 +38,7 @@ public class App {
         allCategories = readAllCategories();
 
         // write vocabularies to file
+        writeVocab(allCategories);
 
 //        GenerateNodes();
 //        GenerateEdges();
@@ -50,6 +51,17 @@ public class App {
 //        ObjectMapper mapper = new ObjectMapper();
 
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
+    }
+
+    private static void writeVocab(SortedSet<String> allCategories) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output/vocab.txt")));
+        System.out.println("Start writing vocabulary of categories");
+        for(String cat : allCategories) {
+            writer.write(cat); writer.newLine();
+        }
+        writer.close();
+        System.out.println("Done");
+        System.out.println();
     }
 
     private static SortedSet<String> readAllCategories() throws IOException {
