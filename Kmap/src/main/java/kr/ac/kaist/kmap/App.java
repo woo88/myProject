@@ -12,9 +12,12 @@ import java.util.*;
  */
 public class App {
 //    protected static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
-    protected static final String baseDir = "/home/woo88/dbpedia/2014/en/";
+//    protected static final String baseDir = "/home/woo88/dbpedia/";
+    protected static String baseDir = null;
+    protected static String vocabFile = null;
 //    protected static final String filename_categories = "article-categories_en.nt";
-    protected static final String filename_categories = "article_categories_en.nt";
+//    protected static final String filename_categories = "article_categories_en.nt";
+    protected static ArrayList<String> categoriesFileList = null;
     private static final String filename_redirects = "redirects_en.nt";
     private static final String filename_infobox = "infobox-properties_en.nt";
     private static final String filename_types = "instance-types_en.nt";
@@ -32,6 +35,12 @@ public class App {
 //    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
+        baseDir = "/home/woo88/dbpedia/";
+        vocabFile = "output/vocab.kmap";
+        categoriesFileList.add("3.9/en/article_categories_en.nt");
+        categoriesFileList.add("2014/en/article_categories_en.nt");
+        categoriesFileList.add("2015-04/en/article-categories_en.nt");
+
         // id, timeslot, types, instances, redirects
 
         // if there is no vocab.kmap
@@ -42,6 +51,8 @@ public class App {
             // write vocabularies to file
             writeVocab(allCategories);
         }
+
+        generateNodes(10);
 
 //        GenerateNodes();
 //        GenerateEdges();
@@ -56,6 +67,23 @@ public class App {
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
     }
 
+    private static void generateNodes(int m) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + vocabFile)));
+        String inputLine;
+        int i = 0;
+        ArrayList<String> categories = new ArrayList<>();
+        System.out.println("Start loading: " + vocabFile);
+        while((inputLine = reader.readLine()) != null) {
+            if(i >= m) break;
+
+            categories.add(inputLine);
+
+            i++;
+        }
+        reader.close();
+        System.out.println("Size: " + categories.size());
+    }
+
     private static boolean checkFile(String s) {
         File f = new File(s);
         if(f.isFile()) {
@@ -67,7 +95,7 @@ public class App {
     }
 
     private static void writeVocab(SortedSet<String> allCategories) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("output/vocab.txt")));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(vocabFile)));
         System.out.println("Start writing vocabulary of categories");
         for(String cat : allCategories) {
             writer.write(cat); writer.newLine();
@@ -126,7 +154,7 @@ public class App {
 
         ArrayList<Map<String, Object>> nodes = new ArrayList<>();
         Category cat = new Category();
-        cat.setFileName(baseDir + filename_categories);
+//        cat.setFileName(baseDir + filename_categories);
         cat.setMap("category");
 
         Redirect red = new Redirect(baseDir + filename_redirects);
