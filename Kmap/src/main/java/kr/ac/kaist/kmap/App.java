@@ -17,7 +17,7 @@ public class App {
     protected static String vocabFile = null;
 //    protected static final String filename_categories = "article-categories_en.nt";
 //    protected static final String filename_categories = "article_categories_en.nt";
-    protected static ArrayList<String> categoriesFileList = null;
+    protected static ArrayList<String> categoriesFileList = new ArrayList<>();
     private static final String filename_redirects = "redirects_en.nt";
     private static final String filename_infobox = "infobox-properties_en.nt";
     private static final String filename_types = "instance-types_en.nt";
