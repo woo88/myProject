@@ -19,7 +19,7 @@ public class Category {
         int valueIdx;
 
         if(Objects.equals(filename, null)) {
-            filename = App.baseDir + App.filename_categories;
+            filename = App.baseDir + App.categoriesFileList.get(2);
         }
 
 
