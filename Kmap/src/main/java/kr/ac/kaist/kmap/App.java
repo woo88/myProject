@@ -13,11 +13,8 @@ import java.util.*;
 public class App {
 //    protected static final String baseDir = "/home/woo88/dbpedia/2015-04/en/";
 //    protected static final String baseDir = "/home/woo88/dbpedia/";
-    protected static String baseDir = null;
-    protected static String vocabFile = null;
 //    protected static final String filename_categories = "article-categories_en.nt";
 //    protected static final String filename_categories = "article_categories_en.nt";
-    protected static ArrayList<String> categoriesFileList = new ArrayList<>();
     private static final String filename_redirects = "redirects_en.nt";
     private static final String filename_infobox = "infobox-properties_en.nt";
     private static final String filename_types = "instance-types_en.nt";
@@ -32,14 +29,22 @@ public class App {
 //    private static final String TIME_SLOT = "2015-04";
     private static final String TIME_SLOT = "2014";
 
+    public static String vocabFile = null;
+    public static String baseDir = null;
+    public static ArrayList<String> categoriesFileList = new ArrayList<>();
+    public static ArrayList<String> typesFileList = new ArrayList<>();
+
 //    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
-        baseDir = "/home/woo88/dbpedia/";
         vocabFile = "output/vocab.kmap";
+        baseDir = "/home/woo88/dbpedia/";
         categoriesFileList.add("3.9/en/article_categories_en.nt");
         categoriesFileList.add("2014/en/article_categories_en.nt");
         categoriesFileList.add("2015-04/en/article-categories_en.nt");
+        typesFileList.add("3.9/en/instance_types_en.nt");
+        typesFileList.add("2014/en/instance_types_en.nt");
+        typesFileList.add("2015-04/en/instance-types_en.nt");
 
         // id, timeslot, types, instances, redirects
 
@@ -52,7 +57,7 @@ public class App {
             writeVocab(allCategories);
         }
 
-        generateNodes(10);
+        Nodes.generateNodes(0, 10);
 
 //        GenerateNodes();
 //        GenerateEdges();
@@ -67,28 +72,12 @@ public class App {
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
     }
 
-    private static void generateNodes(int m) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File(vocabFile)));
-        String inputLine;
-        int i = 0;
-        ArrayList<String> categories = new ArrayList<>();
-        System.out.println("Start loading: " + vocabFile);
-        while((inputLine = reader.readLine()) != null) {
-            if(i >= m) break;
-
-            categories.add(inputLine);
-
-            i++;
-        }
-        reader.close();
-        System.out.println("Size: " + categories.size());
-    }
-
     private static boolean checkFile(String s) {
         File f = new File(s);
         if(f.isFile()) {
             System.out.println("File exists: " + s);
-            System.out.println(f.length());
+            System.out.println("File length: " + f.length());
+            System.out.println();
             return true;
         }
         return false;
