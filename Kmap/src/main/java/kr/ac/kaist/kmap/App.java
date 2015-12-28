@@ -68,7 +68,7 @@ public class App {
     }
 
     private static void generateNodes(int m) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + vocabFile)));
+        BufferedReader reader = new BufferedReader(new FileReader(new File(vocabFile)));
         String inputLine;
         int i = 0;
         ArrayList<String> categories = new ArrayList<>();
