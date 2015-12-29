@@ -84,6 +84,7 @@ public class Type {
                     } catch (NullPointerException e) {
                         System.out.println("inputLine: " + inputLine);
                         System.out.println("instance: " + ins);
+                        System.exit(1);
                     }
                 }
                 prevIns = ins;
