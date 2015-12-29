@@ -117,7 +117,7 @@ public class Category {
 
     public static void writeInsToCat(String baseDir, ArrayList<String> categoriesFileList) throws IOException {
         // loading vocab.kmap
-        ArrayList<String> vocabList = loadVocab();
+//        ArrayList<String> vocabList = loadVocab();
 
         for(String fileName : categoriesFileList) {
             String[] strArr = fileName.split("/");
@@ -162,7 +162,7 @@ public class Category {
 //                notFirstLine = true;
 //                prevIns = ins;
 
-                map.get(ins).add(String.valueOf(vocabList.indexOf(cat)));
+                map.get(ins).add(cat);
                 if (lineNumber >= 10000) {
                     totalLineNumber += lineNumber;
                     lineNumber = 0;
