@@ -1,10 +1,7 @@
 package kr.ac.kaist.kmap;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by Woo on 2015. 12. 5..
@@ -83,7 +80,8 @@ public class Nodes {
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
-        for (String node : nodeData.keySet()) {
+        Set<String> nodeSet = nodeData.keySet();
+        for (String node : nodeSet) {
             String[] dataArr = nodeData.get(node);
             if (varData.containsKey(node)) {
                 dataArr[i] = varData.get(node);
