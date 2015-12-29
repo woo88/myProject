@@ -130,10 +130,13 @@ public class Category {
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
             String inputLine = null;
+            System.out.println("Start reading: " + fileName);
             while ((inputLine = reader.readLine()) != null) {
                 // ignore comment lines.
                 if(inputLine.startsWith("#")) continue;
             }
+            System.out.println("Done");
+            System.out.println();
             reader.close();
             writer.close();
         }
