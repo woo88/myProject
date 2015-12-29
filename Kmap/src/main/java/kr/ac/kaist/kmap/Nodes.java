@@ -82,20 +82,17 @@ public class Nodes {
         System.out.println("Done! size: " + varData.size());
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
-//        int i = 0;
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
             String[] dataArr = nodeData.get(node);
-//            if (i < 2) System.out.print(dataArr + ", ");
             if (varData.containsKey(node)) {
                 dataArr[i] = varData.get(node);
             }
+            nodeData.remove(node);
             nodeData.put(node, dataArr);
             dataArr = null;
-
-//            i++;
         }
-        System.out.println("\ttest: " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
+        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
         System.out.println("Done!");
         System.out.println();
     }
