@@ -3,6 +3,7 @@ package kr.ac.kaist.kmap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
@@ -22,6 +23,34 @@ public class Nodes {
             WordCounter.readWordFile(frequencyData, fileName);
             WordCounter.writeAllCounts(frequencyData, output);
         }
+
+        TreeMap<String, ArrayList> nodeData = new TreeMap<>();
+        readVocabFile(nodeData);
+
+        System.out.println("nodeData test: " + nodeData.get("!!!_albums").get(0));
+    }
+
+    private static void readVocabFile(TreeMap<String, ArrayList> nodeData) {
+        Scanner vocabFile;
+        String vocab;
+        ArrayList data = new ArrayList();
+        data.add("3.9");
+
+        System.out.println("Start reading: " + App.vocabFile);
+        try {
+            vocabFile = new Scanner(new FileReader(App.vocabFile));
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+            return;
+        }
+
+        while (vocabFile.hasNext()) {
+            vocab = vocabFile.next();
+
+            nodeData.put(vocab, data);
+        }
+        System.out.println("Done! size: " + nodeData.size());
+        System.out.println();
     }
 
     private static ArrayList<String> loadVocab(int from, int to) throws IOException {
