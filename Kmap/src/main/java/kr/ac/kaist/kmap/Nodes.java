@@ -95,7 +95,8 @@ public class Nodes {
             if (varData.containsKey(node)) {
                 dataArr[i] = varData.get(node);
             }
-            nodeData.put(node, dataArr);
+            entry.setValue(dataArr);
+//            nodeData.put(node, dataArr);
         }
         System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
         System.out.println("Done!");
