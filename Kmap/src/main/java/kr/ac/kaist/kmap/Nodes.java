@@ -27,20 +27,20 @@ public class Nodes {
         TreeMap<String, ArrayList> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
         // add data for each data
-//        for (String tmp : fileList) {
-//            String input = tmp + ".occ";
-//
-//            readDataFile(nodeData, input);
-//        }
+        for (String tmp : fileList) {
+            String input = tmp + ".occ";
 
-        String test = "!!!_albums";
-        ArrayList testDataList = nodeData.get(test);
-        testDataList.add("test");
-        nodeData.put(test, testDataList);
-        testDataList = nodeData.get(test);
-        testDataList.add("test2");
-        nodeData.put(test, testDataList);
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
+            readDataFile(nodeData, input);
+        }
+
+//        String test = "!!!_albums";
+//        ArrayList testDataList = nodeData.get(test);
+//        testDataList.add("test");
+//        nodeData.put(test, testDataList);
+//        testDataList = nodeData.get(test);
+//        testDataList.add("test2");
+//        nodeData.put(test, testDataList);
+//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
@@ -77,8 +77,11 @@ public class Nodes {
         System.out.println("Done! size: " + varData.size());
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
+        int i = 0;
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
+            if (i < 10) System.out.print(node + ", ");
+
             ArrayList dataList = new ArrayList();
             dataList = nodeData.get(node);
             if (varData.containsKey(node)) {
@@ -88,6 +91,8 @@ public class Nodes {
             }
             nodeData.put(node, dataList);
             dataList = null;
+
+            i++;
         }
         System.out.println("Done!");
         System.out.println();
