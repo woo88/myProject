@@ -1,6 +1,7 @@
 package kr.ac.kaist.kmap;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,5 +51,9 @@ public class Type {
     public Set<String> getIntersection(Set<String> s) {
         s.retainAll(set);
         return s;
+    }
+
+    public static void convertInsToCat(ArrayList<String> typesFileList) {
+
     }
 }

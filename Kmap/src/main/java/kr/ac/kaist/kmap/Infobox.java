@@ -1,6 +1,7 @@
 package kr.ac.kaist.kmap;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,5 +65,9 @@ public class Infobox {
         } else {
             return i;
         }
+    }
+
+    public static void convertInsToCat(ArrayList<String> infoboxFileList) {
+
     }
 }

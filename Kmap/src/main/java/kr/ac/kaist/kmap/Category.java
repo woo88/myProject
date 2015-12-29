@@ -1,10 +1,7 @@
 package kr.ac.kaist.kmap;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by woo on 2015-12-01.
@@ -116,5 +113,47 @@ public class Category {
 
     public void setFileName(String filename) {
         Category.filename = filename;
+    }
+
+    public static void writeInsToCat(String baseDir, ArrayList<String> categoriesFileList) throws IOException {
+        // loading vocab.kmap
+        ArrayList<String> vocabList = loadVocab();
+
+        for(String fileName : categoriesFileList) {
+            String[] strArr = fileName.split("/");
+            String output = "output/" + strArr[0] + strArr[2];
+            if(App.checkFile(output)) {
+                continue;
+            }
+
+            BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+            String inputLine = null;
+            while ((inputLine = reader.readLine()) != null) {
+                // ignore comment lines.
+                if(inputLine.startsWith("#")) continue;
+            }
+            reader.close();
+            writer.close();
+        }
+    }
+
+    private static ArrayList<String> loadVocab() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(App.vocabFile)));
+        String inputLine;
+        ArrayList<String> categories = new ArrayList<>();
+        System.out.println("Start loading: " + App.vocabFile);
+        while((inputLine = reader.readLine()) != null) {
+            categories.add(inputLine);
+        }
+        reader.close();
+        System.out.println("Done! size: " + categories.size());
+        System.out.println();
+
+        return categories;
+    }
+
+    public static void convertInsToCat(ArrayList<String> categoriesFileList) {
+
     }
 }

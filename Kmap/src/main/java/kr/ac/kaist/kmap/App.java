@@ -33,6 +33,8 @@ public class App {
     public static String baseDir = null;
     public static ArrayList<String> categoriesFileList = new ArrayList<>();
     public static ArrayList<String> typesFileList = new ArrayList<>();
+    public static ArrayList<String> redirectsFileList = new ArrayList<>();
+    public static ArrayList<String> infoboxFileList = new ArrayList<>();
 
 //    private static HashMap resultMap = new HashMap();
 
@@ -45,6 +47,12 @@ public class App {
         typesFileList.add("3.9/en/instance_types_en.nt");
         typesFileList.add("2014/en/instance_types_en.nt");
         typesFileList.add("2015-04/en/instance-types_en.nt");
+        redirectsFileList.add("");
+        redirectsFileList.add("");
+        redirectsFileList.add("");
+        infoboxFileList.add("");
+        infoboxFileList.add("");
+        infoboxFileList.add("");
 
         // id, timeslot, types, instances, redirects
 
@@ -56,6 +64,13 @@ public class App {
             // write vocabularies to file
             writeVocab(allCategories);
         }
+
+        // preprocessing
+        Category.writeInsToCat(baseDir, categoriesFileList);
+        Category.convertInsToCat(categoriesFileList);
+        Type.convertInsToCat(typesFileList);
+        Redirect.convertInsToCat(redirectsFileList);
+        Infobox.convertInsToCat(infoboxFileList);
 
         Nodes.generateNodes(0, 10);
 
@@ -72,7 +87,7 @@ public class App {
 //        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("output2.json"), resultMap);
     }
 
-    private static boolean checkFile(String s) {
+    public static boolean checkFile(String s) {
         File f = new File(s);
         if(f.isFile()) {
             System.out.println("File exists: " + s);
