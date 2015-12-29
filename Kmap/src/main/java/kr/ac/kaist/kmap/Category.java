@@ -136,7 +136,10 @@ public class Category {
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+            Map<String, ArrayList<String>> map = new DefaultHashMap<>(ArrayList.class);
+            int lineNumber = 0;
+            int totalLineNumber = 0;
             String inputLine = null;
             String prevIns = "";
             boolean notFirstLine = false;
@@ -150,20 +153,28 @@ public class Category {
                 String ins = App.removePrefix(strArr[0], "/resource/");
                 String cat = App.removePrefix(strArr[2], "/Category:");
 
-                if (Objects.equals(ins, prevIns)) {
-                    writer.write(" " + vocabList.indexOf(cat));
-                } else {
-                    if (notFirstLine) writer.newLine();
-                    writer.write(ins + " " + vocabList.indexOf(cat));
+//                if (Objects.equals(ins, prevIns)) {
+//                    writer.write(" " + vocabList.indexOf(cat));
+//                } else {
+//                    if (notFirstLine) writer.newLine();
+//                    writer.write(ins + " " + vocabList.indexOf(cat));
+//                }
+//                notFirstLine = true;
+//                prevIns = ins;
+
+                map.get(ins).add(String.valueOf(vocabList.indexOf(cat)));
+                if (lineNumber >= 10000) {
+                    totalLineNumber += lineNumber;
+                    lineNumber = 0;
+                    System.out.print(totalLineNumber + ", ");
                 }
-                notFirstLine = true;
-                prevIns = ins;
+                lineNumber++;
             }
             System.out.println("Done");
             System.out.println("File is created: " + output);
             System.out.println();
             reader.close();
-            writer.close();
+//            writer.close();
         }
     }
 
