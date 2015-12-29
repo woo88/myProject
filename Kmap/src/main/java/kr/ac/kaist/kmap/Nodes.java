@@ -27,8 +27,60 @@ public class Nodes {
         TreeMap<String, ArrayList> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
         // add data for each data
+        for (String tmp : fileList) {
+            String input = tmp + ".occ";
+
+            readDataFile(nodeData, input);
+        }
 
         System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(0));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(4));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(8));
+    }
+
+    private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
+        BufferedReader reader;
+        String inputLine;
+        TreeMap<String, String> varData = new TreeMap<>();
+        ArrayList dataList;
+
+        System.out.println("Start reading: " + input);
+        try {
+            reader = new BufferedReader(new FileReader(new File(input)));
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+            return;
+        }
+
+        try {
+            while ((inputLine = reader.readLine()) != null) {
+                String[] strArr = inputLine.split(" ");
+
+                varData.put(strArr[0], strArr[1]);
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+
+        try {
+            reader.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+        System.out.println("Done! size: " + varData.size());
+
+        System.out.println("Start adding data");
+        for (String node : nodeData.keySet()) {
+            dataList = nodeData.get(node);
+            if (varData.containsKey(node)) {
+                dataList.add(varData.get(node));
+            } else {
+                dataList.add("0");
+            }
+            nodeData.put(node, dataList);
+        }
     }
 
     private static void readVocabFile(TreeMap<String, ArrayList> nodeData) {
