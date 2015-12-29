@@ -34,7 +34,13 @@ public class Nodes {
         }
 
         System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(0));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(1));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(2));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(3));
         System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(4));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(5));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(6));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(7));
         System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(8));
     }
 
@@ -81,6 +87,8 @@ public class Nodes {
             }
             nodeData.put(node, dataList);
         }
+        System.out.println("Done!");
+        System.out.println();
     }
 
     private static void readVocabFile(TreeMap<String, ArrayList> nodeData) {
