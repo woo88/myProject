@@ -21,7 +21,7 @@ public class Nodes {
             WordCounter.writeAllCounts(frequencyData, output);
         }
 
-        TreeMap<String, String[]> nodeData = new TreeMap<>();
+        TreeMap<String, String> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
 
 
@@ -45,7 +45,7 @@ public class Nodes {
 //        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[3]);
     }
 
-    private static void readDataFile(TreeMap<String, String[]> nodeData, String input, int i) {
+    private static void readDataFile(TreeMap<String, String> nodeData, String input, int i) {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
@@ -80,34 +80,26 @@ public class Nodes {
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
-//        for (String node : nodeData.keySet()) {
-//            String[] dataArr = nodeData.get(node);
-//            if (varData.containsKey(node)) {
-//                dataArr[i] = varData.get(node);
-//            }
-//            nodeData.remove(node);
-//            nodeData.put(node, dataArr);
-//            dataArr = null;
-//        }
-        for (Map.Entry<String, String[]> entry : nodeData.entrySet()) {
-            String node = entry.getKey();
-            String[] dataArr = entry.getValue();
-//            if (varData.containsKey(node)) {
-//                dataArr[i] = varData.get(node);
-//            }
-            entry.setValue(dataArr);
-//            nodeData.put(node, dataArr);
+        for (String node : nodeData.keySet()) {
+            String data = nodeData.get(node);
+            if (varData.containsKey(node)) {
+                data = data + " " + varData.get(node);
+            } else {
+                data = data + " 0";
+            }
+
+            nodeData.put(node, data.trim());
         }
-        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
+        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums"));
         System.out.println("Done!");
         System.out.println();
     }
 
-    private static void readVocabFile(TreeMap<String, String[]> nodeData) {
+    private static void readVocabFile(TreeMap<String, String> nodeData) {
         Scanner vocabFile;
         String vocab;
 //        ArrayList data = new ArrayList();
-        String[] data = {"0", "0", "0", "0", "0", "0", "0", "0", "0"};
+        String data = "";
 //        data.add("3.9");
 
         System.out.println("Start reading: " + App.vocabFile);
