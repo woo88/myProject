@@ -69,6 +69,14 @@ public class Type {
             String prevIns = "";
             System.out.println("Start reading: " + baseDir + fileName);
             while ((inputLine = reader.readLine()) != null) {
+                // check progress
+                if (lineNumber >= 500000) {
+                    totalLineNumber += lineNumber;
+                    lineNumber = 0;
+                    System.out.print(totalLineNumber + ", ");
+                }
+                lineNumber++;
+
                 // ignore comment lines.
                 if(inputLine.startsWith("#")) continue;
 
@@ -86,14 +94,6 @@ public class Type {
                         continue;
                     }
                 }
-
-                // check progress
-                if (lineNumber >= 500000) {
-                    totalLineNumber += lineNumber;
-                    lineNumber = 0;
-                    System.out.print(totalLineNumber + ", ");
-                }
-                lineNumber++;
             }
             System.out.println("Done");
             System.out.println("File is created: " + output);
