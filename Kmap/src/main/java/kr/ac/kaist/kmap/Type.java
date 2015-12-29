@@ -79,15 +79,13 @@ public class Type {
                 if (Objects.equals(ins, prevIns)) {
                     continue;
                 } else {
+                    prevIns = ins;
                     try {
                         writer.write(insToCat.get(ins)); writer.newLine();
                     } catch (NullPointerException e) {
-                        System.out.println("inputLine: " + inputLine);
-                        System.out.println("instance: " + ins);
-                        System.exit(1);
+                        continue;
                     }
                 }
-                prevIns = ins;
 
                 // check progress
                 if (lineNumber >= 500000) {
