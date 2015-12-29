@@ -230,7 +230,7 @@ public class Category {
         }
         reader.close();
         System.out.println("Done");
-        System.out.println("Albedo has 6 categories: " + map.get("Albedo"));
+//        System.out.println("Albedo has 6 categories: " + map.get("Albedo"));
         System.out.println();
         return map;
     }

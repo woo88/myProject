@@ -67,7 +67,7 @@ public class Type {
             int totalLineNumber = 0;
             String inputLine = null;
             String prevIns = "";
-            System.out.println("Start reading: " + fileName);
+            System.out.println("Start reading: " + baseDir + fileName);
             while ((inputLine = reader.readLine()) != null) {
                 // ignore comment lines.
                 if(inputLine.startsWith("#")) continue;
@@ -79,7 +79,12 @@ public class Type {
                 if (Objects.equals(ins, prevIns)) {
                     continue;
                 } else {
-                    writer.write(insToCat.get(ins)); writer.newLine();
+                    try {
+                        writer.write(insToCat.get(ins)); writer.newLine();
+                    } catch (NullPointerException e) {
+                        System.out.println("inputLine: " + inputLine);
+                        System.out.println("instance: " + ins);
+                    }
                 }
                 prevIns = ins;
 
