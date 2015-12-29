@@ -37,6 +37,9 @@ public class Nodes {
         ArrayList testDataList = nodeData.get(test);
         testDataList.add("test");
         nodeData.put(test, testDataList);
+        testDataList = nodeData.get(test);
+        testDataList.add("test2");
+        nodeData.put(test, testDataList);
         System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
