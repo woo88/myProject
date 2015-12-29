@@ -66,6 +66,7 @@ public class Type {
             writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
 
             // get Map of instance to categories
+            insToCat = null;
             insToCat = Category.getInsToCat(strArr[0], ".ab");
             // convert
             writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
