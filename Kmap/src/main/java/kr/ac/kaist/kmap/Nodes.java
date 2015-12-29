@@ -80,10 +80,9 @@ public class Nodes {
         int i = 0;
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
-            if (i < 10) System.out.print(node + ", ");
-
             ArrayList dataList = new ArrayList();
             dataList = nodeData.get(node);
+            if (i < 2) System.out.print(dataList + ", ");
             if (varData.containsKey(node)) {
                 dataList.add(varData.get(node));
             } else {
