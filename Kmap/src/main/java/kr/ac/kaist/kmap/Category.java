@@ -121,7 +121,7 @@ public class Category {
 
         for(String fileName : categoriesFileList) {
             String[] strArr = fileName.split("/");
-            String output = "output/" + strArr[0] + strArr[2];
+            String output = "output/" + strArr[0] + "/" + strArr[2];
             if(App.checkFile(output)) {
                 System.out.println("File exists: " + output);
                 continue;
