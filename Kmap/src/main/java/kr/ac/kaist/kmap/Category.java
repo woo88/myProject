@@ -194,7 +194,7 @@ public class Category {
 
     }
 
-    public static Map<String, ArrayList<String>> getInsToCat(String timeslot) throws IOException {
+    public static Map<String, String> getInsToCat(String timeslot) throws IOException {
         BufferedReader reader = null;
         String input = null;
 
@@ -213,13 +213,12 @@ public class Category {
         int lineNumber = 0;
         int totalLineNumber = 0;
         reader = new BufferedReader(new FileReader(new File(input)));
-        Map<String, ArrayList<String>> map = new DefaultHashMap<String, ArrayList<String>>(ArrayList.class);
+        Map<String, String> map = new HashMap<>();
         System.out.println("Start loading: " + input);
         while ((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ");
-            for (int i = 1; i < strArr.length; i++) {
-                map.get(strArr[0]).add(strArr[i]);
-            }
+            String[] strArr = inputLine.split(" ", 2);
+
+            map.put(strArr[0], strArr[1]);
 
             // check progress
             if (lineNumber >= 500000) {
@@ -231,7 +230,7 @@ public class Category {
         }
         reader.close();
         System.out.println("Done");
-        System.out.println("Albedo has 6 categories: " + map.get("Albedo").size());
+        System.out.println("Albedo has 6 categories: " + map.get("Albedo"));
         System.out.println();
         return map;
     }

@@ -59,7 +59,7 @@ public class Type {
             if(App.checkFile(output)) continue;
 
             // get Map of instance to categories
-            Map<String, ArrayList<String>> insToCat = Category.getInsToCat(strArr[0]);
+            Map<String, String> insToCat = Category.getInsToCat(strArr[0]);
 
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
@@ -79,11 +79,7 @@ public class Type {
                 if (Objects.equals(ins, prevIns)) {
                     continue;
                 } else {
-                    StringJoiner sj = new StringJoiner(" ");
-                    for (String s : insToCat.get(ins)) {
-                        sj.add(s);
-                    }
-                    writer.write(String.valueOf(sj)); writer.newLine();
+                    writer.write(insToCat.get(ins)); writer.newLine();
                 }
                 prevIns = ins;
 
