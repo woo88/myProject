@@ -127,6 +127,14 @@ public class Category {
                 continue;
             }
 
+            // make directory
+            String mkFolder = "output/" + strArr[0];
+            File desti = new File(mkFolder);
+            if(!desti.exists()) {
+                desti.mkdirs();
+                System.out.println("Directory is created: " + mkFolder);
+            }
+
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
             String inputLine = null;
