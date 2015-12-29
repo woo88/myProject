@@ -136,8 +136,8 @@ public class Category {
             }
 
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
-            Map<String, ArrayList<String>> map = new DefaultHashMap<>(ArrayList.class);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+//            Map<String, ArrayList<String>> map = new DefaultHashMap<>(ArrayList.class);
             int lineNumber = 0;
             int totalLineNumber = 0;
             String inputLine = null;
@@ -153,17 +153,17 @@ public class Category {
                 String ins = App.removePrefix(strArr[0], "/resource/");
                 String cat = App.removePrefix(strArr[2], "/Category:");
 
-//                if (Objects.equals(ins, prevIns)) {
-//                    writer.write(" " + vocabList.indexOf(cat));
-//                } else {
-//                    if (notFirstLine) writer.newLine();
-//                    writer.write(ins + " " + vocabList.indexOf(cat));
-//                }
-//                notFirstLine = true;
-//                prevIns = ins;
+                if (Objects.equals(ins, prevIns)) {
+                    writer.write(" " + cat);
+                } else {
+                    if (notFirstLine) writer.newLine();
+                    writer.write(ins + " " + cat);
+                }
+                notFirstLine = true;
+                prevIns = ins;
 
-                map.get(ins).add(cat);
-                if (lineNumber >= 10000) {
+//                map.get(ins).add(cat);
+                if (lineNumber >= 500000) {
                     totalLineNumber += lineNumber;
                     lineNumber = 0;
                     System.out.print(totalLineNumber + ", ");
