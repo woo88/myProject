@@ -42,10 +42,10 @@ public class Nodes {
 //        testData[1] = "test1";
 //        testData[2] = "test2";
 //        nodeData.put(test, testData);
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[0]);
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[1]);
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[2]);
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[3]);
+//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[0]);
+//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[1]);
+//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[2]);
+//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[3]);
     }
 
     private static void readDataFile(TreeMap<String, String[]> nodeData, String input, int i) {
@@ -95,6 +95,7 @@ public class Nodes {
 
 //            i++;
         }
+        System.out.println("\ttest: " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
         System.out.println("Done!");
         System.out.println();
     }
