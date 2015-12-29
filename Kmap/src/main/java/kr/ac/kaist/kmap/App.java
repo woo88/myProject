@@ -40,7 +40,8 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         vocabFile = "output/vocab.kmap";
-        baseDir = "/home/woo88/dbpedia/";
+//        baseDir = "/home/woo88/dbpedia/";
+        baseDir = "/home/woo/dev/dbpedia/";
         categoriesFileList.add("3.9/en/article_categories_en.nt");
         categoriesFileList.add("2014/en/article_categories_en.nt");
         categoriesFileList.add("2015-04/en/article-categories_en.nt");
