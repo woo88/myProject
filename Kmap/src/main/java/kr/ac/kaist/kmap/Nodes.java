@@ -92,9 +92,9 @@ public class Nodes {
         for (Map.Entry<String, String[]> entry : nodeData.entrySet()) {
             String node = entry.getKey();
             String[] dataArr = entry.getValue();
-            if (varData.containsKey(node)) {
-                dataArr[i] = varData.get(node);
-            }
+//            if (varData.containsKey(node)) {
+//                dataArr[i] = varData.get(node);
+//            }
             entry.setValue(dataArr);
 //            nodeData.put(node, dataArr);
         }
