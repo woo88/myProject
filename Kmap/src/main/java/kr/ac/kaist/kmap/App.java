@@ -81,7 +81,7 @@ public class App {
         fileList.add("output/2014/instance_types_en.nt");
         fileList.add("output/2014/redirects_en.nt");
         fileList.add("output/2014/infobox_properties_en.nt");
-        fileList.add("output/2015-04/instance_types_en.nt");
+        fileList.add("output/2015-04/instance-types_en.nt");
         fileList.add("output/2015-04/redirects_en.nt");
         fileList.add("output/2015-04/infobox-properties_en.nt");
         Nodes.generateNodes(fileList);
