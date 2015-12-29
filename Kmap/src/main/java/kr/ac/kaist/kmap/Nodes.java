@@ -26,15 +26,16 @@ public class Nodes {
 
         TreeMap<String, ArrayList> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
+        // add data for each data
 
-        System.out.println("nodeData test: " + nodeData.get("!!!_albums").get(0));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(0));
     }
 
     private static void readVocabFile(TreeMap<String, ArrayList> nodeData) {
         Scanner vocabFile;
         String vocab;
         ArrayList data = new ArrayList();
-        data.add("3.9");
+//        data.add("3.9");
 
         System.out.println("Start reading: " + App.vocabFile);
         try {
