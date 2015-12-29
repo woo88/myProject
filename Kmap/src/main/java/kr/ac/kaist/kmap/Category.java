@@ -194,7 +194,7 @@ public class Category {
 
     }
 
-    public static Map<String, String> getInsToCat(String timeslot) throws IOException {
+    public static Map<String, String> getInsToCat(String timeslot, String fileSuffix) throws IOException {
         BufferedReader reader = null;
         String input = null;
 
@@ -202,7 +202,7 @@ public class Category {
             String[] strArr = catFile.split("/");
 
             if (Objects.equals(timeslot, strArr[0])) {
-                input = "output/" + strArr[0] + "/" + strArr[2];
+                input = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
                 break;
             } else {
                 continue;

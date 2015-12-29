@@ -58,48 +58,62 @@ public class Type {
 
             if(App.checkFile(output)) continue;
 
-            // get Map of instance to categories
-            Map<String, String> insToCat = Category.getInsToCat(strArr[0]);
-
-            BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
-            int lineNumber = 0;
-            int totalLineNumber = 0;
-            String inputLine = null;
-            String prevIns = "";
-            System.out.println("Start reading: " + baseDir + fileName);
-            while ((inputLine = reader.readLine()) != null) {
-                // check progress
-                if (lineNumber >= 500000) {
-                    totalLineNumber += lineNumber;
-                    lineNumber = 0;
-                    System.out.print(totalLineNumber + ", ");
-                }
-                lineNumber++;
 
-                // ignore comment lines.
-                if(inputLine.startsWith("#")) continue;
+            // get Map of instance to categories
+            Map<String, String> insToCat = Category.getInsToCat(strArr[0], ".aa");
+            // convert
+            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
 
-                // tokenize
-                strArr = inputLine.split(" ");
-                String ins = App.removePrefix(strArr[0], "/resource/");
+            // get Map of instance to categories
+            insToCat = Category.getInsToCat(strArr[0], ".ab");
+            // convert
+            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
 
-                if (Objects.equals(ins, prevIns)) {
-                    continue;
-                } else {
-                    prevIns = ins;
-                    try {
-                        writer.write(insToCat.get(ins)); writer.newLine();
-                    } catch (NullPointerException e) {
-                        continue;
-                    }
-                }
-            }
-            System.out.println("Done");
             System.out.println("File is created: " + output);
             System.out.println();
-            reader.close();
             writer.close();
         }
+    }
+
+    private static BufferedWriter convertInsToCatInner(String baseDir, String fileName,
+                                                       BufferedWriter writer,
+                                                       Map<String, String> insToCat) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
+        int lineNumber = 0;
+        int totalLineNumber = 0;
+        String inputLine = null;
+        String prevIns = "";
+        System.out.println("Start reading: " + baseDir + fileName);
+        while ((inputLine = reader.readLine()) != null) {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
+            // ignore comment lines.
+            if(inputLine.startsWith("#")) continue;
+
+            // tokenize
+            String[] strArr = inputLine.split(" ");
+            String ins = App.removePrefix(strArr[0], "/resource/");
+
+            if (Objects.equals(ins, prevIns)) {
+                continue;
+            } else {
+                prevIns = ins;
+                try {
+                    writer.write(insToCat.get(ins)); writer.newLine();
+                } catch (NullPointerException e) {
+                    continue;
+                }
+            }
+        }
+        System.out.println("Done");
+        reader.close();
+        return writer;
     }
 }
