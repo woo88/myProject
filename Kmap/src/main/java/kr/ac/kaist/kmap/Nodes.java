@@ -27,19 +27,24 @@ public class Nodes {
         TreeMap<String, ArrayList> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
         // add data for each data
-        for (String tmp : fileList) {
-            String input = tmp + ".occ";
+//        for (String tmp : fileList) {
+//            String input = tmp + ".occ";
+//
+//            readDataFile(nodeData, input);
+//        }
 
-            readDataFile(nodeData, input);
-            System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
-        }
+        String test = "!!!_albums";
+        ArrayList testDataList = nodeData.get(test);
+        testDataList.add("test");
+        nodeData.put(test, testDataList);
+        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
-//        ArrayList dataList;
+//        ArrayList dataList = new ArrayList();
 
         System.out.println("Start reading: " + input);
         try {
@@ -71,7 +76,8 @@ public class Nodes {
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
-            ArrayList dataList = nodeData.get(node);
+            ArrayList dataList = new ArrayList();
+            dataList = nodeData.get(node);
             if (varData.containsKey(node)) {
                 dataList.add(varData.get(node));
             } else {
