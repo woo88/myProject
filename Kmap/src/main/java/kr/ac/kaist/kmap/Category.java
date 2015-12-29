@@ -122,10 +122,7 @@ public class Category {
         for(String fileName : categoriesFileList) {
             String[] strArr = fileName.split("/");
             String output = "output/" + strArr[0] + "/" + strArr[2];
-            if(App.checkFile(output)) {
-                System.out.println("File exists: " + output);
-                continue;
-            }
+            if(App.checkFile(output)) continue;
 
             // make directory
             String mkFolder = "output/" + strArr[0];
@@ -174,7 +171,7 @@ public class Category {
             System.out.println("File is created: " + output);
             System.out.println();
             reader.close();
-//            writer.close();
+            writer.close();
         }
     }
 
@@ -195,5 +192,47 @@ public class Category {
 
     public static void convertInsToCat(ArrayList<String> categoriesFileList) {
 
+    }
+
+    public static Map<String, ArrayList<String>> getInsToCat(String timeslot) throws IOException {
+        BufferedReader reader = null;
+        String input = null;
+
+        for (String catFile : App.categoriesFileList) {
+            String[] strArr = catFile.split("/");
+
+            if (Objects.equals(timeslot, strArr[0])) {
+                input = "output/" + strArr[0] + "/" + strArr[2];
+                break;
+            } else {
+                continue;
+            }
+        }
+
+        String inputLine = null;
+        int lineNumber = 0;
+        int totalLineNumber = 0;
+        reader = new BufferedReader(new FileReader(new File(input)));
+        Map<String, ArrayList<String>> map = new DefaultHashMap<String, ArrayList<String>>(ArrayList.class);
+        System.out.println("Start loading: " + input);
+        while ((inputLine = reader.readLine()) != null) {
+            String[] strArr = inputLine.split(" ");
+            for (int i = 1; i < strArr.length; i++) {
+                map.get(strArr[0]).add(strArr[i]);
+            }
+
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+        }
+        reader.close();
+        System.out.println("Done");
+        System.out.println("Albedo has 6 categories: " + map.get("Albedo").size());
+        System.out.println();
+        return map;
     }
 }

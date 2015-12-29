@@ -69,7 +69,7 @@ public class App {
         // preprocessing
         Category.writeInsToCat(baseDir, categoriesFileList);
         Category.convertInsToCat(categoriesFileList);
-        Type.convertInsToCat(typesFileList);
+        Type.convertInsToCat(baseDir, typesFileList);
         Redirect.convertInsToCat(redirectsFileList);
         Infobox.convertInsToCat(infoboxFileList);
 
