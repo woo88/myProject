@@ -27,13 +27,13 @@ public class Nodes {
         TreeMap<String, ArrayList> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
         // add data for each data
-//        for (String tmp : fileList) {
-//            String input = tmp + ".occ";
-//
-//            readDataFile(nodeData, input);
-//        }
+        for (String tmp : fileList) {
+            String input = tmp + ".occ";
 
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
+            readDataFile(nodeData, input);
+        }
+
+//        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
@@ -68,6 +68,7 @@ public class Nodes {
             return;
         }
         System.out.println("Done! size: " + varData.size());
+        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
