@@ -33,15 +33,7 @@ public class Nodes {
             readDataFile(nodeData, input);
         }
 
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(0));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(1));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(2));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(3));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(4));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(5));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(6));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(7));
-        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums").get(8));
+        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
