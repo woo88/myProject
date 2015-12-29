@@ -72,7 +72,7 @@ public class App {
         Redirect.convertInsToCat(redirectsFileList);
         Infobox.convertInsToCat(infoboxFileList);
 
-        Nodes.generateNodes(0, 10);
+//        Nodes.generateNodes(0, 10);
 
 //        GenerateNodes();
 //        GenerateEdges();

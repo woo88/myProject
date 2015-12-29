@@ -123,6 +123,7 @@ public class Category {
             String[] strArr = fileName.split("/");
             String output = "output/" + strArr[0] + strArr[2];
             if(App.checkFile(output)) {
+                System.out.println("File exists: " + output);
                 continue;
             }
 
