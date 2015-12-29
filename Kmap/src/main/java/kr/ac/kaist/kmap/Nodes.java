@@ -80,15 +80,22 @@ public class Nodes {
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
-        Set<String> nodeSet = nodeData.keySet();
-        for (String node : nodeSet) {
-            String[] dataArr = nodeData.get(node);
+//        for (String node : nodeData.keySet()) {
+//            String[] dataArr = nodeData.get(node);
+//            if (varData.containsKey(node)) {
+//                dataArr[i] = varData.get(node);
+//            }
+//            nodeData.remove(node);
+//            nodeData.put(node, dataArr);
+//            dataArr = null;
+//        }
+        for (Map.Entry<String, String[]> entry : nodeData.entrySet()) {
+            String node = entry.getKey();
+            String[] dataArr = entry.getValue();
             if (varData.containsKey(node)) {
                 dataArr[i] = varData.get(node);
             }
-            nodeData.remove(node);
             nodeData.put(node, dataArr);
-            dataArr = null;
         }
         System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums")[i]);
         System.out.println("Done!");
