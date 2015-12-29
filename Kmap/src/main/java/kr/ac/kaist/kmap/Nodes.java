@@ -26,25 +26,29 @@ public class Nodes {
 
         TreeMap<String, String[]> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
-        // add data for each data
-//        for (String tmp : fileList) {
-//            String input = tmp + ".occ";
-//
-//            readDataFile(nodeData, input);
-//        }
 
-        String test = "!!!_albums";
-        String[] testData = nodeData.get(test);
-        testData[1] = "test1";
-        testData[2] = "test2";
-        nodeData.put(test, testData);
+
+        // add data for each data
+        int i = 0;
+        for (String tmp : fileList) {
+            String input = tmp + ".occ";
+
+            readDataFile(nodeData, input, i);
+            i++;
+        }
+
+//        String test = "!!!_albums";
+//        String[] testData = nodeData.get(test);
+//        testData[1] = "test1";
+//        testData[2] = "test2";
+//        nodeData.put(test, testData);
         System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[0]);
         System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[1]);
         System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[2]);
         System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[3]);
     }
 
-    private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
+    private static void readDataFile(TreeMap<String, String[]> nodeData, String input, int i) {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
@@ -78,21 +82,18 @@ public class Nodes {
         System.out.println("Done! size: " + varData.size());
 //        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
-        int i = 0;
+//        int i = 0;
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
-            ArrayList dataList = new ArrayList();
-            dataList = nodeData.get(node);
-            if (i < 2) System.out.print(dataList + ", ");
+            String[] dataArr = nodeData.get(node);
+//            if (i < 2) System.out.print(dataArr + ", ");
             if (varData.containsKey(node)) {
-                dataList.add(varData.get(node));
-            } else {
-                dataList.add("0");
+                dataArr[i] = varData.get(node);
             }
-            nodeData.put(node, dataList);
-            dataList = null;
+            nodeData.put(node, dataArr);
+            dataArr = null;
 
-            i++;
+//            i++;
         }
         System.out.println("Done!");
         System.out.println();
