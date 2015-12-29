@@ -24,23 +24,21 @@ public class Nodes {
             WordCounter.writeAllCounts(frequencyData, output);
         }
 
-        TreeMap<String, ArrayList> nodeData = new TreeMap<>();
+        TreeMap<String, String[]> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
         // add data for each data
-        for (String tmp : fileList) {
-            String input = tmp + ".occ";
+//        for (String tmp : fileList) {
+//            String input = tmp + ".occ";
+//
+//            readDataFile(nodeData, input);
+//        }
 
-            readDataFile(nodeData, input);
-        }
-
-//        String test = "!!!_albums";
-//        ArrayList testDataList = nodeData.get(test);
-//        testDataList.add("test");
-//        nodeData.put(test, testDataList);
-//        testDataList = nodeData.get(test);
-//        testDataList.add("test2");
-//        nodeData.put(test, testDataList);
-//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
+        String test = "!!!_albums";
+        String[] testData = nodeData.get(test);
+        testData[1] = "test1";
+        testData[2] = "test2";
+        nodeData.put(test, testData);
+        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
@@ -97,10 +95,11 @@ public class Nodes {
         System.out.println();
     }
 
-    private static void readVocabFile(TreeMap<String, ArrayList> nodeData) {
+    private static void readVocabFile(TreeMap<String, String[]> nodeData) {
         Scanner vocabFile;
         String vocab;
-        ArrayList data = new ArrayList();
+//        ArrayList data = new ArrayList();
+        String[] data = {"0", "0", "0", "0", "0", "0", "0", "0", "0"};
 //        data.add("3.9");
 
         System.out.println("Start reading: " + App.vocabFile);
