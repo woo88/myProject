@@ -40,7 +40,7 @@ public class Nodes {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
-        ArrayList dataList;
+//        ArrayList dataList;
 
         System.out.println("Start reading: " + input);
         try {
@@ -71,13 +71,14 @@ public class Nodes {
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
-            dataList = nodeData.get(node);
+            ArrayList dataList = nodeData.get(node);
             if (varData.containsKey(node)) {
                 dataList.add(varData.get(node));
             } else {
                 dataList.add("0");
             }
             nodeData.put(node, dataList);
+            dataList = null;
         }
         System.out.println("Done!");
         System.out.println();
