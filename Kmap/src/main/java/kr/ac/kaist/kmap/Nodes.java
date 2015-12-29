@@ -26,26 +26,16 @@ public class Nodes {
 
 
         // add data for each data
-        int i = 0;
         for (String tmp : fileList) {
             String input = tmp + ".occ";
 
-            readDataFile(nodeData, input, i);
-            i++;
+            readDataFile(nodeData, input);
         }
 
-//        String test = "!!!_albums";
-//        String[] testData = nodeData.get(test);
-//        testData[1] = "test1";
-//        testData[2] = "test2";
-//        nodeData.put(test, testData);
-//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[0]);
-//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[1]);
-//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[2]);
-//        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums")[3]);
+        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
-    private static void readDataFile(TreeMap<String, String> nodeData, String input, int i) {
+    private static void readDataFile(TreeMap<String, String> nodeData, String input) {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
@@ -90,7 +80,7 @@ public class Nodes {
 
             nodeData.put(node, data.trim());
         }
-        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums"));
+//        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums"));
         System.out.println("Done!");
         System.out.println();
     }
