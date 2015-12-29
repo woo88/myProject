@@ -138,12 +138,30 @@ public class Category {
             BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
             String inputLine = null;
+            String prevIns = "";
+            boolean notFirstLine = false;
             System.out.println("Start reading: " + fileName);
             while ((inputLine = reader.readLine()) != null) {
                 // ignore comment lines.
                 if(inputLine.startsWith("#")) continue;
+
+
+                // tokenize
+                strArr = inputLine.split(" ");
+                String ins = App.removePrefix(strArr[0], "/resource/");
+                String cat = App.removePrefix(strArr[2], "/Category:");
+
+                if (Objects.equals(ins, prevIns)) {
+                    writer.write(" " + vocabList.indexOf(cat));
+                } else {
+                    if (notFirstLine) writer.newLine();
+                    writer.write(ins + " " + vocabList.indexOf(cat));
+                }
+                notFirstLine = true;
+                prevIns = ins;
             }
             System.out.println("Done");
+            System.out.println("File is created: " + output);
             System.out.println();
             reader.close();
             writer.close();
