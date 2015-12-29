@@ -68,12 +68,23 @@ public class App {
 
         // preprocessing
         Category.writeInsToCat(baseDir, categoriesFileList);
-        Category.convertInsToCat(categoriesFileList);
+//        Category.convertInsToCat(categoriesFileList);
         Type.convertInsToCat(baseDir, typesFileList);
         Redirect.convertInsToCat(baseDir, redirectsFileList);
         Infobox.convertInsToCat(baseDir, infoboxFileList);
 
-//        Nodes.generateNodes(0, 10);
+        // generate nodes
+        ArrayList<String> fileList = new ArrayList<>();
+        fileList.add("output/3.9/instance_types_en.nt");
+        fileList.add("output/3.9/redirects_en.nt");
+        fileList.add("output/3.9/raw_infobox_properties_en.nt");
+        fileList.add("output/2014/instance_types_en.nt");
+        fileList.add("output/2014/redirects_en.nt");
+        fileList.add("output/2014/infobox_properties_en.nt");
+        fileList.add("output/2015-04/instance_types_en.nt");
+        fileList.add("output/2015-04/redirects_en.nt");
+        fileList.add("output/2015-04/infobox-properties_en.nt");
+        Nodes.generateNodes(fileList);
 
 //        GenerateNodes();
 //        GenerateEdges();

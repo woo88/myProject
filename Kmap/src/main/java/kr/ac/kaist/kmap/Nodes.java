@@ -3,6 +3,7 @@ package kr.ac.kaist.kmap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Created by Woo on 2015. 12. 5..
@@ -10,26 +11,16 @@ import java.util.HashMap;
 public class Nodes {
     private HashMap<String, String> node_id;
 
-    public static void generateNodes(int from, int to) throws IOException {
-        // loading vocab.kmap
-        ArrayList<String> categories = loadVocab(from, to);
+    public static void generateNodes(ArrayList<String> fileList) throws IOException {
+        // count numbers for each file
+        for (String fileName : fileList) {
+            String output = fileName + ".occ";
 
-        // make map of instances
+            if(App.checkFile(output)) continue;
 
-
-        // for each timeslot
-        for(String fileName : App.typesFileList) {
-            BufferedReader reader = new BufferedReader(new FileReader(new File(App.baseDir + fileName)));
-            String inputLine = null;
-            System.out.println("Start reading: " + fileName);
-            while((inputLine = reader.readLine()) != null) {
-                // ignore comment lines.
-                if(inputLine.startsWith("#")) continue;
-
-                // make matrix for type score
-            }
-            reader.close();
-            System.out.println("Done!");
+            TreeMap<String, Integer> frequencyData = new TreeMap<String, Integer>( );
+            WordCounter.readWordFile(frequencyData, fileName);
+            WordCounter.writeAllCounts(frequencyData, output);
         }
     }
 
