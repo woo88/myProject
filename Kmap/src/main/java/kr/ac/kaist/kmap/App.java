@@ -70,8 +70,8 @@ public class App {
         Category.writeInsToCat(baseDir, categoriesFileList);
         Category.convertInsToCat(categoriesFileList);
         Type.convertInsToCat(baseDir, typesFileList);
-        Redirect.convertInsToCat(redirectsFileList);
-        Infobox.convertInsToCat(infoboxFileList);
+        Redirect.convertInsToCat(baseDir, redirectsFileList);
+        Infobox.convertInsToCat(baseDir, infoboxFileList);
 
 //        Nodes.generateNodes(0, 10);
 

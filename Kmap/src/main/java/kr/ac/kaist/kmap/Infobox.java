@@ -67,7 +67,64 @@ public class Infobox {
         }
     }
 
-    public static void convertInsToCat(ArrayList<String> infoboxFileList) {
+    public static void convertInsToCat(String baseDir, ArrayList<String> infoboxFileList) throws IOException {
+        for(String fileName : infoboxFileList) {
+            String[] strArr = fileName.split("/");
+            String output = "output/" + strArr[0] + "/" + strArr[2];
 
+            if(App.checkFile(output)) continue;
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+
+            // get Map of instance to categories
+            Map<String, String> insToCat = Category.getInsToCat(strArr[0], ".aa");
+            // convert
+            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
+
+            // get Map of instance to categories
+            insToCat = null;
+            insToCat = Category.getInsToCat(strArr[0], ".ab");
+            // convert
+            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
+
+            System.out.println("File is created: " + output);
+            System.out.println();
+            writer.close();
+        }
+    }
+
+    private static BufferedWriter convertInsToCatInner(String baseDir, String fileName,
+                                                       BufferedWriter writer,
+                                                       Map<String, String> insToCat) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
+        int lineNumber = 0;
+        int totalLineNumber = 0;
+        String inputLine = null;
+        System.out.println("Start reading: " + baseDir + fileName);
+        while ((inputLine = reader.readLine()) != null) {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
+            // ignore comment lines.
+            if(inputLine.startsWith("#")) continue;
+
+            // tokenize
+            String[] strArr = inputLine.split(" ");
+            String ins = App.removePrefix(strArr[0], "/resource/");
+
+            try {
+                writer.write(insToCat.get(ins)); writer.newLine();
+            } catch (NullPointerException e) {
+                continue;
+            }
+        }
+        System.out.println("Done");
+        reader.close();
+        return writer;
     }
 }
