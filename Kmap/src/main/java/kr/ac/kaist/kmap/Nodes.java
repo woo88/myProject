@@ -31,9 +31,8 @@ public class Nodes {
             String input = tmp + ".occ";
 
             readDataFile(nodeData, input);
+            System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
         }
-
-//        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
     private static void readDataFile(TreeMap<String, ArrayList> nodeData, String input) {
@@ -68,7 +67,7 @@ public class Nodes {
             return;
         }
         System.out.println("Done! size: " + varData.size());
-        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
+//        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
