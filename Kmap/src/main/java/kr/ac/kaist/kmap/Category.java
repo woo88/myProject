@@ -145,7 +145,6 @@ public class Category {
                 // ignore comment lines.
                 if(inputLine.startsWith("#")) continue;
 
-
                 // tokenize
                 strArr = inputLine.split(" ");
                 String ins = App.removePrefix(strArr[0], "/resource/");
@@ -177,7 +176,7 @@ public class Category {
             categories.add(inputLine);
         }
         reader.close();
-        System.out.println("Done! size: " + categories.size());
+        System.out.println("Done! number of categories: " + categories.size());
         System.out.println();
 
         return categories;

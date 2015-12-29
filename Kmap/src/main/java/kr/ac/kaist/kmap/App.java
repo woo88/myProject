@@ -47,12 +47,12 @@ public class App {
         typesFileList.add("3.9/en/instance_types_en.nt");
         typesFileList.add("2014/en/instance_types_en.nt");
         typesFileList.add("2015-04/en/instance-types_en.nt");
-        redirectsFileList.add("");
-        redirectsFileList.add("");
-        redirectsFileList.add("");
-        infoboxFileList.add("");
-        infoboxFileList.add("");
-        infoboxFileList.add("");
+        redirectsFileList.add("3.9/en/redirects_en.nt");
+        redirectsFileList.add("2014/en/redirects_en.nt");
+        redirectsFileList.add("2015-04/en/redirects_en.nt");
+        infoboxFileList.add("3.9/en/raw_infobox_properties_en.nt");
+        infoboxFileList.add("2014/en/infobox_properties_en.nt");
+        infoboxFileList.add("2015-04/en/infobox-properties_en.nt");
 
         // id, timeslot, types, instances, redirects
 
@@ -91,7 +91,7 @@ public class App {
         File f = new File(s);
         if(f.isFile()) {
             System.out.println("File exists: " + s);
-            System.out.println("File length: " + f.length());
+            System.out.println("File size: " + f.length());
             System.out.println();
             return true;
         }
