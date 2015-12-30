@@ -249,7 +249,7 @@ public class Category {
             WordCounter.readWordFile(overlapsData, output + ".tmp" + i);
 
             // write overlaps data into file
-            WordCounter.writeAllCounts(overlapsData, output);
+            WordCounter.writeAllCounts(overlapsData, output + i);
         }
     }
 
