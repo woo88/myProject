@@ -289,7 +289,7 @@ public class Category {
         lineNumber = 0;
         totalLineNumber = 0;
         tokenNumber = 0;
-        limitTokenNumber = 10000000;
+        limitTokenNumber = 5000000;
         try {
             while ((inputLine = reader.readLine()) != null) {
                 // check progress
