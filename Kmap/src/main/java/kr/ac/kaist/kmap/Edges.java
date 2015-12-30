@@ -416,8 +416,9 @@ public class Edges {
                     sourceIns = App.removePrefix(strArr[0], "/resource/");
                     targetIns = App.removePrefix(strArr[2], "/resource/");
 
-                    // ignore the line if instance is File
+                    // ignore the line if instance is File or Category
                     if (targetIns.startsWith("File:")) continue;
+                    if (targetIns.startsWith("Category:")) continue;
 
                     try {
                         sourceArr = insToCat.get(sourceIns).split(" ");
