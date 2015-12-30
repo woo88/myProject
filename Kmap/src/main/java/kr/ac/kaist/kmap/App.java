@@ -180,6 +180,15 @@ public class App {
         return s;
     }
 
+    public static void fileDelete(String deleteFileName) {
+        File file = new File(deleteFileName);
+
+        if(file.exists()){
+            file.delete();
+            System.out.println("File is deleted: " + deleteFileName);
+        }
+    }
+
     private static void GenerateNodes() throws IOException {
         HashMap resultMap = new HashMap();
         putTimeSlot(resultMap);

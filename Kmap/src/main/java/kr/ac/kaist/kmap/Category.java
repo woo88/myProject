@@ -243,10 +243,16 @@ public class Category {
         lastFileNumber = new Integer(0);
         writeOverlapsTemp(input, output + ".tmp", lastFileNumber);
 
+        System.out.println(lastFileNumber);
+        System.out.println(lastFileNumber.intValue());
+
         for (int i = 0; i <= lastFileNumber.intValue(); i++) {
             // count occurrences of overlap
             overlapsData = new TreeMap<>();
             WordCounter.readWordFile(overlapsData, output + ".tmp" + i);
+
+            // delete temp file
+            App.fileDelete(output + ".tmp" + i);
 
             // write overlaps data into file
             WordCounter.writeAllCounts(overlapsData, output + i);

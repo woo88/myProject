@@ -68,7 +68,7 @@ public class WordCounter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Done");
+        System.out.println("File is created: " + output);
         System.out.println();
     }
 
