@@ -11,6 +11,8 @@ public class Category {
     private static String filename = null;
     private static String targetFileName = null;
 
+    static int lastFileNumber;
+
     public void setMap(String s) throws IOException {
         int keyIdx;
         int valueIdx;
@@ -237,16 +239,11 @@ public class Category {
 
     public static void writeOverlapsData(String input, String output) {
         TreeMap<String, Integer> overlapsData;
-        Integer lastFileNumber;
 
         // preprocessing for counting occurrences of overlap
-        lastFileNumber = new Integer(0);
-        writeOverlapsTemp(input, output + ".tmp", lastFileNumber);
+        writeOverlapsTemp(input, output + ".tmp");
 
-        System.out.println(lastFileNumber);
-        System.out.println(lastFileNumber.intValue());
-
-        for (int i = 0; i <= lastFileNumber.intValue(); i++) {
+        for (int i = 0; i <= lastFileNumber; i++) {
             // count occurrences of overlap
             overlapsData = new TreeMap<>();
             WordCounter.readWordFile(overlapsData, output + ".tmp" + i);
@@ -259,7 +256,7 @@ public class Category {
         }
     }
 
-    private static void writeOverlapsTemp(String input, String output, Integer tmpFileNumber) {
+    private static void writeOverlapsTemp(String input, String output) {
         BufferedReader reader;
         String inputLine;
         String[] strArr;
@@ -273,9 +270,9 @@ public class Category {
         int limitTokenNumber;
 //        int tmpFileNumber;
 
-        tmpFileNumber = 0;
+        lastFileNumber = 0;
 
-        if (App.checkFile(output + tmpFileNumber)) return;
+        if (App.checkFile(output + lastFileNumber)) return;
 
         try {
             reader = new BufferedReader(new FileReader(new File(input)));
@@ -285,7 +282,7 @@ public class Category {
         }
 
         try {
-            writer = new BufferedWriter(new FileWriter(new File(output + tmpFileNumber)));
+            writer = new BufferedWriter(new FileWriter(new File(output + lastFileNumber)));
         } catch (IOException e) {
             System.err.println(e);
             return;
@@ -310,9 +307,9 @@ public class Category {
                 if (tokenNumber > limitTokenNumber) {
                     tokenNumber = 0;
                     writer.close();
-                    System.out.println("File is created: " + output + tmpFileNumber);
-                    tmpFileNumber++;
-                    writer = new BufferedWriter(new FileWriter(new File(output + tmpFileNumber)));
+                    System.out.println("File is created: " + output + lastFileNumber);
+                    lastFileNumber++;
+                    writer = new BufferedWriter(new FileWriter(new File(output + lastFileNumber)));
                 }
 
                 strArr = inputLine.split(" ");
@@ -344,7 +341,7 @@ public class Category {
             return;
         }
 
-        System.out.println("File is created: " + output + tmpFileNumber);
+        System.out.println("File is created: " + output + lastFileNumber);
 
         try {
             reader.close();
@@ -353,7 +350,7 @@ public class Category {
             return;
         }
 
-        System.out.println("Done! last temp file number: " + tmpFileNumber);
+        System.out.println("Done! last temp file number: " + lastFileNumber);
         System.out.println();
     }
 
