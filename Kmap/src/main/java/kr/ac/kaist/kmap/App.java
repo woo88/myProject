@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -187,6 +188,31 @@ public class App {
             file.delete();
             System.out.println("File is deleted: " + deleteFileName);
         }
+    }
+
+    public static void fileSort(String inputfile, String outputfile, File tempFileStore) throws IOException {
+        ExternalSort sort = new ExternalSort();
+        boolean verbose = true;
+        boolean distinct = false;
+        int maxtmpfiles = 1024;
+        Charset cs = Charset.defaultCharset();
+//        String inputfile = null, outputfile = null;
+//        File tempFileStore = null;
+        boolean usegzip = false;
+        int headersize = 0;
+
+//        inputfile = input;
+//        outputfile = output;
+//        tempFileStore = new File(baseDir + "res/tmp/");
+
+        Comparator<String> comparator = sort.defaultcomparator;
+        List<File> l = sort.sortInBatch(new File(inputfile), comparator,
+                maxtmpfiles, cs, tempFileStore, distinct, headersize,
+                usegzip);
+        if (verbose)
+            System.out.println("created " + l.size() + " tmp files");
+        sort.mergeSortedFiles(l, new File(outputfile), comparator, cs,
+                distinct, false, usegzip);
     }
 
     private static void GenerateNodes() throws IOException {

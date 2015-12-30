@@ -72,6 +72,13 @@ public class WordCounter {
         System.out.println();
     }
 
+    public static void writeAllCounts(TreeMap<String, Integer> frequencyData,
+                                      BufferedWriter writer) throws IOException {
+        for (String word : frequencyData.keySet()) {
+            writer.write(word + " " + frequencyData.get(word)); writer.newLine();
+        }
+    }
+
     public static void readWordFile(TreeMap<String, Integer> frequencyData, String fileName)
     {
         Scanner wordFile;
@@ -113,6 +120,56 @@ public class WordCounter {
             frequencyData.put(word, count);
         }
 
+        System.out.println("Done");
+        System.out.println();
+    }
+
+    public static void readWordFile(String fileName, String output) throws IOException {
+        Scanner wordFile;
+        String word;     // A word read from the file
+        Integer count;   // The number of occurrences of the word
+
+        TreeMap<String, Integer> frequencyData;
+        BufferedWriter writer;
+        int lineNumber;
+        int totalLineNumber;
+        int tokenNumber;
+        int limitTokenNumber;
+
+        if (App.checkFile(output)) return;
+
+        wordFile = new Scanner(new FileReader(fileName));
+        frequencyData = new TreeMap<>();
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+        lineNumber = 0;
+        totalLineNumber = 0;
+        tokenNumber = 0;
+        limitTokenNumber = 5000000;
+        System.out.println("Start reading: " + fileName);
+        while (wordFile.hasNext()) {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
+            // check token number (file size)
+            if (tokenNumber > limitTokenNumber) {
+                tokenNumber = 0;
+                writeAllCounts(frequencyData, writer);
+                frequencyData = new TreeMap<>();
+            }
+
+            // Read the next word and get rid of the end-of-line marker if needed:
+            word = wordFile.next( );
+            tokenNumber++;
+
+            // Get the current count of this word, add one, and then store the new count:
+            count = getCount(word, frequencyData) + 1;
+            frequencyData.put(word, count);
+        }
         System.out.println("Done");
         System.out.println();
     }

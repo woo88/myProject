@@ -291,11 +291,13 @@ public class Edges {
     }
 
     public static void generateEdges(ArrayList<String> fileList, String baseDir,
-                                     ArrayList<String> pagelinksFileList, String edgesFile) {
+                                     ArrayList<String> pagelinksFileList, String edgesFile) throws IOException {
         String fileSuffix = ".occ";
+        String input;
         String output;
         String[] strArr;
         TreeMap<String, String> edgeData;
+        Map<String, String> insToCat;
 
         System.out.println("---------------------------");
 
@@ -311,18 +313,178 @@ public class Edges {
         for (String pagelinksFile : pagelinksFileList) {
             // set output file name
             strArr = pagelinksFile.split("/");
+            output = "output/" + strArr[0] + "/" + strArr[2];
+
+            if(App.checkFile(output + fileSuffix)) continue;
+
+            // write pagelinks temp into file
+            try {
+                // step 0 for source
+                insToCat = Category.getInsToCat(strArr[0], ".aa");
+                writePagelinksTemp(baseDir + pagelinksFile, insToCat, output + ".tmp", 0);
+                insToCat = null;
+
+                // step 1 for source
+                insToCat = Category.getInsToCat(strArr[0], ".ab");
+                writePagelinksTemp(output + ".tmp0", insToCat, output + ".tmp", 1);
+                insToCat = null;
+
+                // step 2 for target
+                insToCat = Category.getInsToCat(strArr[0], ".aa");
+                writePagelinksTemp(output + ".tmp1", insToCat, output + ".tmp", 2);
+                insToCat = null;
+
+                // step 3 for target
+                insToCat = Category.getInsToCat(strArr[0], ".ab");
+                writePagelinksTemp(output + ".tmp2", insToCat, output, 3);
+                insToCat = null;
+            } catch (IOException e) {
+                System.err.println(e);
+                return;
+            }
+
+            // word count
+            input = output;
+            output = output + fileSuffix + ".tmp";
+            WordCounter.readWordFile(input, output);
+
+            // external sort
+            input = output;
+            output = output + ".sorted";
+            if (!App.checkFile(output)) {
+                App.fileSort(input, output, new File("output/tmp"));
+            }
+
+            // reduce
+            input = output;
             output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
-
-            if(App.checkFile(output)) continue;
-
-            writePagelinksData(baseDir + pagelinksFile, output);
+//            fileReduce(input, output);
         }
 
-        edgeData = new TreeMap<>();
+//        edgeData = new TreeMap<>();
         // add data for each data
     }
 
-    private static void writePagelinksData(String input, String output) {
+    private static void writePagelinksTemp(String input, Map<String, String> insToCat, String output, int step) {
+        BufferedReader reader;
+        BufferedWriter writer;
+        String inputLine;
+        String[] strArr;
+        int lineNumber;
+        int totalLineNumber;
+        String sourceIns;
+        String targetIns;
+        String[] sourceArr;
+        String[] targetArr;
 
+        if (step == 3) {
+            if (App.checkFile(output)) return;
+        } else {
+            if (App.checkFile(output + step)) return;
+        }
+
+        try {
+            reader = new BufferedReader(new FileReader(new File(input)));
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+            return;
+        }
+
+        System.out.println("Start reading: " + input);
+        lineNumber = 0;
+        totalLineNumber = 0;
+        try {
+            if (step == 3) {
+                writer = new BufferedWriter(new FileWriter(new File(output)));
+            } else {
+                writer = new BufferedWriter(new FileWriter(new File(output + step)));
+            }
+            while ((inputLine = reader.readLine()) != null) {
+                // check progress
+                if (lineNumber >= 500000) {
+                    totalLineNumber += lineNumber;
+                    lineNumber = 0;
+                    System.out.print(totalLineNumber + ", ");
+                }
+                lineNumber++;
+
+                if (step == 0) { // step 0
+                    // Ignore comment lines.
+                    if(inputLine.startsWith("#")) continue;
+
+                    strArr = inputLine.split(" ");
+                    sourceIns = App.removePrefix(strArr[0], "/resource/");
+                    targetIns = App.removePrefix(strArr[2], "/resource/");
+
+                    // ignore the line if instance is File
+                    if (targetIns.startsWith("File:")) continue;
+
+                    try {
+                        sourceArr = insToCat.get(sourceIns).split(" ");
+                        for (String sourceCat : sourceArr) {
+                            writer.write(sourceCat + " " + targetIns); writer.newLine();
+                        }
+                    } catch (NullPointerException e) {
+                        writer.write("/" + sourceIns + " " + targetIns); writer.newLine();
+                    }
+                } else if (step == 1) { // step 1
+                    strArr = inputLine.split(" ");
+
+                    if (!strArr[0].startsWith("/")) continue;
+
+                    try {
+                        sourceArr = insToCat.get(strArr[0].replace("/", "")).split(" ");
+                        for (String sourceCat : sourceArr) {
+                            writer.write(sourceCat + " " + strArr[1]); writer.newLine();
+                        }
+                    } catch (NullPointerException e) {
+                        continue;
+                    }
+                } else if (step == 2) { // step 2
+                    strArr = inputLine.split(" ");
+
+                    try {
+                        targetArr = insToCat.get(strArr[1]).split(" ");
+                        for (String targetCat : targetArr) {
+                            writer.write(strArr[0] + " " + targetCat); writer.newLine();
+                        }
+                    } catch (NullPointerException e) {
+                        writer.write(strArr[0] + " /" + strArr[1]); writer.newLine();
+                    }
+                } else if (step == 3) {
+                    strArr = inputLine.split(" ");
+
+                    if (strArr[1].startsWith("/")) {
+                        try {
+                            targetArr = insToCat.get(strArr[1].replace("/", "")).split(" ");
+                            for (String targetCat : targetArr) {
+                                writer.write(strArr[0] + "/" + targetCat); writer.newLine();
+                            }
+                        } catch (NullPointerException e) {
+                            continue;
+                        }
+                    } else {
+                        writer.write(strArr[0] + "/" + strArr[1]); writer.newLine();
+                    }
+                }
+
+//                for (String sourceCat : sourceArr) {
+//                    for (String targetCat : targetArr) {
+//                        // skip if FROM and TO are in the same category
+//                        if(Objects.equals(sourceCat, targetCat)) continue;
+//
+//                        writer.write(sourceCat + "/" + targetCat); writer.newLine();
+//                    }
+//                }
+            }
+            writer.close();
+            reader.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+        System.out.println("Done");
+        System.out.println("File is created: " + output + step);
+        System.out.println();
     }
 }
