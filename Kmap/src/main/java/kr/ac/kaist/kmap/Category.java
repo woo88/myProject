@@ -259,8 +259,13 @@ public class Category {
         BufferedWriter writer;
         int lineNumber;
         int totalLineNumber;
+        int tokenNumber;
+        int limitTokenNumber;
+        int tmpFileNumber;
 
-        if (App.checkFile(output)) return;
+        tmpFileNumber = 0;
+
+        if (App.checkFile(output + tmpFileNumber)) return;
 
         try {
             reader = new BufferedReader(new FileReader(new File(input)));
@@ -270,7 +275,7 @@ public class Category {
         }
 
         try {
-            writer = new BufferedWriter(new FileWriter(new File(output)));
+            writer = new BufferedWriter(new FileWriter(new File(output + tmpFileNumber)));
         } catch (IOException e) {
             System.err.println(e);
             return;
@@ -279,6 +284,8 @@ public class Category {
         System.out.println("Start reading: " + input);
         lineNumber = 0;
         totalLineNumber = 0;
+        tokenNumber = 0;
+        limitTokenNumber = 10000000;
         try {
             while ((inputLine = reader.readLine()) != null) {
                 // check progress
@@ -289,6 +296,14 @@ public class Category {
                 }
                 lineNumber++;
 
+                // check token number (file size)
+                if (tokenNumber > limitTokenNumber) {
+                    tokenNumber = 0;
+                    writer.close();
+                    tmpFileNumber++;
+                    writer = new BufferedWriter(new FileWriter(new File(output + tmpFileNumber)));
+                }
+
                 strArr = inputLine.split(" ");
 
                 // make overlaps data (combination)
@@ -296,9 +311,10 @@ public class Category {
                 for (int i = 1; i < strArr.length-1; i++) {
                     for (int j = i+1; j < strArr.length; j++) {
                         tmp1 = strArr[i] + "/" + strArr[j];
-//                        tmp2 = strArr[j] + "/" + strArr[i];
+                        tmp2 = strArr[j] + "/" + strArr[i];
                         joiner.add(tmp1);
-//                        joiner.add(tmp2);
+                        joiner.add(tmp2);
+                        tokenNumber++;
                     }
                 }
 
