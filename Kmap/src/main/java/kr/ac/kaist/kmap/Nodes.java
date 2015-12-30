@@ -21,6 +21,8 @@ public class Nodes {
             WordCounter.writeAllCounts(frequencyData, output);
         }
 
+        if (App.checkFile(App.nodesFile)) return;
+
         TreeMap<String, String> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
 
