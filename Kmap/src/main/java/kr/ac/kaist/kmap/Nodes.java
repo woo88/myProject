@@ -24,7 +24,6 @@ public class Nodes {
         TreeMap<String, String> nodeData = new TreeMap<>();
         readVocabFile(nodeData);
 
-
         // add data for each data
         for (String tmp : fileList) {
             String input = tmp + ".occ";
@@ -32,14 +31,64 @@ public class Nodes {
             readDataFile(nodeData, input);
         }
 
-        System.out.println("\tnodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
+        // write nodeData to nodes.kmap
+        writeNodes(nodeData);
+
+//        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
+    }
+
+    private static void writeNodes(TreeMap<String, String> nodeData) {
+        BufferedWriter writer;
+        String data39;
+        int score39 = 0;
+        String data2014;
+        int score2014 = 0;
+        String data2015;
+        int score2015 = 0;
+
+        System.out.println("Start writing: " + App.nodesFile);
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+        for(String node : nodeData.keySet( ))
+        {
+            String data = nodeData.get(node);
+            String[] strArr = data.split(" ");
+
+            score39 = Integer.parseInt(strArr[0]) + Integer.parseInt(strArr[1]) + Integer.parseInt(strArr[2]);
+            data39 = "3.9/" + score39 + "/" + strArr[0] + "/" + strArr[1] + "/" + strArr[2];
+
+            score2014 = Integer.parseInt(strArr[3]) + Integer.parseInt(strArr[4]) + Integer.parseInt(strArr[5]);
+            data2014 = "2014/" + score2014 + "/" + strArr[3] + "/" + strArr[4] + "/" + strArr[5];
+
+            score2015 = Integer.parseInt(strArr[6]) + Integer.parseInt(strArr[7]) + Integer.parseInt(strArr[8]);
+            data2015 = "2015-04/" + score2015 + "/" + strArr[6] + "/" + strArr[7] + "/" + strArr[8];
+
+            try {
+                writer.write(node + " " + data39 + " " + data2014 + " " + data2015);
+                writer.newLine();
+            } catch (IOException e) {
+                System.err.println(e);
+                return;
+            }
+        }
+
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done");
+        System.out.println();
     }
 
     private static void readDataFile(TreeMap<String, String> nodeData, String input) {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
-//        ArrayList dataList = new ArrayList();
 
         System.out.println("Start reading: " + input);
         try {
@@ -67,7 +116,6 @@ public class Nodes {
             return;
         }
         System.out.println("Done! size: " + varData.size());
-//        System.out.println("\tvarData.get(!!!_albums) test: " + varData.get("!!!_albums"));
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
@@ -80,7 +128,6 @@ public class Nodes {
 
             nodeData.put(node, data.trim());
         }
-//        System.out.println("\ttest: " + i + " " + varData.get("!!!_albums") + " " + nodeData.get("!!!_albums"));
         System.out.println("Done!");
         System.out.println();
     }

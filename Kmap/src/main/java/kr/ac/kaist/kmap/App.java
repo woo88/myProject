@@ -35,6 +35,7 @@ public class App {
     public static ArrayList<String> typesFileList = new ArrayList<>();
     public static ArrayList<String> redirectsFileList = new ArrayList<>();
     public static ArrayList<String> infoboxFileList = new ArrayList<>();
+    public static String nodesFile;
 
 //    private static HashMap resultMap = new HashMap();
 
@@ -54,6 +55,7 @@ public class App {
         infoboxFileList.add("3.9/en/raw_infobox_properties_en.nt");
         infoboxFileList.add("2014/en/infobox_properties_en.nt");
         infoboxFileList.add("2015-04/en/infobox-properties_en.nt");
+        nodesFile = "output/nodes.kmap";
 
         // id, timeslot, types, instances, redirects
 
