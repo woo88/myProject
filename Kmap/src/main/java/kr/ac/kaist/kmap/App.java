@@ -94,7 +94,7 @@ public class App {
         fileList.add("output/2015-04/instance-types_en.nt");
         fileList.add("output/2015-04/redirects_en.nt");
         fileList.add("output/2015-04/infobox-properties_en.nt");
-//        Nodes.generateNodes(fileList);
+        if (!App.checkFile(nodesFile)) Nodes.generateNodes(fileList);
 
         // generate edges
         fileList = new ArrayList<>();
