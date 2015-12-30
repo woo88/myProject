@@ -49,6 +49,8 @@ public class Nodes {
         System.out.println("Start writing: " + App.nodesFile);
         try {
             writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
+            writer.write("#node_name " +
+                    "timeslot/node_size/#instances/#instancesHavingType/#instancesRedirected/infoboxLength/interLangLength");
         } catch (IOException e) {
             System.err.println(e);
             return;
@@ -66,6 +68,8 @@ public class Nodes {
 
             score2015 = Integer.parseInt(strArr[6]) + Integer.parseInt(strArr[7]) + Integer.parseInt(strArr[8]);
             data2015 = "2015-04/" + score2015 + "/" + strArr[6] + "/" + strArr[7] + "/" + strArr[8];
+
+            if ((score39 + score2014 + score2015) == 0) continue;
 
             try {
                 writer.write(node + " " + data39 + " " + data2014 + " " + data2015);
