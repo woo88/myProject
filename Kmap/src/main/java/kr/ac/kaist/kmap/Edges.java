@@ -352,13 +352,13 @@ public class Edges {
             input = output;
             output = output + ".sorted";
             if (!App.checkFile(output)) {
-                App.fileSort(input, output, new File("output/tmp"));
+                App.fileSort(input, output, new File("output/tmp/"));
             }
 
             // reduce
             input = output;
             output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
-//            fileReduce(input, output);
+            fileReduce(input, output);
         }
 
 //        edgeData = new TreeMap<>();
@@ -430,7 +430,10 @@ public class Edges {
                 } else if (step == 1) { // step 1
                     strArr = inputLine.split(" ");
 
-                    if (!strArr[0].startsWith("/")) continue;
+                    if (!strArr[0].startsWith("/")) {
+                        writer.write(inputLine); writer.newLine();
+                        continue;
+                    }
 
                     try {
                         sourceArr = insToCat.get(strArr[0].replace("/", "")).split(" ");
@@ -485,6 +488,62 @@ public class Edges {
         }
         System.out.println("Done");
         System.out.println("File is created: " + output + step);
+        System.out.println();
+    }
+
+    public static void fileReduce(String inputfile, String outputfile) throws IOException {
+        BufferedReader reader;
+        BufferedWriter writer;
+        String inputLine;
+        String[] strArr;
+        String prevWord;
+        String word;
+        int count;
+        int totalCnt;
+        int lineNumber;
+        int totalLineNumber;
+        boolean notFirstLine;
+
+        if (App.checkFile(outputfile)) return;
+
+        reader = new BufferedReader(new FileReader(new File(inputfile)));
+        writer = new BufferedWriter(new FileWriter(new File(outputfile)));
+        prevWord = "";
+        count = 0;
+        totalCnt = 0;
+        lineNumber = 0;
+        totalLineNumber = 0;
+        notFirstLine = false;
+
+        System.out.println("Start reading: " + inputfile);
+        while ((inputLine = reader.readLine()) != null) {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
+            strArr = inputLine.split(" ");
+            word = strArr[0];
+            count = Integer.parseInt(strArr[1]);
+
+            if (Objects.equals(word, prevWord)) {
+                totalCnt += count;
+            } else {
+                if (notFirstLine) {
+                    writer.write(prevWord + " " + totalCnt); writer.newLine();
+                }
+                totalCnt = count;
+            }
+            notFirstLine = true;
+            prevWord = word;
+        }
+        writer.write(prevWord + " " + totalCnt); writer.newLine();
+        writer.close();
+        reader.close();
+        System.out.println("Done");
         System.out.println();
     }
 }
