@@ -243,7 +243,7 @@ public class Category {
         lastFileNumber = new Integer(0);
         writeOverlapsTemp(input, output + ".tmp", lastFileNumber);
 
-        for (int i = 0; i <= lastFileNumber; i++) {
+        for (int i = 0; i <= lastFileNumber.intValue(); i++) {
             // count occurrences of overlap
             overlapsData = new TreeMap<>();
             WordCounter.readWordFile(overlapsData, output + ".tmp" + i);
