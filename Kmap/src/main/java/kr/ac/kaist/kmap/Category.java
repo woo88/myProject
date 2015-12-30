@@ -234,4 +234,96 @@ public class Category {
         System.out.println();
         return map;
     }
+
+    public static void writeOverlapsData(String input, String output) {
+        BufferedReader reader;
+        String inputLine;
+        String[] strArr;
+        String tmp1;
+        String tmp2;
+        StringJoiner joiner;
+        BufferedWriter writer;
+        TreeMap<String, Integer> overlapsData;
+
+        try {
+            reader = new BufferedReader(new FileReader(new File(input)));
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+            return;
+        }
+
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(output + ".tmp")));
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+
+        System.out.println("Start reading: " + input);
+        try {
+            while ((inputLine = reader.readLine()) != null) {
+                strArr = inputLine.split(" ");
+
+                // make overlaps data (combination)
+                joiner = new StringJoiner(" ");
+                for (int i = 1; i < strArr.length-1; i++) {
+                    for (int j = i+1; j < strArr.length; j++) {
+                        tmp1 = strArr[i] + "/" + strArr[j];
+                        tmp2 = strArr[j] + "/" + strArr[i];
+                        joiner.add(tmp1);
+                        joiner.add(tmp2);
+                    }
+                }
+
+                //white overlaps to file
+                writer.write(joiner.toString()); writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+
+        try {
+            writer.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+
+        try {
+            reader.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            return;
+        }
+
+        System.out.println("Done");
+        System.out.println();
+
+        // count occurrences of overlap
+        overlapsData = new TreeMap<>();
+        WordCounter.readWordFile(overlapsData, output + ".tmp");
+
+        // write overlaps data into file
+        WordCounter.writeAllCounts(overlapsData, output);
+    }
+
+    public static void main(String[] args) {
+        String inputLine;
+        String[] strArr;
+        String tmp1;
+        String tmp2;
+
+        inputLine = "ins1 cat1 cat2 cat3 cat4 cat5";
+        strArr = inputLine.split(" ");
+
+        for (int i = 1; i < strArr.length-1; i++) {
+            for (int j = i+1; j < strArr.length; j++) {
+                tmp1 = strArr[i] + "/" + strArr[j];
+                tmp2 = strArr[j] + "/" + strArr[i];
+                System.out.println(tmp1);
+                System.out.println(tmp2);
+            }
+        }
+    }
 }

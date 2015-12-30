@@ -36,6 +36,8 @@ public class App {
     public static ArrayList<String> redirectsFileList = new ArrayList<>();
     public static ArrayList<String> infoboxFileList = new ArrayList<>();
     public static String nodesFile;
+    public static ArrayList<String> pagelinksFileList = new ArrayList<>();
+    public static String edgesFile;
 
 //    private static HashMap resultMap = new HashMap();
 
@@ -56,6 +58,11 @@ public class App {
         infoboxFileList.add("2014/en/infobox_properties_en.nt");
         infoboxFileList.add("2015-04/en/infobox-properties_en.nt");
         nodesFile = "output/nodes.kmap";
+        pagelinksFileList.add("3.9/en/page_links_en.nt");
+        pagelinksFileList.add("2014/en/page_links_en.nt");
+        pagelinksFileList.add("2015-04/en/page-links_en.nt");
+        edgesFile = "output/edges.kmap";
+
 
         // id, timeslot, types, instances, redirects
 
@@ -87,6 +94,13 @@ public class App {
         fileList.add("output/2015-04/redirects_en.nt");
         fileList.add("output/2015-04/infobox-properties_en.nt");
         Nodes.generateNodes(fileList);
+
+        // generate edges
+        fileList = new ArrayList<>();
+        fileList.add("output/3.9/article_categories_en.nt");
+        fileList.add("output/2014/article_categories_en.nt");
+        fileList.add("output/2015-04/article-categories_en.nt");
+        Edges.generateEdges(fileList, baseDir, pagelinksFileList, edgesFile);
 
 //        GenerateNodes();
 //        GenerateEdges();

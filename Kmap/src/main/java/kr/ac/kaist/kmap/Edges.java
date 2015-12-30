@@ -289,4 +289,38 @@ public class Edges {
         System.out.println(pageLinkMap.get("AcademicElitism"));
         System.out.println(pageLinkMap.get("Albedo"));
     }
+
+    public static void generateEdges(ArrayList<String> fileList, String baseDir,
+                                     ArrayList<String> pagelinksFileList, String edgesFile) {
+        String fileSuffix = ".occ";
+        String output;
+        String[] strArr;
+        TreeMap<String, String> edgeData;
+
+        for (String catFile : fileList) {
+            // set output file name
+            output = catFile + ".overlaps" + fileSuffix;
+
+            if(App.checkFile(output)) continue;
+
+            Category.writeOverlapsData(catFile, output);
+        }
+
+        for (String pagelinksFile : pagelinksFileList) {
+            // set output file name
+            strArr = pagelinksFile.split("/");
+            output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
+
+            if(App.checkFile(output)) continue;
+
+            writePagelinksData(baseDir + pagelinksFile, output);
+        }
+
+        edgeData = new TreeMap<>();
+        // add data for each data
+    }
+
+    private static void writePagelinksData(String input, String output) {
+
+    }
 }
