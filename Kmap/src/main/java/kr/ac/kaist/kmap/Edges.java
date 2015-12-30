@@ -297,6 +297,8 @@ public class Edges {
         String[] strArr;
         TreeMap<String, String> edgeData;
 
+        System.out.println("---------------------------");
+
         for (String catFile : fileList) {
             // set output file name
             output = catFile + ".overlaps" + fileSuffix;

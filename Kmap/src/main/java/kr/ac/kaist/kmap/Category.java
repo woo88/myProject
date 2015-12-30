@@ -236,6 +236,20 @@ public class Category {
     }
 
     public static void writeOverlapsData(String input, String output) {
+        TreeMap<String, Integer> overlapsData;
+
+        // preprocessing for counting occurrences of overlap
+        writeOverlapsTemp(input, output + ".tmp");
+
+        // count occurrences of overlap
+        overlapsData = new TreeMap<>();
+        WordCounter.readWordFile(overlapsData, output + ".tmp");
+
+        // write overlaps data into file
+        WordCounter.writeAllCounts(overlapsData, output);
+    }
+
+    private static void writeOverlapsTemp(String input, String output) {
         BufferedReader reader;
         String inputLine;
         String[] strArr;
@@ -243,7 +257,10 @@ public class Category {
         String tmp2;
         StringJoiner joiner;
         BufferedWriter writer;
-        TreeMap<String, Integer> overlapsData;
+        int lineNumber;
+        int totalLineNumber;
+
+        if (App.checkFile(output)) return;
 
         try {
             reader = new BufferedReader(new FileReader(new File(input)));
@@ -253,15 +270,25 @@ public class Category {
         }
 
         try {
-            writer = new BufferedWriter(new FileWriter(new File(output + ".tmp")));
+            writer = new BufferedWriter(new FileWriter(new File(output)));
         } catch (IOException e) {
             System.err.println(e);
             return;
         }
 
         System.out.println("Start reading: " + input);
+        lineNumber = 0;
+        totalLineNumber = 0;
         try {
             while ((inputLine = reader.readLine()) != null) {
+                // check progress
+                if (lineNumber >= 500000) {
+                    totalLineNumber += lineNumber;
+                    lineNumber = 0;
+                    System.out.print(totalLineNumber + ", ");
+                }
+                lineNumber++;
+
                 strArr = inputLine.split(" ");
 
                 // make overlaps data (combination)
@@ -299,13 +326,6 @@ public class Category {
 
         System.out.println("Done");
         System.out.println();
-
-        // count occurrences of overlap
-        overlapsData = new TreeMap<>();
-        WordCounter.readWordFile(overlapsData, output + ".tmp");
-
-        // write overlaps data into file
-        WordCounter.writeAllCounts(overlapsData, output);
     }
 
     public static void main(String[] args) {

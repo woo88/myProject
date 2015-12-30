@@ -78,6 +78,9 @@ public class WordCounter {
         String word;     // A word read from the file
         Integer count;   // The number of occurrences of the word
 
+        int lineNumber;
+        int totalLineNumber;
+
         try
         {
             wordFile = new Scanner(new FileReader(fileName));
@@ -88,8 +91,20 @@ public class WordCounter {
             return;
         }
 
+        System.out.println("Start reading: " + fileName);
+        lineNumber = 0;
+        totalLineNumber = 0;
+
         while (wordFile.hasNext( ))
         {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
             // Read the next word and get rid of the end-of-line marker if needed:
             word = wordFile.next( );
 
