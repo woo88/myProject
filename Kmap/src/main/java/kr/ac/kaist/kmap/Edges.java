@@ -301,14 +301,14 @@ public class Edges {
 
         System.out.println("---------------------------");
 
-        for (String catFile : fileList) {
-            // set output file name
-            output = catFile + ".overlaps" + fileSuffix;
-
-            if(App.checkFile(output)) continue;
-
-            Category.writeOverlapsData(catFile, output);
-        }
+//        for (String catFile : fileList) {
+//            // set output file name
+//            output = catFile + ".overlaps" + fileSuffix;
+//
+//            if(App.checkFile(output)) continue;
+//
+//            Category.writeOverlapsData(catFile, output);
+//        }
 
         for (String pagelinksFile : pagelinksFileList) {
             // set output file name
