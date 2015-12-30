@@ -296,9 +296,9 @@ public class Category {
                 for (int i = 1; i < strArr.length-1; i++) {
                     for (int j = i+1; j < strArr.length; j++) {
                         tmp1 = strArr[i] + "/" + strArr[j];
-                        tmp2 = strArr[j] + "/" + strArr[i];
+//                        tmp2 = strArr[j] + "/" + strArr[i];
                         joiner.add(tmp1);
-                        joiner.add(tmp2);
+//                        joiner.add(tmp2);
                     }
                 }
 
