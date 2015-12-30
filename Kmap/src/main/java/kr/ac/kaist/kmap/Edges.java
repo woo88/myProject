@@ -299,16 +299,16 @@ public class Edges {
         TreeMap<String, String> edgeData;
         Map<String, String> insToCat;
 
-        System.out.println("---------------------------");
+        System.out.println("-------------------------------");
 
-//        for (String catFile : fileList) {
-//            // set output file name
-//            output = catFile + ".overlaps" + fileSuffix;
-//
-//            if(App.checkFile(output)) continue;
-//
-//            Category.writeOverlapsData(catFile, output);
-//        }
+        for (String catFile : fileList) {
+            // set output file name
+            output = catFile + ".overlaps" + fileSuffix;
+
+            if(App.checkFile(output)) continue;
+
+            Category.writeOverlapsData2(catFile, output);
+        }
 
         for (String pagelinksFile : pagelinksFileList) {
             // set output file name

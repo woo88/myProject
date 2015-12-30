@@ -118,8 +118,13 @@ public class Category {
     }
 
     public static void writeInsToCat(String baseDir, ArrayList<String> categoriesFileList) throws IOException {
+        TreeMap<String, Integer> vocabData;
+        String inputfile;
+
         // loading vocab.kmap
-//        ArrayList<String> vocabList = loadVocab();
+        inputfile = App.vocabFile;
+        vocabData = new TreeMap<>();
+        loadVocab(inputfile, vocabData);
 
         for(String fileName : categoriesFileList) {
             String[] strArr = fileName.split("/");
@@ -153,10 +158,10 @@ public class Category {
                 String cat = App.removePrefix(strArr[2], "/Category:");
 
                 if (Objects.equals(ins, prevIns)) {
-                    writer.write(" " + cat);
+                    writer.write(" " + vocabData.get(cat));
                 } else {
                     if (notFirstLine) writer.newLine();
-                    writer.write(ins + " " + cat);
+                    writer.write(ins + " " + vocabData.get(cat));
                 }
                 notFirstLine = true;
                 prevIns = ins;
@@ -177,19 +182,22 @@ public class Category {
         }
     }
 
-    private static ArrayList<String> loadVocab() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File(App.vocabFile)));
+    private static void loadVocab(String inputfile, TreeMap<String, Integer> vocabData) throws IOException {
+        BufferedReader reader;
         String inputLine;
-        ArrayList<String> categories = new ArrayList<>();
-        System.out.println("Start loading: " + App.vocabFile);
+        Integer id;
+
+        reader = new BufferedReader(new FileReader(new File(inputfile)));
+        id = 0;
+
+        System.out.println("Start loading: " + inputfile);
         while((inputLine = reader.readLine()) != null) {
-            categories.add(inputLine);
+            vocabData.put(inputLine, id);
+            id++;
         }
         reader.close();
-        System.out.println("Done! number of categories: " + categories.size());
+        System.out.println("Done!");
         System.out.println();
-
-        return categories;
     }
 
     public static void convertInsToCat(ArrayList<String> categoriesFileList) {
@@ -351,6 +359,71 @@ public class Category {
         }
 
         System.out.println("Done! last temp file number: " + lastFileNumber);
+        System.out.println();
+    }
+
+    public static void writeOverlapsData2(String input, String output) throws IOException {
+        String inputfile;
+        String outputfile;
+
+        // preprocessing for counting occurrences of overlap
+        inputfile = input;
+        outputfile = output + ".tmp";
+        writeOverlapsTemp2(inputfile, outputfile);
+
+        // count occurrences of overlap
+        inputfile = outputfile;
+        outputfile = output;
+        WordCounter.readWordFile(inputfile, outputfile);
+    }
+
+    private static void writeOverlapsTemp2(String input, String output) throws IOException {
+        BufferedReader reader;
+        String inputLine;
+        String[] strArr;
+        String tmp1;
+        String tmp2;
+        StringJoiner joiner;
+        BufferedWriter writer;
+        int lineNumber;
+        int totalLineNumber;
+
+        if (App.checkFile(output)) return;
+
+        reader = new BufferedReader(new FileReader(new File(input)));
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+        lineNumber = 0;
+        totalLineNumber = 0;
+
+        System.out.println("Start reading: " + input);
+        while ((inputLine = reader.readLine()) != null) {
+            // check progress
+            if (lineNumber >= 500000) {
+                totalLineNumber += lineNumber;
+                lineNumber = 0;
+                System.out.print(totalLineNumber + ", ");
+            }
+            lineNumber++;
+
+            strArr = inputLine.split(" ");
+
+            // make overlaps data (combination)
+            joiner = new StringJoiner(" ");
+            for (int i = 1; i < strArr.length-1; i++) {
+                for (int j = i+1; j < strArr.length; j++) {
+                    tmp1 = strArr[i] + "/" + strArr[j];
+                    tmp2 = strArr[j] + "/" + strArr[i];
+                    joiner.add(tmp1);
+                    joiner.add(tmp2);
+                }
+            }
+            //white overlaps to file
+            writer.write(joiner.toString()); writer.newLine();
+        }
+        writer.close();
+        reader.close();
+        System.out.println("Done!");
+        System.out.println("File is created: " + output);
         System.out.println();
     }
 

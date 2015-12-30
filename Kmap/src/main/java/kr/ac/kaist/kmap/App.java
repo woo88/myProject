@@ -44,8 +44,8 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         vocabFile = "output/vocab.kmap";
-//        baseDir = "/home/woo88/dbpedia/";
-        baseDir = "/home/woo/dev/dbpedia/";
+        baseDir = "/home/woo88/dbpedia/";
+//        baseDir = "/home/woo/dev/dbpedia/";
         categoriesFileList.add("3.9/en/article_categories_en.nt");
         categoriesFileList.add("2014/en/article_categories_en.nt");
         categoriesFileList.add("2015-04/en/article-categories_en.nt");
@@ -94,7 +94,7 @@ public class App {
         fileList.add("output/2015-04/instance-types_en.nt");
         fileList.add("output/2015-04/redirects_en.nt");
         fileList.add("output/2015-04/infobox-properties_en.nt");
-        Nodes.generateNodes(fileList);
+//        Nodes.generateNodes(fileList);
 
         // generate edges
         fileList = new ArrayList<>();
