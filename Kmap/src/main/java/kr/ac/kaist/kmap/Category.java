@@ -237,19 +237,23 @@ public class Category {
 
     public static void writeOverlapsData(String input, String output) {
         TreeMap<String, Integer> overlapsData;
+        Integer lastFileNumber;
 
         // preprocessing for counting occurrences of overlap
-        writeOverlapsTemp(input, output + ".tmp");
+        lastFileNumber = new Integer(0);
+        writeOverlapsTemp(input, output + ".tmp", lastFileNumber);
 
-        // count occurrences of overlap
-        overlapsData = new TreeMap<>();
-        WordCounter.readWordFile(overlapsData, output + ".tmp");
+        for (int i = 0; i <= lastFileNumber; i++) {
+            // count occurrences of overlap
+            overlapsData = new TreeMap<>();
+            WordCounter.readWordFile(overlapsData, output + ".tmp" + i);
 
-        // write overlaps data into file
-        WordCounter.writeAllCounts(overlapsData, output);
+            // write overlaps data into file
+            WordCounter.writeAllCounts(overlapsData, output);
+        }
     }
 
-    private static void writeOverlapsTemp(String input, String output) {
+    private static void writeOverlapsTemp(String input, String output, Integer tmpFileNumber) {
         BufferedReader reader;
         String inputLine;
         String[] strArr;
@@ -261,7 +265,7 @@ public class Category {
         int totalLineNumber;
         int tokenNumber;
         int limitTokenNumber;
-        int tmpFileNumber;
+//        int tmpFileNumber;
 
         tmpFileNumber = 0;
 
@@ -300,6 +304,7 @@ public class Category {
                 if (tokenNumber > limitTokenNumber) {
                     tokenNumber = 0;
                     writer.close();
+                    System.out.println("File is created: " + output + tmpFileNumber);
                     tmpFileNumber++;
                     writer = new BufferedWriter(new FileWriter(new File(output + tmpFileNumber)));
                 }
@@ -333,6 +338,8 @@ public class Category {
             return;
         }
 
+        System.out.println("File is created: " + output + tmpFileNumber);
+
         try {
             reader.close();
         } catch (IOException e) {
@@ -340,7 +347,7 @@ public class Category {
             return;
         }
 
-        System.out.println("Done");
+        System.out.println("Done! last temp file number: " + tmpFileNumber);
         System.out.println();
     }
 
