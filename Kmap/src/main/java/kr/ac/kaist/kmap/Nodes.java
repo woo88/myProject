@@ -50,7 +50,7 @@ public class Nodes {
         try {
             writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
             writer.write("#node_name " +
-                    "timeslot/node_size/#instances/#instancesHavingType/#instancesRedirected/infoboxLength/interLangLength");
+                    "timeslot/node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
             writer.newLine();
         } catch (IOException e) {
             System.err.println(e);
