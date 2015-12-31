@@ -51,8 +51,8 @@ public class Nodes {
         System.out.println("Start writing: " + App.nodesFile);
         try {
             writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
-            writer.write("#node_name " +
-                    "timeslot/node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
+            writer.write("#node_id " +
+                    "node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
             writer.newLine();
         } catch (IOException e) {
             System.err.println(e);
@@ -64,13 +64,13 @@ public class Nodes {
             String[] strArr = data.split(" ");
 
             score39 = Integer.parseInt(strArr[0]) + Integer.parseInt(strArr[1]) + Integer.parseInt(strArr[2]);
-            data39 = "3.9/" + score39 + "/" + strArr[0] + "/" + strArr[1] + "/" + strArr[2];
+            data39 = score39 + "/" + strArr[0] + "/" + strArr[1] + "/" + strArr[2];
 
             score2014 = Integer.parseInt(strArr[3]) + Integer.parseInt(strArr[4]) + Integer.parseInt(strArr[5]);
-            data2014 = "2014/" + score2014 + "/" + strArr[3] + "/" + strArr[4] + "/" + strArr[5];
+            data2014 = score2014 + "/" + strArr[3] + "/" + strArr[4] + "/" + strArr[5];
 
             score2015 = Integer.parseInt(strArr[6]) + Integer.parseInt(strArr[7]) + Integer.parseInt(strArr[8]);
-            data2015 = "2015-04/" + score2015 + "/" + strArr[6] + "/" + strArr[7] + "/" + strArr[8];
+            data2015 = score2015 + "/" + strArr[6] + "/" + strArr[7] + "/" + strArr[8];
 
             if ((score39 + score2014 + score2015) == 0) continue;
 
