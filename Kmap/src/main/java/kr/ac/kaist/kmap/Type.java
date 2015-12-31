@@ -52,32 +52,30 @@ public class Type {
     }
 
     public static void convertInsToCat(String baseDir, ArrayList<String> typesFileList) throws IOException {
+        BufferedWriter writer;
+        Map<String, String> insToCat;
+
         for(String fileName : typesFileList) {
             String[] strArr = fileName.split("/");
             String output = "output/" + strArr[0] + "/" + strArr[2];
 
             if(App.checkFile(output)) continue;
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(output)));
+            writer = new BufferedWriter(new FileWriter(new File(output)));
 
             // get Map of instance to categories
-            Map<String, String> insToCat = Category.getInsToCat(strArr[0], ".aa");
+            insToCat = Category.getInsToCat(strArr[0]);
             // convert
-            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
-
-            // get Map of instance to categories
+            convertInsToCatInner(baseDir, fileName, writer, insToCat);
             insToCat = null;
-            insToCat = Category.getInsToCat(strArr[0], ".ab");
-            // convert
-            writer = convertInsToCatInner(baseDir, fileName, writer, insToCat);
 
+            writer.close();
             System.out.println("File is created: " + output);
             System.out.println();
-            writer.close();
         }
     }
 
-    private static BufferedWriter convertInsToCatInner(String baseDir, String fileName,
+    private static void convertInsToCatInner(String baseDir, String fileName,
                                                        BufferedWriter writer,
                                                        Map<String, String> insToCat) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(baseDir + fileName)));
@@ -113,8 +111,7 @@ public class Type {
                 }
             }
         }
-        System.out.println("Done");
         reader.close();
-        return writer;
+        System.out.println("Done");
     }
 }

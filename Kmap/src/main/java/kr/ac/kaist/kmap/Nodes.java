@@ -10,25 +10,30 @@ public class Nodes {
     private HashMap<String, String> node_id;
 
     public static void generateNodes(ArrayList<String> fileList) throws IOException {
+        String input;
+        String output;
+        TreeMap<String, Integer> frequencyData;
+        TreeMap<String, String> nodeData;
+
         // count numbers for each file
         for (String fileName : fileList) {
-            String output = fileName + ".occ";
+            output = fileName + ".occ";
 
             if(App.checkFile(output)) continue;
 
-            TreeMap<String, Integer> frequencyData = new TreeMap<String, Integer>( );
+            frequencyData = new TreeMap<>();
             WordCounter.readWordFile(frequencyData, fileName);
             WordCounter.writeAllCounts(frequencyData, output);
         }
 
         if (App.checkFile(App.nodesFile)) return;
 
-        TreeMap<String, String> nodeData = new TreeMap<>();
+        nodeData = new TreeMap<>();
         readVocabFile(nodeData);
 
         // add data for each data
         for (String tmp : fileList) {
-            String input = tmp + ".occ";
+            input = tmp + ".occ";
 
             readDataFile(nodeData, input);
         }
@@ -39,8 +44,10 @@ public class Nodes {
 //        System.out.println("nodeData.get(!!!_albums) test: " + nodeData.get("!!!_albums"));
     }
 
-    private static void writeNodes(TreeMap<String, String> nodeData) {
+    private static void writeNodes(TreeMap<String, String> nodeData) throws IOException {
         BufferedWriter writer;
+        String data;
+        String[] strArr;
         String data39;
         int score39 = 0;
         String data2014;
@@ -48,20 +55,16 @@ public class Nodes {
         String data2015;
         int score2015 = 0;
 
+        writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
+
         System.out.println("Start writing: " + App.nodesFile);
-        try {
-            writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
-            writer.write("#node_id " +
-                    "node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println(e);
-            return;
-        }
-        for(String node : nodeData.keySet( ))
-        {
-            String data = nodeData.get(node);
-            String[] strArr = data.split(" ");
+        writer.write("#node_id " +
+                "node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
+        writer.newLine();
+
+        for(String node : nodeData.keySet()) {
+            data = nodeData.get(node);
+            strArr = data.split(" ");
 
             score39 = Integer.parseInt(strArr[0]) + Integer.parseInt(strArr[1]) + Integer.parseInt(strArr[2]);
             data39 = score39 + "/" + strArr[0] + "/" + strArr[1] + "/" + strArr[2];
@@ -74,54 +77,28 @@ public class Nodes {
 
             if ((score39 + score2014 + score2015) == 0) continue;
 
-            try {
-                writer.write(node + " " + data39 + " " + data2014 + " " + data2015);
-                writer.newLine();
-            } catch (IOException e) {
-                System.err.println(e);
-                return;
-            }
+            writer.write(node + " " + data39 + " " + data2014 + " " + data2015);
+            writer.newLine();
         }
-
-        try {
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writer.close();
         System.out.println("Done");
         System.out.println();
     }
 
-    private static void readDataFile(TreeMap<String, String> nodeData, String input) {
+    private static void readDataFile(TreeMap<String, String> nodeData, String input) throws IOException {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
 
+        reader = new BufferedReader(new FileReader(new File(input)));
+
         System.out.println("Start reading: " + input);
-        try {
-            reader = new BufferedReader(new FileReader(new File(input)));
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-            return;
-        }
+        while ((inputLine = reader.readLine()) != null) {
+            String[] strArr = inputLine.split(" ");
 
-        try {
-            while ((inputLine = reader.readLine()) != null) {
-                String[] strArr = inputLine.split(" ");
-
-                varData.put(strArr[0], strArr[1]);
-            }
-        } catch (IOException e) {
-            System.err.println(e);
-            return;
+            varData.put(strArr[0], strArr[1]);
         }
-
-        try {
-            reader.close();
-        } catch (IOException e) {
-            System.err.println(e);
-            return;
-        }
+        reader.close();
         System.out.println("Done! size: " + varData.size());
 
         System.out.println("Start adding data");
@@ -139,21 +116,16 @@ public class Nodes {
         System.out.println();
     }
 
-    private static void readVocabFile(TreeMap<String, String> nodeData) {
+    private static void readVocabFile(TreeMap<String, String> nodeData) throws FileNotFoundException {
         Scanner vocabFile;
         String vocab;
 //        ArrayList data = new ArrayList();
         String data = "";
 //        data.add("3.9");
 
-        System.out.println("Start reading: " + App.vocabFile);
-        try {
-            vocabFile = new Scanner(new FileReader(App.vocabFile));
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-            return;
-        }
+        vocabFile = new Scanner(new FileReader(App.vocabFile));
 
+        System.out.println("Start reading: " + App.vocabFile);
         while (vocabFile.hasNext()) {
             vocab = vocabFile.next();
 
