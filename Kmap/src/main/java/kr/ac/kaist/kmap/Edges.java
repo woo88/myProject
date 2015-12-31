@@ -298,6 +298,7 @@ public class Edges {
         String[] strArr;
         TreeMap<String, String> edgeData;
         Map<String, String> insToCat;
+        String[] inputfileArr;
 
         System.out.println("-------------------------------");
 
@@ -363,6 +364,24 @@ public class Edges {
 
 //        edgeData = new TreeMap<>();
         // add data for each data
+        inputfileArr = new String[]{
+                "output/3.9/article_categories_en.nt.overlaps.occ",
+                "output/3.9/page_links_en.nt.occ",
+                "output/2014/article_categories_en.nt.overlaps.occ",
+                "output/2014/page_links_en.nt.occ",
+                "output/2015-04/article-categories_en.nt.overlaps.occ",
+                "output/2015-04/page-links_en.nt.occ"
+        };
+        output = "output/edges.kmap";
+        for (String inputfile : inputfileArr) {
+            writeEdges(inputfile, output);
+        }
+    }
+
+    private static void writeEdges(String inputfile, String output) {
+        Scanner edgesFile;
+        BufferedWriter writer;
+        String inputLine;
     }
 
     private static void writePagelinksTemp(String input, Map<String, String> insToCat, String output, int step) {
