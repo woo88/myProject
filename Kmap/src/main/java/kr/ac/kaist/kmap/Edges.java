@@ -332,23 +332,28 @@ public class Edges {
             insToCat = Category.getInsToCat(strArr[0]);
             writePagelinksTemp(input, insToCat, output, 1);
             insToCat = null;
+            App.fileDelete(input);
 
             // word count
             input = output;
             output = output + fileSuffix + ".tmp";
             WordCounter.readWordFile(input, output);
+            App.fileDelete(input);
 
             // external sort
             input = output;
             output = output + ".sorted";
             if (!App.checkFile(output)) {
                 App.fileSort(input, output, new File("output/tmp/"));
+                App.fileDelete(input);
             }
+
 
             // reduce
             input = output;
             output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
             fileReduce(input, output);
+            App.fileDelete(input);
         }
 
 //        edgeData = new TreeMap<>();
@@ -483,6 +488,7 @@ public class Edges {
                 count = Integer.parseInt(strArr[1]);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println(inputLine);
+                System.exit(1);
             }
 
             if (Objects.equals(word, prevWord)) {
