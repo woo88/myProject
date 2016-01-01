@@ -452,7 +452,7 @@ public class Edges {
         int count;
         int totalCnt;
         int lineNumber;
-        int totalLineNumber;
+        double totalLineNumber;
         boolean notFirstLine;
 
         if (App.checkFile(outputfile)) return;
@@ -478,7 +478,12 @@ public class Edges {
 
             strArr = inputLine.split(" ");
             word = strArr[0];
-            count = Integer.parseInt(strArr[1]);
+
+            try {
+                count = Integer.parseInt(strArr[1]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println(inputLine);
+            }
 
             if (Objects.equals(word, prevWord)) {
                 totalCnt += count;
