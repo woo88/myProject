@@ -132,7 +132,7 @@ public class WordCounter {
         TreeMap<String, Integer> frequencyData;
         BufferedWriter writer;
         int lineNumber;
-        int totalLineNumber;
+        double totalLineNumber;
         int tokenNumber;
         int limitTokenNumber;
 
@@ -148,7 +148,7 @@ public class WordCounter {
         System.out.println("Start reading: " + fileName);
         while (wordFile.hasNext()) {
             // check progress
-            if (lineNumber >= 500000) {
+            if (lineNumber >= 1000000) {
                 totalLineNumber += lineNumber;
                 lineNumber = 0;
                 System.out.print(totalLineNumber + ", ");

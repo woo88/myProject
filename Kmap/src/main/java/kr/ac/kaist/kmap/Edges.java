@@ -384,7 +384,7 @@ public class Edges {
         String inputLine;
         String[] strArr;
         int lineNumber;
-        int totalLineNumber;
+        double totalLineNumber;
         String sourceIns;
         String targetIns;
         String[] sourceArr;
@@ -400,7 +400,7 @@ public class Edges {
         System.out.println("Start reading: " + input);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 500000) {
+            if (lineNumber >= 1000000) {
                 totalLineNumber += lineNumber;
                 lineNumber = 0;
                 System.out.print(totalLineNumber + ", ");
@@ -474,7 +474,7 @@ public class Edges {
         System.out.println("Start reading: " + inputfile);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 500000) {
+            if (lineNumber >= 1000000) {
                 totalLineNumber += lineNumber;
                 lineNumber = 0;
                 System.out.print(totalLineNumber + ", ");

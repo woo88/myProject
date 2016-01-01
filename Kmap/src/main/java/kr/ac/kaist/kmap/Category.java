@@ -207,6 +207,8 @@ public class Category {
     public static Map<String, String> getInsToCat(String timeslot) throws IOException {
         BufferedReader reader = null;
         String input = null;
+        int lineNumber;
+        double totalLineNumber;
 
         for (String catFile : App.categoriesFileList) {
             String[] strArr = catFile.split("/");
@@ -220,23 +222,23 @@ public class Category {
         }
 
         String inputLine = null;
-        int lineNumber = 0;
-        int totalLineNumber = 0;
+        lineNumber = 0;
+        totalLineNumber = 0;
         reader = new BufferedReader(new FileReader(new File(input)));
         Map<String, String> map = new HashMap<>();
         System.out.println("Start loading: " + input);
         while ((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ", 2);
-
-            map.put(strArr[0], strArr[1]);
-
             // check progress
-            if (lineNumber >= 500000) {
+            if (lineNumber >= 1000000) {
                 totalLineNumber += lineNumber;
                 lineNumber = 0;
                 System.out.print(totalLineNumber + ", ");
             }
             lineNumber++;
+
+            String[] strArr = inputLine.split(" ", 2);
+
+            map.put(strArr[0], strArr[1]);
         }
         reader.close();
         System.out.println("Done");
@@ -386,7 +388,7 @@ public class Category {
         StringJoiner joiner;
         BufferedWriter writer;
         int lineNumber;
-        int totalLineNumber;
+        double totalLineNumber;
 
         if (App.checkFile(output)) return;
 
@@ -398,7 +400,7 @@ public class Category {
         System.out.println("Start reading: " + input);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 500000) {
+            if (lineNumber >= 1000000) {
                 totalLineNumber += lineNumber;
                 lineNumber = 0;
                 System.out.print(totalLineNumber + ", ");
