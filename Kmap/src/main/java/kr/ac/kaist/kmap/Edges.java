@@ -433,6 +433,7 @@ public class Edges {
                 try {
                     targetArr = insToCat.get(strArr[1]).split(" ");
                     for (String targetCat : targetArr) {
+                        if (Objects.equals(strArr[0], targetCat)) continue;
                         writer.write(strArr[0] + "/" + targetCat); writer.newLine();
                     }
                 } catch (NullPointerException e) {

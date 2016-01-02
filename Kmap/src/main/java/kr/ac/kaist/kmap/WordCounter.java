@@ -75,6 +75,10 @@ public class WordCounter {
     public static void writeAllCounts(TreeMap<String, Integer> frequencyData,
                                       BufferedWriter writer) throws IOException {
         for (String word : frequencyData.keySet()) {
+            if (frequencyData.get(word) == null) {
+                System.out.println("[null]");
+                System.exit(1);
+            }
             writer.write(word + " " + frequencyData.get(word)); writer.newLine();
         }
     }
@@ -159,6 +163,7 @@ public class WordCounter {
             if (tokenNumber > limitTokenNumber) {
                 tokenNumber = 0;
                 writeAllCounts(frequencyData, writer);
+                frequencyData = null;
                 frequencyData = new TreeMap<>();
             }
 
