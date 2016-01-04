@@ -229,12 +229,12 @@ public class Category {
         System.out.println("Start loading: " + input);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 1000000) {
-                totalLineNumber += lineNumber;
-                lineNumber = 0;
-                System.out.print(totalLineNumber + ", ");
-            }
-            lineNumber++;
+//            if (lineNumber >= 1000000) {
+//                totalLineNumber += lineNumber;
+//                lineNumber = 0;
+//                System.out.print(totalLineNumber + ", ");
+//            }
+//            lineNumber++;
 
             String[] strArr = inputLine.split(" ", 2);
 

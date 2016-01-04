@@ -400,12 +400,12 @@ public class Edges {
         System.out.println("Start reading: " + input);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 1000000) {
-                totalLineNumber += lineNumber;
-                lineNumber = 0;
-                System.out.print(totalLineNumber + ", ");
-            }
-            lineNumber++;
+//            if (lineNumber >= 1000000) {
+//                totalLineNumber += lineNumber;
+//                lineNumber = 0;
+//                System.out.print(totalLineNumber + ", ");
+//            }
+//            lineNumber++;
 
             if (step == 0) { // step 0 for source
                 // Ignore comment lines.
@@ -475,12 +475,12 @@ public class Edges {
         System.out.println("Start reading: " + inputfile);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
-            if (lineNumber >= 1000000) {
-                totalLineNumber += lineNumber;
-                lineNumber = 0;
-                System.out.print(totalLineNumber + ", ");
-            }
-            lineNumber++;
+//            if (lineNumber >= 1000000) {
+//                totalLineNumber += lineNumber;
+//                lineNumber = 0;
+//                System.out.print(totalLineNumber + ", ");
+//            }
+//            lineNumber++;
 
             strArr = inputLine.split(" ");
             word = strArr[0];
@@ -488,8 +488,9 @@ public class Edges {
             try {
                 count = Integer.parseInt(strArr[1]);
             } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println(e);
                 System.out.println(inputLine);
-                System.exit(1);
+//                System.exit(1);
             }
 
             if (Objects.equals(word, prevWord)) {

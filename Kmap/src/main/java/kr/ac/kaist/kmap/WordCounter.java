@@ -1,6 +1,7 @@
 package kr.ac.kaist.kmap;
 
 import java.io.*;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -75,7 +76,7 @@ public class WordCounter {
     public static void writeAllCounts(TreeMap<String, Integer> frequencyData,
                                       BufferedWriter writer) throws IOException {
         for (String word : frequencyData.keySet()) {
-            if (frequencyData.get(word) == null) {
+            if (Objects.equals(frequencyData.get(word), null)) {
                 System.out.println("[null]");
                 System.exit(1);
             }
@@ -148,16 +149,16 @@ public class WordCounter {
         lineNumber = 0;
         totalLineNumber = 0;
         tokenNumber = 0;
-        limitTokenNumber = 5000000;
+        limitTokenNumber = 2500000;
         System.out.println("Start reading: " + fileName);
         while (wordFile.hasNext()) {
             // check progress
-            if (lineNumber >= 1000000) {
-                totalLineNumber += lineNumber;
-                lineNumber = 0;
-                System.out.print(totalLineNumber + ", ");
-            }
-            lineNumber++;
+//            if (lineNumber >= 1000000) {
+//                totalLineNumber += lineNumber;
+//                lineNumber = 0;
+//                System.out.print(totalLineNumber + ", ");
+//            }
+//            lineNumber++;
 
             // check token number (file size)
             if (tokenNumber > limitTokenNumber) {
