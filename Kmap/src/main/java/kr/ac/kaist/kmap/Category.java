@@ -200,8 +200,32 @@ public class Category {
         System.out.println();
     }
 
-    public static void convertInsToCat(ArrayList<String> categoriesFileList) {
+    public static void convertInsToCat(String baseDir, ArrayList<String> categoriesFileList) throws IOException {
+        String[] strArr;
+        String output;
+        BufferedReader reader;
+        BufferedWriter writer;
+        String inputLine;
 
+        for (String inputfile : categoriesFileList) {
+            strArr = inputfile.split("/");
+            output = "output/" + strArr[0] + "/" + strArr[2] + "2";
+
+            if(App.checkFile(output)) continue;
+
+            reader = new BufferedReader(new FileReader(new File(baseDir + inputfile)));
+            writer = new BufferedWriter(new FileWriter(new File(output)));
+
+            System.out.println("Start reading: " + inputfile);
+            while ((inputLine = reader.readLine()) != null) {
+                strArr = inputLine.split(" ", 2);
+                writer.write(strArr[1]); writer.newLine();
+            }
+            writer.close();
+            reader.close();
+            System.out.println("File is created: " + output);
+            System.out.println();
+        }
     }
 
     public static Map<String, String> getInsToCat(String timeslot) throws IOException {
