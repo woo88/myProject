@@ -91,15 +91,15 @@ public class App {
 
         // generate nodes
         fileList = new ArrayList<>();
-        fileList.add("output/3.9/article_categories_en.nt2");
+        fileList.add("output/3.9/article_categories_en.nt.nodes");
         fileList.add("output/3.9/instance_types_en.nt");
         fileList.add("output/3.9/redirects_en.nt");
         fileList.add("output/3.9/raw_infobox_properties_en.nt");
-        fileList.add("output/2014/article_categories_en.nt2");
+        fileList.add("output/2014/article_categories_en.nt.nodes");
         fileList.add("output/2014/instance_types_en.nt");
         fileList.add("output/2014/redirects_en.nt");
         fileList.add("output/2014/infobox_properties_en.nt");
-        fileList.add("output/2015-04/article-categories_en.nt2");
+        fileList.add("output/2015-04/article-categories_en.nt.nodes");
         fileList.add("output/2015-04/instance-types_en.nt");
         fileList.add("output/2015-04/redirects_en.nt");
         fileList.add("output/2015-04/infobox-properties_en.nt");

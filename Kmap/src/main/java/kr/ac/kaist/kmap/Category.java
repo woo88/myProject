@@ -208,7 +208,7 @@ public class Category {
         String inputLine;
 
         for (String inputfile : categoriesFileList) {
-            output = inputfile + "2";
+            output = inputfile + ".nodes";
 
             if(App.checkFile(output)) continue;
 
