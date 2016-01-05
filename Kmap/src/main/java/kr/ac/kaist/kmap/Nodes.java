@@ -112,7 +112,7 @@ public class Nodes {
 
             nodeData.put(node, data.trim());
         }
-        System.out.println("Done!");
+        System.out.println("Done! Treemap size: " + nodeData.size());
         System.out.println();
     }
 
