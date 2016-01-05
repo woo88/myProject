@@ -54,6 +54,7 @@ public class Nodes {
         int score2014 = 0;
         String data2015;
         int score2015 = 0;
+        int emptyNodeNumber;
 
         writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
 
@@ -63,6 +64,7 @@ public class Nodes {
                 "node_size/#instances/#instancesHavingType/#instancesRedirected/infoboxLength");
         writer.newLine();
 
+        emptyNodeNumber = 0;
         for(String node : nodeData.keySet()) {
             data = nodeData.get(node);
             strArr = data.split(" ");
@@ -82,13 +84,17 @@ public class Nodes {
             data2015 = score2015 + "/" + strArr[8] + "/" + strArr[9]
                     + "/" + strArr[10] + "/" + strArr[11];
 
-            if ((score39 == 0) && (score2014 == 0) && (score2015 == 0)) continue;
+            if ((score39 == 0) && (score2014 == 0) && (score2015 == 0)) {
+                emptyNodeNumber++;
+                continue;
+            }
 
             writer.write(node + " " + data39 + " " + data2014 + " " + data2015);
             writer.newLine();
         }
         writer.close();
         System.out.println("Done");
+        System.out.println("Number of empty nodes: " + emptyNodeNumber);
         System.out.println();
     }
 
