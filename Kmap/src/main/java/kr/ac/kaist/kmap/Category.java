@@ -200,7 +200,7 @@ public class Category {
         System.out.println();
     }
 
-    public static void convertInsToCat(String baseDir, ArrayList<String> categoriesFileList) throws IOException {
+    public static void convertInsToCat(ArrayList<String> categoriesFileList) throws IOException {
         String[] strArr;
         String output;
         BufferedReader reader;
@@ -208,12 +208,11 @@ public class Category {
         String inputLine;
 
         for (String inputfile : categoriesFileList) {
-            strArr = inputfile.split("/");
-            output = "output/" + strArr[0] + "/" + strArr[2] + "2";
+            output = inputfile + "2";
 
             if(App.checkFile(output)) continue;
 
-            reader = new BufferedReader(new FileReader(new File(baseDir + inputfile)));
+            reader = new BufferedReader(new FileReader(new File(inputfile)));
             writer = new BufferedWriter(new FileWriter(new File(output)));
 
             System.out.println("Start reading: " + inputfile);

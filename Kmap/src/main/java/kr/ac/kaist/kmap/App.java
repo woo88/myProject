@@ -43,6 +43,8 @@ public class App {
 //    private static HashMap resultMap = new HashMap();
 
     public static void main(String[] args) throws IOException {
+        ArrayList<String> fileList;
+
         vocabFile = "output/vocab.kmap";
 //        baseDir = "/home/woo88/dbpedia/";
         baseDir = "/home/woo/dev/dbpedia/";
@@ -78,13 +80,17 @@ public class App {
 
         // preprocessing
         Category.writeInsToCat(baseDir, categoriesFileList);
-        Category.convertInsToCat(baseDir, categoriesFileList);
+        fileList = new ArrayList<>();
+        fileList.add("output/3.9/article_categories_en.nt");
+        fileList.add("output/2014/article_categories_en.nt");
+        fileList.add("output/2015-04/article-categories_en.nt");
+        Category.convertInsToCat(fileList);
         Type.convertInsToCat(baseDir, typesFileList);
         Redirect.convertInsToCat(baseDir, redirectsFileList);
         Infobox.convertInsToCat(baseDir, infoboxFileList);
 
         // generate nodes
-        ArrayList<String> fileList = new ArrayList<>();
+        fileList = new ArrayList<>();
         fileList.add("output/3.9/article_categories_en.nt2");
         fileList.add("output/3.9/instance_types_en.nt");
         fileList.add("output/3.9/redirects_en.nt");
