@@ -58,22 +58,29 @@ public class Nodes {
         writer = new BufferedWriter(new FileWriter(new File(App.nodesFile)));
 
         System.out.println("Start writing: " + App.nodesFile);
+        System.out.println("Treemap size: " + nodeData.keySet().size());
         writer.write("#node_id " +
-                "node_size/#instancesHavingType/#instancesRedirected/infoboxLength");
+                "node_size/#instances/#instancesHavingType/#instancesRedirected/infoboxLength");
         writer.newLine();
 
         for(String node : nodeData.keySet()) {
             data = nodeData.get(node);
             strArr = data.split(" ");
 
-            score39 = Integer.parseInt(strArr[0]) + Integer.parseInt(strArr[1]) + Integer.parseInt(strArr[2]);
-            data39 = score39 + "/" + strArr[0] + "/" + strArr[1] + "/" + strArr[2];
+            score39 = Integer.parseInt(strArr[0]) + Integer.parseInt(strArr[1])
+                    + Integer.parseInt(strArr[2]) + Integer.parseInt(strArr[3]);
+            data39 = score39 + "/" + strArr[0] + "/" + strArr[1]
+                    + "/" + strArr[2] + "/" + strArr[3];
 
-            score2014 = Integer.parseInt(strArr[3]) + Integer.parseInt(strArr[4]) + Integer.parseInt(strArr[5]);
-            data2014 = score2014 + "/" + strArr[3] + "/" + strArr[4] + "/" + strArr[5];
+            score2014 = Integer.parseInt(strArr[4]) + Integer.parseInt(strArr[5])
+                    + Integer.parseInt(strArr[6]) + Integer.parseInt(strArr[7]);
+            data2014 = score2014 + "/" + strArr[4] + "/" + strArr[5]
+                    + "/" + strArr[6] + "/" + strArr[7];
 
-            score2015 = Integer.parseInt(strArr[6]) + Integer.parseInt(strArr[7]) + Integer.parseInt(strArr[8]);
-            data2015 = score2015 + "/" + strArr[6] + "/" + strArr[7] + "/" + strArr[8];
+            score2015 = Integer.parseInt(strArr[8]) + Integer.parseInt(strArr[9])
+                    + Integer.parseInt(strArr[10]) + Integer.parseInt(strArr[11]);
+            data2015 = score2015 + "/" + strArr[8] + "/" + strArr[9]
+                    + "/" + strArr[10] + "/" + strArr[11];
 
             if ((score39 == 0) && (score2014 == 0) && (score2015 == 0)) continue;
 
