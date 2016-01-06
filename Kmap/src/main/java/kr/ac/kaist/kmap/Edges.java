@@ -394,8 +394,8 @@ public class Edges {
         System.out.println("Start reading: " + input);
 
         while (pagelinksFile.hasNext()) {
-            writer.write(pagelinksFile.next() + " 0/0 0/0 0/0"); writer.newLine();
-            pagelinksFile.next();
+            writer.write(pagelinksFile.next() + " 0/0 0/0 0/" + pagelinksFile.next());
+            writer.newLine();
         }
         writer.close();
         System.out.println("File is created: " + output);
