@@ -139,18 +139,20 @@ public class Nodes {
 
     private static void readVocabFile(TreeMap<String, String> nodeData) throws FileNotFoundException {
         Scanner vocabFile;
-        String vocab;
+        int i;
 //        ArrayList data = new ArrayList();
         String data = "";
 //        data.add("3.9");
 
         vocabFile = new Scanner(new FileReader(App.vocabFile));
+        i = 0;
 
         System.out.println("Start reading: " + App.vocabFile);
         while (vocabFile.hasNext()) {
-            vocab = vocabFile.next();
+            vocabFile.next();
 
-            nodeData.put(vocab, data);
+            nodeData.put(Integer.toString(i), data);
+            i++;
         }
         System.out.println("Done! size: " + nodeData.size());
         System.out.println();
