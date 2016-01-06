@@ -296,7 +296,6 @@ public class Edges {
         String input;
         String output;
         String[] strArr;
-        TreeMap<String, String> edgeData;
         Map<String, String> insToCat;
         String[] inputfileArr;
 
@@ -356,7 +355,11 @@ public class Edges {
             App.fileDelete(input);
         }
 
-//        edgeData = new TreeMap<>();
+        // initialize edges.kmap
+        input = "output/2015-04/page-links_en.nt.occ";
+        output = "output/edges.kmap.tmp";
+        initEdges(input, output);
+
         // add data for each data
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps.occ",
@@ -376,6 +379,27 @@ public class Edges {
         Scanner edgesFile;
         BufferedWriter writer;
         String inputLine;
+    }
+
+    private static void initEdges(String input, String output) throws IOException {
+        Scanner pagelinksFile;
+        BufferedWriter writer;
+
+        if (App.checkFile(output)) return;
+
+        pagelinksFile = new Scanner(new FileReader(input));
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+
+        System.out.println("Initialize edges.kmap");
+        System.out.println("Start reading: " + input);
+
+        while (pagelinksFile.hasNext()) {
+            writer.write(pagelinksFile.next() + " 0/0 0/0 0/0"); writer.newLine();
+            pagelinksFile.next();
+        }
+        writer.close();
+        System.out.println("File is created: " + output);
+        System.out.println();
     }
 
     private static void writePagelinksTemp(String input, Map<String, String> insToCat, String output, int step) throws IOException {
