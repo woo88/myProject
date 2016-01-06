@@ -88,7 +88,7 @@ public class Nodes {
 
             if ((score39 == 0) && (score2014 == 0) && (score2015 == 0)) {
                 if (lineNumber < 10) {
-                    System.out.println("[empty node] " + data);
+                    System.out.println("[empty node] " + node + " : " + data);
                 }
                 lineNumber++;
 
@@ -109,12 +109,13 @@ public class Nodes {
         BufferedReader reader;
         String inputLine;
         TreeMap<String, String> varData = new TreeMap<>();
+        String data;
 
         reader = new BufferedReader(new FileReader(new File(input)));
 
         System.out.println("Start reading: " + input);
         while ((inputLine = reader.readLine()) != null) {
-            String[] strArr = inputLine.split(" ");
+            String[] strArr = inputLine.split("\\s+");
 
             varData.put(strArr[0], strArr[1]);
         }
@@ -123,7 +124,7 @@ public class Nodes {
 
         System.out.println("Start adding data");
         for (String node : nodeData.keySet()) {
-            String data = nodeData.get(node);
+            data = nodeData.get(node);
             if (varData.containsKey(node)) {
                 data = data + " " + varData.get(node);
             } else {
