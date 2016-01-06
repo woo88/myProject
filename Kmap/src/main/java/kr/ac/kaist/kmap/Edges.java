@@ -376,6 +376,10 @@ public class Edges {
             writeEdges(input, inputfile, output, (i/2)+1, i%2);
             i++;
         }
+
+        File file = new File("output/edges.kmap.tmp");
+        File file2 = new File("output/edges.kmap");
+        file.renameTo(file2);
     }
 
     private static void writeEdges(String input, String inputfile,
@@ -494,7 +498,7 @@ public class Edges {
         Scanner pagelinksFile;
         BufferedWriter writer;
 
-        if (App.checkFile(output)) return;
+        if (App.checkFile("output/edges.kmap")) return;
 
         pagelinksFile = new Scanner(new FileReader(input));
         writer = new BufferedWriter(new FileWriter(new File(output)));
