@@ -298,6 +298,7 @@ public class Edges {
         String[] strArr;
         Map<String, String> insToCat;
         String[] inputfileArr;
+        int i;
 
         System.out.println("-------------------------------");
 
@@ -347,7 +348,6 @@ public class Edges {
                 App.fileDelete(input);
             }
 
-
             // reduce
             input = output;
             output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
@@ -361,6 +361,7 @@ public class Edges {
         initEdges(input, output);
 
         // add data for each data
+        input = output;
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps.occ",
                 "output/3.9/page_links_en.nt.occ",
@@ -370,15 +371,123 @@ public class Edges {
                 "output/2015-04/page-links_en.nt.occ"
         };
         output = "output/edges.kmap";
+        i = 0;
         for (String inputfile : inputfileArr) {
-            writeEdges(inputfile, output);
+            writeEdges(input, inputfile, output, (i/2)+1, i%2);
+            i++;
         }
     }
 
-    private static void writeEdges(String inputfile, String output) {
-        Scanner edgesFile;
+    private static void writeEdges(String input, String inputfile,
+                                   String output, int i, int j) throws IOException {
+        Scanner occFile;
+        TreeMap<String, String> occData;
+        int lineNumber;
+        int limitNumber;
+
+        if (App.checkFile(output)) return;
+
+        occFile = new Scanner(new FileReader(inputfile));
+        occData = new TreeMap<>();
+        lineNumber = 0;
+        limitNumber = 2500000;
+
+        System.out.println("Start reading: " + inputfile);
+        while (occFile.hasNext()) {
+            if (lineNumber > limitNumber) {
+                replaceEdgeData(input, occData, output, i, j);
+
+                File file = new File(output);
+                File file2 = new File(input);
+                file2.delete();
+                file.renameTo(file2);
+
+                occData = null;
+                occData = new TreeMap<>();
+                lineNumber = 0;
+            }
+
+            occData.put(occFile.next(), occFile.next());
+            lineNumber++;
+        }
+        replaceEdgeData(input, occData, output, i, j);
+
+        File file = new File(output);
+        File file2 = new File(input);
+        file2.delete();
+        file.renameTo(file2);
+
+        System.out.println("Done");
+        System.out.println();
+    }
+
+    private static void replaceEdgeData(String input, TreeMap<String, String> occData,
+                                        String output, int i, int j) throws IOException {
+        BufferedReader reader;
         BufferedWriter writer;
         String inputLine;
+        String[] strArr;
+        String data;
+        String tmp;
+        StringJoiner sj;
+
+        reader = new BufferedReader(new FileReader(new File(input)));
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+
+        while ((inputLine = reader.readLine()) != null) {
+            strArr = inputLine.split(" ");
+            data = strArr[i].split("/")[j];
+
+            if (Objects.equals(data, "0")) {
+                if (occData.containsKey(strArr[0])) {
+                    data = occData.get(strArr[0]);
+                    occData.remove(strArr[0]);
+
+                    if (j == 0) {
+                        tmp = data + "/" + strArr[i].split("/")[1];
+                    } else {
+                        tmp = strArr[i].split("/")[0] + "/" + data;
+                    }
+
+                    sj = new StringJoiner(" ");
+                    for (int k = 0; k < strArr.length; k++) {
+                        if (k == i) {
+                            sj.add(tmp);
+                        } else {
+                            sj.add(strArr[k]);
+                        }
+                    }
+
+                    writer.write(sj.toString());
+                } else {
+                    writer.write(inputLine);
+                }
+            } else {
+                writer.write(inputLine);
+            }
+            writer.newLine();
+        }
+        reader.close();
+
+        for (String edge : occData.keySet()) {
+            if (j == 0) {
+                tmp = occData.get(edge) + "/0";
+            } else {
+                tmp = "0/" + occData.get(edge);
+            }
+
+            sj = new StringJoiner(" ");
+            sj.add(edge);
+            for (int k = 1; k < 4; k++) {
+                if (k == i) {
+                    sj.add(tmp);
+                } else {
+                    sj.add("0/0");
+                }
+            }
+            writer.write(sj.toString()); writer.newLine();
+        }
+        writer.close();
     }
 
     private static void initEdges(String input, String output) throws IOException {
