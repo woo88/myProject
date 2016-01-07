@@ -301,17 +301,42 @@ public class Edges {
         int i;
         BufferedWriter writer;
 
-        System.out.println("-------------------------------");
+        System.out.println();
+        System.out.println("---------------------------------------");
+        System.out.println("Start generating edges");
+        System.out.println("---------------------------------------");
 
+        System.out.println("Start calculating overlaps");
+        System.out.println("---------------------------------------");
         for (String catFile : fileList) {
             // set output file name
-            output = catFile + ".overlaps" + fileSuffix;
+            output = catFile + ".overlaps";
 
             if(App.checkFile(output)) continue;
 
-            Category.writeOverlapsData2(catFile, output);
+            // make combinations of overlaps
+            input = catFile;
+            output = output + ".tmp";
+            Category.writeOverlapsData2(input, output);
+
+            // count occurrences of overlap
+            input = output;
+            output = output + ".occ";
+            WordCounter.readWordFile(input, output);
+
+            // sort before merging the same edge
+            input = output;
+            output = output + ".sorted";
+
+            // reduce
+            input = output;
+            output = catFile + ".overlaps";
         }
 
+        System.out.println();
+        System.out.println("---------------------------------------");
+        System.out.println("Start calculating pagelinks");
+        System.out.println("---------------------------------------");
         for (String pagelinksFile : pagelinksFileList) {
             // set output file name
             strArr = pagelinksFile.split("/");
@@ -363,17 +388,17 @@ public class Edges {
                 "output/2015-04/article-categories_en.nt.overlaps.occ"
         };
         output = "output/edges.kmap.tmp";
-        if (!App.checkFile("output/edges.kmap")) {
-            writer = new BufferedWriter(new FileWriter(new File(output)));
-
-            System.out.println("Initialize edges.kmap.tmp");
-            for (String inputfile : inputfileArr) {
-                initEdges(inputfile, writer);
-            }
-            writer.close();
-            System.out.println("File is created: " + output);
-            System.out.println();
-        }
+//        if (!App.checkFile("output/edges.kmap")) {
+//            writer = new BufferedWriter(new FileWriter(new File(output)));
+//
+//            System.out.println("Initialize edges.kmap.tmp");
+//            for (String inputfile : inputfileArr) {
+//                initEdges(inputfile, writer);
+//            }
+//            writer.close();
+//            System.out.println("File is created: " + output);
+//            System.out.println();
+//        }
 
         // add data for each data
 //        input = output;

@@ -76,10 +76,10 @@ public class WordCounter {
     public static void writeAllCounts(TreeMap<String, Integer> frequencyData,
                                       BufferedWriter writer) throws IOException {
         for (String word : frequencyData.keySet()) {
-            if (Objects.equals(frequencyData.get(word), null)) {
-                System.out.println("[null]");
-                System.exit(1);
-            }
+//            if (Objects.equals(frequencyData.get(word), null)) {
+//                System.out.println("[null]");
+//                System.exit(1);
+//            }
             writer.write(word + " " + frequencyData.get(word)); writer.newLine();
         }
     }
@@ -150,7 +150,8 @@ public class WordCounter {
         totalLineNumber = 0;
         tokenNumber = 0;
         limitTokenNumber = 2500000;
-        System.out.println("Start reading: " + fileName);
+
+        System.out.println("Start counting words: " + fileName);
         while (wordFile.hasNext()) {
             // check progress
 //            if (lineNumber >= 1000000) {
@@ -178,6 +179,7 @@ public class WordCounter {
         }
         writeAllCounts(frequencyData, writer);
 
+        writer.close();
         System.out.println("Done");
         System.out.println();
     }

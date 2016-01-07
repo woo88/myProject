@@ -388,21 +388,6 @@ public class Category {
     }
 
     public static void writeOverlapsData2(String input, String output) throws IOException {
-        String inputfile;
-        String outputfile;
-
-        // preprocessing for counting occurrences of overlap
-        inputfile = input;
-        outputfile = output + ".tmp";
-        writeOverlapsTemp2(inputfile, outputfile);
-
-        // count occurrences of overlap
-        inputfile = outputfile;
-        outputfile = output;
-        WordCounter.readWordFile(inputfile, outputfile);
-    }
-
-    private static void writeOverlapsTemp2(String input, String output) throws IOException {
         BufferedReader reader;
         String inputLine;
         String[] strArr;
