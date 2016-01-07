@@ -363,13 +363,15 @@ public class Edges {
                 "output/2015-04/article-categories_en.nt.overlaps.occ"
         };
         output = "output/edges.kmap.tmp";
-        writer = new BufferedWriter(new FileWriter(new File(output)));
-        for (String inputfile : inputfileArr) {
-            initEdges(inputfile, writer);
+        if (!App.checkFile("output/edges.kmap")) {
+            writer = new BufferedWriter(new FileWriter(new File(output)));
+            for (String inputfile : inputfileArr) {
+                initEdges(inputfile, writer);
+            }
+            writer.close();
+            System.out.println("File is created: " + output);
+            System.out.println();
         }
-        writer.close();
-        System.out.println("File is created: " + output);
-        System.out.println();
 
         // add data for each data
 //        input = output;
