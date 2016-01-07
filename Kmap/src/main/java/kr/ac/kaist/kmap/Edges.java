@@ -508,17 +508,19 @@ public class Edges {
     }
 
     private static void initEdges(String input, BufferedWriter writer) throws IOException {
-        Scanner overlapsFile;
+        BufferedReader reader;
+        String inputLine;
+        String[] strArr;
 
-        overlapsFile = new Scanner(new FileReader(input));
+        reader = new BufferedReader(new FileReader(new File(input)));
 
         System.out.println("Initialize edges.kmap.tmp");
         System.out.println("Start reading: " + input);
 
-        while (overlapsFile.hasNext()) {
-            writer.write(overlapsFile.next());
-            writer.newLine();
-            overlapsFile.next();
+        while ((inputLine = reader.readLine()) != null) {
+            strArr = inputLine.split(" ", 2);
+
+            writer.write(strArr[0]); writer.newLine();
         }
     }
 
