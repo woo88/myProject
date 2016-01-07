@@ -581,7 +581,7 @@ public class Edges {
         writer.close();
         reader.close();
         System.out.println("Done");
-        System.out.println("File is created: " + output + step);
+        System.out.println("File is created: " + output);
         System.out.println();
     }
 
