@@ -299,6 +299,7 @@ public class Edges {
         Map<String, String> insToCat;
         String[] inputfileArr;
         int i;
+        BufferedWriter writer;
 
         System.out.println("-------------------------------");
 
@@ -356,30 +357,40 @@ public class Edges {
         }
 
         // initialize edges.kmap
-        input = "output/2015-04/page-links_en.nt.occ";
-        output = "output/edges.kmap.tmp";
-        initEdges(input, output);
-
-        // add data for each data
-        input = output;
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps.occ",
-                "output/3.9/page_links_en.nt.occ",
                 "output/2014/article_categories_en.nt.overlaps.occ",
-                "output/2014/page_links_en.nt.occ",
-                "output/2015-04/article-categories_en.nt.overlaps.occ",
-                "output/2015-04/page-links_en.nt.occ"
+                "output/2015-04/article-categories_en.nt.overlaps.occ"
         };
-        output = "output/edges.kmap";
-        i = 0;
+        output = "output/edges.kmap.tmp";
+        writer = new BufferedWriter(new FileWriter(new File(output)));
         for (String inputfile : inputfileArr) {
-            writeEdges(input, inputfile, output, (i/2)+1, i%2);
-            i++;
+            initEdges(inputfile, writer);
         }
+        writer.close();
+        System.out.println("File is created: " + output);
+        System.out.println();
 
-        File file = new File("output/edges.kmap.tmp");
-        File file2 = new File("output/edges.kmap");
-        file.renameTo(file2);
+        // add data for each data
+//        input = output;
+//        inputfileArr = new String[]{
+//                "output/3.9/article_categories_en.nt.overlaps.occ",
+//                "output/3.9/page_links_en.nt.occ",
+//                "output/2014/article_categories_en.nt.overlaps.occ",
+//                "output/2014/page_links_en.nt.occ",
+//                "output/2015-04/article-categories_en.nt.overlaps.occ",
+//                "output/2015-04/page-links_en.nt.occ"
+//        };
+//        output = "output/edges.kmap";
+//        i = 0;
+//        for (String inputfile : inputfileArr) {
+//            writeEdges(input, inputfile, output, (i/2)+1, i%2);
+//            i++;
+//        }
+//
+//        File file = new File("output/edges.kmap.tmp");
+//        File file2 = new File("output/edges.kmap");
+//        file.renameTo(file2);
     }
 
     private static void writeEdges(String input, String inputfile,
@@ -494,25 +505,19 @@ public class Edges {
         writer.close();
     }
 
-    private static void initEdges(String input, String output) throws IOException {
-        Scanner pagelinksFile;
-        BufferedWriter writer;
+    private static void initEdges(String input, BufferedWriter writer) throws IOException {
+        Scanner overlapsFile;
 
-        if (App.checkFile("output/edges.kmap")) return;
+        overlapsFile = new Scanner(new FileReader(input));
 
-        pagelinksFile = new Scanner(new FileReader(input));
-        writer = new BufferedWriter(new FileWriter(new File(output)));
-
-        System.out.println("Initialize edges.kmap");
+        System.out.println("Initialize edges.kmap.tmp");
         System.out.println("Start reading: " + input);
 
-        while (pagelinksFile.hasNext()) {
-            writer.write(pagelinksFile.next() + " 0/0 0/0 0/" + pagelinksFile.next());
+        while (overlapsFile.hasNext()) {
+            writer.write(overlapsFile.next());
             writer.newLine();
+            overlapsFile.next();
         }
-        writer.close();
-        System.out.println("File is created: " + output);
-        System.out.println();
     }
 
     private static void writePagelinksTemp(String input, Map<String, String> insToCat, String output, int step) throws IOException {
