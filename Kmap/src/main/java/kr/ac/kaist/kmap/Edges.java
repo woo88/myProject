@@ -365,6 +365,8 @@ public class Edges {
         output = "output/edges.kmap.tmp";
         if (!App.checkFile("output/edges.kmap")) {
             writer = new BufferedWriter(new FileWriter(new File(output)));
+
+            System.out.println("Initialize edges.kmap.tmp");
             for (String inputfile : inputfileArr) {
                 initEdges(inputfile, writer);
             }
@@ -514,9 +516,7 @@ public class Edges {
 
         reader = new BufferedReader(new FileReader(new File(input)));
 
-        System.out.println("Initialize edges.kmap.tmp");
         System.out.println("Start reading: " + input);
-
         while ((inputLine = reader.readLine()) != null) {
             strArr = inputLine.split(" ", 2);
 
