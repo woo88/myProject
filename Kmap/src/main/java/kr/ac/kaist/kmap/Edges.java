@@ -334,6 +334,9 @@ public class Edges {
             // reduce
             input = output;
             output = catFile + ".overlaps";
+            if (!App.checkFile(output)) {
+                fileReduce(input, output);
+            }
         }
 
         System.out.println();
