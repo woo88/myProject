@@ -327,6 +327,9 @@ public class Edges {
             // sort before merging the same edge
             input = output;
             output = output + ".sorted";
+            if (!App.checkFile(output)) {
+                App.fileSort(input, output, new File("output/tmp/"));
+            }
 
             // reduce
             input = output;
