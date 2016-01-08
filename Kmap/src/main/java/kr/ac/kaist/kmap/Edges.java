@@ -389,22 +389,27 @@ public class Edges {
 
         // initialize edges.kmap
         inputfileArr = new String[]{
-                "output/3.9/article_categories_en.nt.overlaps.occ",
-                "output/2014/article_categories_en.nt.overlaps.occ",
-                "output/2015-04/article-categories_en.nt.overlaps.occ"
+                "output/3.9/article_categories_en.nt.overlaps",
+                "output/2014/article_categories_en.nt.overlaps",
+                "output/2015-04/article-categories_en.nt.overlaps"
         };
         output = "output/edges.kmap.tmp";
-//        if (!App.checkFile("output/edges.kmap")) {
-//            writer = new BufferedWriter(new FileWriter(new File(output)));
-//
-//            System.out.println("Initialize edges.kmap.tmp");
-//            for (String inputfile : inputfileArr) {
-//                initEdges(inputfile, writer);
-//            }
-//            writer.close();
-//            System.out.println("File is created: " + output);
-//            System.out.println();
-//        }
+        if (!App.checkFile("output/edges.kmap")) {
+            writer = new BufferedWriter(new FileWriter(new File(output)));
+
+            System.out.println("Initialize edges.kmap.tmp");
+            for (String inputfile : inputfileArr) {
+                initEdges(inputfile, writer);
+            }
+            writer.close();
+            System.out.println("File is created: " + output);
+            System.out.println();
+
+            //reduce
+            input = output;
+            output = output + ".reduce";
+            fileReduce(input, output);
+        }
 
         // add data for each data
 //        input = output;
@@ -544,6 +549,7 @@ public class Edges {
         BufferedReader reader;
         String inputLine;
         String[] strArr;
+        String tmp;
 
         reader = new BufferedReader(new FileReader(new File(input)));
 
@@ -552,6 +558,8 @@ public class Edges {
             strArr = inputLine.split(" ", 2);
 
             writer.write(strArr[0]); writer.newLine();
+
+            tmp = strArr[1];
         }
     }
 
@@ -649,7 +657,7 @@ public class Edges {
         totalLineNumber = 0;
         notFirstLine = false;
 
-        System.out.println("Start reading: " + inputfile);
+        System.out.println("Start reducing: " + inputfile);
         while ((inputLine = reader.readLine()) != null) {
             // check progress
 //            if (lineNumber >= 1000000) {
@@ -684,7 +692,7 @@ public class Edges {
         writer.write(prevWord + " " + totalCnt); writer.newLine();
         writer.close();
         reader.close();
-        System.out.println("Done");
+        System.out.println("File is created: " + outputfile);
         System.out.println();
     }
 }
