@@ -391,6 +391,7 @@ public class Edges {
 
         // initialize edges.kmap
         System.out.println("Initialize edges.kmap");
+        System.out.println();
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps",
                 "output/2014/article_categories_en.nt.overlaps",
