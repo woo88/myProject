@@ -301,6 +301,8 @@ public class Edges {
         int i;
         BufferedWriter writer;
 
+        if (App.checkFile(edgesFile)) return;
+
         System.out.println();
         System.out.println("---------------------------------------");
         System.out.println("Start generating edges");
@@ -388,37 +390,35 @@ public class Edges {
         }
 
         // initialize edges.kmap
+        System.out.println("Initialize edges.kmap");
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps",
                 "output/2014/article_categories_en.nt.overlaps",
                 "output/2015-04/article-categories_en.nt.overlaps"
         };
         output = "output/edges.kmap.tmp";
-        if (!App.checkFile("output/edges.kmap")) {
-            if (!App.checkFile(output)) {
-                writer = new BufferedWriter(new FileWriter(new File(output)));
+        if (!App.checkFile(output)) {
+            writer = new BufferedWriter(new FileWriter(new File(output)));
 
-                System.out.println("Initialize edges.kmap.tmp");
-                for (String inputfile : inputfileArr) {
-                    initEdges(inputfile, writer);
-                }
-                writer.close();
-                System.out.println("File is created: " + output);
-                System.out.println();
+            for (String inputfile : inputfileArr) {
+                initEdges(inputfile, writer);
             }
-
-            // sort
-            input = output;
-            output = output + ".sorted";
-            if (!App.checkFile(output)) {
-                App.fileSort(input, output, new File("output/tmp/"));
-            }
-
-            // reduce
-            input = output;
-            output = output + ".reduce";
-            fileReduce(input, output);
+            writer.close();
+            System.out.println("File is created: " + output);
+            System.out.println();
         }
+
+        // sort
+        input = output;
+        output = output + ".sorted";
+        if (!App.checkFile(output)) {
+            App.fileSort(input, output, new File("output/tmp/"));
+        }
+
+        // reduce
+        input = output;
+        output = output + ".reduce";
+        fileReduce(input, output);
 
         // add data for each data
 //        input = output;
