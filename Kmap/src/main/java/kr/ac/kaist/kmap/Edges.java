@@ -335,7 +335,7 @@ public class Edges {
             input = output;
             output = catFile + ".overlaps";
             if (!App.checkFile(output)) {
-                fileReduce(input, output);
+                fileReduce(input, output, 1);
             }
         }
 
@@ -383,7 +383,7 @@ public class Edges {
             // reduce
             input = output;
             output = "output/" + strArr[0] + "/" + strArr[2] + fileSuffix;
-            fileReduce(input, output);
+            fileReduce(input, output, 1);
             App.fileDelete(input);
         }
 
@@ -417,7 +417,7 @@ public class Edges {
             // reduce
             input = output;
             output = output + ".reduce";
-//            fileReduce(input, output);
+            fileReduce(input, output);
         }
 
         // add data for each data
@@ -642,7 +642,7 @@ public class Edges {
         System.out.println();
     }
 
-    public static void fileReduce(String inputfile, String outputfile) throws IOException {
+    public static void fileReduce(String inputfile, String outputfile, int i) throws IOException {
         BufferedReader reader;
         BufferedWriter writer;
         String inputLine;
@@ -680,7 +680,7 @@ public class Edges {
             word = strArr[0];
 
             try {
-                count = Integer.parseInt(strArr[1]);
+                count = Integer.parseInt(strArr[i]);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println(e);
                 System.out.println(inputLine);
@@ -699,6 +699,46 @@ public class Edges {
             prevWord = word;
         }
         writer.write(prevWord + " " + totalCnt); writer.newLine();
+        writer.close();
+        reader.close();
+        System.out.println("File is created: " + outputfile);
+        System.out.println();
+    }
+
+    public static void fileReduce(String inputfile, String outputfile) throws IOException {
+        BufferedReader reader;
+        BufferedWriter writer;
+        String inputLine;
+        String prevWord;
+        String word;
+        int lineNumber;
+        double totalLineNumber;
+
+        if (App.checkFile(outputfile)) return;
+
+        reader = new BufferedReader(new FileReader(new File(inputfile)));
+        writer = new BufferedWriter(new FileWriter(new File(outputfile)));
+        prevWord = "";
+        lineNumber = 0;
+        totalLineNumber = 0;
+
+        System.out.println("Start reducing: " + inputfile);
+        while ((inputLine = reader.readLine()) != null) {
+            // check progress
+//            if (lineNumber >= 1000000) {
+//                totalLineNumber += lineNumber;
+//                lineNumber = 0;
+//                System.out.print(totalLineNumber + ", ");
+//            }
+//            lineNumber++;
+
+            word = inputLine.trim();
+
+            if (Objects.equals(word, prevWord)) continue;
+
+            writer.write(word); writer.newLine();
+            prevWord = word;
+        }
         writer.close();
         reader.close();
         System.out.println("File is created: " + outputfile);
