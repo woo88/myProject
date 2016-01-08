@@ -395,20 +395,29 @@ public class Edges {
         };
         output = "output/edges.kmap.tmp";
         if (!App.checkFile("output/edges.kmap")) {
-            writer = new BufferedWriter(new FileWriter(new File(output)));
+            if (!App.checkFile(output)) {
+                writer = new BufferedWriter(new FileWriter(new File(output)));
 
-            System.out.println("Initialize edges.kmap.tmp");
-            for (String inputfile : inputfileArr) {
-                initEdges(inputfile, writer);
+                System.out.println("Initialize edges.kmap.tmp");
+                for (String inputfile : inputfileArr) {
+                    initEdges(inputfile, writer);
+                }
+                writer.close();
+                System.out.println("File is created: " + output);
+                System.out.println();
             }
-            writer.close();
-            System.out.println("File is created: " + output);
-            System.out.println();
 
-            //reduce
+            // sort
+            input = output;
+            output = output + ".sorted";
+            if (!App.checkFile(output)) {
+                App.fileSort(input, output, new File("output/tmp/"));
+            }
+
+            // reduce
             input = output;
             output = output + ".reduce";
-            fileReduce(input, output);
+//            fileReduce(input, output);
         }
 
         // add data for each data
