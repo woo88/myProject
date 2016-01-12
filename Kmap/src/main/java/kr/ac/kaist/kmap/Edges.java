@@ -421,14 +421,18 @@ public class Edges {
         output = output + ".reduce";
         fileReduce(input, output);
 
+        // test
+        input = output;
+        readData(input);
+
         // add data for each data
 //        input = output;
 //        inputfileArr = new String[]{
-//                "output/3.9/article_categories_en.nt.overlaps.occ",
+//                "output/3.9/article_categories_en.nt.overlaps",
 //                "output/3.9/page_links_en.nt.occ",
-//                "output/2014/article_categories_en.nt.overlaps.occ",
+//                "output/2014/article_categories_en.nt.overlaps",
 //                "output/2014/page_links_en.nt.occ",
-//                "output/2015-04/article-categories_en.nt.overlaps.occ",
+//                "output/2015-04/article-categories_en.nt.overlaps",
 //                "output/2015-04/page-links_en.nt.occ"
 //        };
 //        output = "output/edges.kmap";
@@ -441,6 +445,28 @@ public class Edges {
 //        File file = new File("output/edges.kmap.tmp");
 //        File file2 = new File("output/edges.kmap");
 //        file.renameTo(file2);
+    }
+
+    private static void readData(String input) throws FileNotFoundException {
+        Scanner edgesFile;
+        TreeMap<String, String> edges;
+
+        edgesFile = new Scanner(new FileReader(input));
+        edges = new TreeMap<>();
+
+        System.out.println("[TEST");
+        while (edgesFile.hasNext()) {
+            try {
+                edges.put(edgesFile.next(), "");
+            } catch (OutOfMemoryError e) {
+                System.err.println(e);
+                System.out.println("TreeMap size: " + edges.size());
+                edges = null;
+                System.exit(1);
+            }
+        }
+        System.out.println("Done!");
+        System.out.println();
     }
 
     private static void writeEdges(String input, String inputfile,
