@@ -394,36 +394,26 @@ public class Edges {
         System.out.println();
         inputfileArr = new String[]{
                 "output/3.9/article_categories_en.nt.overlaps",
+                "output/3.9/page_links_en.nt.occ",
                 "output/2014/article_categories_en.nt.overlaps",
-                "output/2015-04/article-categories_en.nt.overlaps"
+                "output/2014/page_links_en.nt.occ",
+                "output/2015-04/article-categories_en.nt.overlaps",
+                "output/2015-04/page-links_en.nt.occ"
         };
         output = "output/edges.kmap.tmp";
-        if (!App.checkFile(output)) {
-            writer = new BufferedWriter(new FileWriter(new File(output)));
-
-            for (String inputfile : inputfileArr) {
-                initEdges(inputfile, writer);
-            }
-            writer.close();
-            System.out.println("File is created: " + output);
-            System.out.println();
-        }
+        genTempEdges(inputfileArr, output);
 
         // sort
-        input = output;
-        output = output + ".sorted";
-        if (!App.checkFile(output)) {
-            App.fileSort(input, output, new File("output/tmp/"));
-        }
+//        input = output;
+//        output = output + ".sorted";
+//        if (!App.checkFile(output)) {
+//            App.fileSort(input, output, new File("output/tmp/"));
+//        }
 
         // reduce
-        input = output;
-        output = output + ".reduce";
-        fileReduce(input, output);
-
-        // test
-        input = output;
-        readData(input);
+//        input = output;
+//        output = output + ".reduce";
+//        fileReduce(input, output);
 
         // add data for each data
 //        input = output;
@@ -447,27 +437,87 @@ public class Edges {
 //        file.renameTo(file2);
     }
 
-    private static void readData(String input) throws FileNotFoundException {
-        Scanner edgesFile;
-        TreeMap<String, String> edges;
+    private static void genTempEdges(String[] inputfileArr, String output) throws IOException {
+        BufferedReader reader;
+        String inputLine;
+        String[] strArr;
+        BufferedWriter writer;
+        Scanner overlapsFile;
+        TreeMap<String, Integer> overlaps;
+        int keyLen;
+        int keyLimit;
 
-        edgesFile = new Scanner(new FileReader(input));
-        edges = new TreeMap<>();
+        if (App.checkFile(output)) return;
+        System.out.println("Start generating temporary file for edges");
 
-        System.out.println("[TEST]");
-        try {
-            while (edgesFile.hasNext()) {
-                edges.put(edgesFile.next(), "");
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+
+        // applying overlaps
+        for (int i = 0; i < inputfileArr.length; i++) {
+            if ((i % 2) == 1) continue;
+
+            reader = new BufferedReader(new FileReader(new File(inputfileArr[i])));
+
+            System.out.println("Start applying for: " + inputfileArr[i]);
+            while ((inputLine = reader.readLine()) != null) {
+                strArr = inputLine.split(" ");
+
+                if (strArr.length != 2) {
+                    System.err.println("[ERR] strArr.length != 2");
+                    continue;
+                }
+
+                writer.write(inputLine.trim() + i); writer.newLine();
             }
-        } catch (OutOfMemoryError e) {
-            System.err.println(e);
-            System.out.println("TreeMap size: " + edges.size());
-            edges = null;
-            edgesFile.close();
-            System.exit(1);
+            reader.close();
         }
-        System.out.println("Done!");
+
+        // applying pagelinks
+        for (int i = 0; i < inputfileArr.length; i++) {
+            if ((i % 2) == 0) continue;
+
+            System.out.println("Start applying for: " + inputfileArr[i]);
+
+            overlapsFile = new Scanner(new FileReader(inputfileArr[i-1]));
+            overlaps = new TreeMap<>();
+            keyLen = 0;
+            keyLimit = 10000000;
+            while (overlapsFile.hasNext()) {
+                if (keyLen >= keyLimit) {
+                    applyPagelinks(inputfileArr[i], overlaps, writer, i);
+                    overlaps = null;
+                    overlaps = new TreeMap<>();
+                    keyLen = 0;
+                }
+
+                overlaps.put(overlapsFile.next(), 0);
+                keyLen++;
+                overlapsFile.next();
+            }
+            applyPagelinks(inputfileArr[i], overlaps, writer, i);
+            overlapsFile.close();
+        }
+
+        writer.close();
+        System.out.println("File is created: " + output);
         System.out.println();
+    }
+
+    private static void applyPagelinks(String input, TreeMap<String, Integer> overlaps,
+                                       BufferedWriter writer, int i) throws IOException {
+        BufferedReader reader;
+        String inputLine;
+        String[] strArr;
+
+        reader = new BufferedReader(new FileReader(new File(input)));
+        while ((inputLine = reader.readLine()) != null) {
+            strArr = inputLine.split(" ");
+
+            if (overlaps.containsKey(strArr[0])) {
+                writer.write(inputLine.trim() + i); writer.newLine();
+            }
+        }
+        reader.close();
     }
 
     private static void writeEdges(String input, String inputfile,
