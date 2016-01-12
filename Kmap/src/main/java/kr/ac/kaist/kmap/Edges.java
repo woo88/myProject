@@ -404,16 +404,16 @@ public class Edges {
         genTempEdges(inputfileArr, output);
 
         // sort
-//        input = output;
-//        output = output + ".sorted";
-//        if (!App.checkFile(output)) {
-//            App.fileSort(input, output, new File("output/tmp/"));
-//        }
+        input = output;
+        output = output + ".sorted";
+        if (!App.checkFile(output)) {
+            App.fileSort(input, output, new File("output/tmp/"));
+        }
 
         // reduce
-//        input = output;
-//        output = output + ".reduce";
-//        fileReduce(input, output);
+        input = output;
+        output = "output/edges.kmap";
+        writeEdges(input, output);
 
         // add data for each data
 //        input = output;
@@ -435,6 +435,55 @@ public class Edges {
 //        File file = new File("output/edges.kmap.tmp");
 //        File file2 = new File("output/edges.kmap");
 //        file.renameTo(file2);
+    }
+
+    private static void writeEdges(String input, String output) throws IOException {
+        BufferedReader reader;
+        BufferedWriter writer;
+        String inputLine;
+        String[] strArr;
+        String word;
+        String prevWord;
+        boolean notFirstLine;
+        String[] varData;
+
+        if (App.checkFile(output)) return;
+        System.out.println("Start writing: " + output);
+
+        reader = new BufferedReader(new FileReader(new File(input)));
+        writer = new BufferedWriter(new FileWriter(new File(output)));
+        writer.write("# source/target overlaps/pagelinks[3.9 2014 2015-04]");
+        writer.newLine();
+        prevWord = "";
+        notFirstLine = false;
+        varData = new String[]{
+          "0", "0", "0", "0", "0", "0"
+        };
+        while ((inputLine = reader.readLine()) != null) {
+            strArr = inputLine.split(" ");
+            word = strArr[0];
+
+            if (!Objects.equals(word, prevWord) && notFirstLine) {
+                writer.write(prevWord
+                        + " " + varData[0] + "/" + varData[1]
+                        + " " + varData[2] + "/" + varData[3]
+                        + " " + varData[4] + "/" + varData[5]);
+                writer.newLine();
+            }
+            varData[Integer.parseInt(strArr[2])] = strArr[1];
+
+            notFirstLine = true;
+            prevWord = word;
+        }
+        writer.write(prevWord
+                + " " + varData[0] + "/" + varData[1]
+                + " " + varData[2] + "/" + varData[3]
+                + " " + varData[4] + "/" + varData[5]);
+        writer.newLine();
+        writer.close();
+        reader.close();
+        System.out.println("Done!");
+        System.out.println();
     }
 
     private static void genTempEdges(String[] inputfileArr, String output) throws IOException {
