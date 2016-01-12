@@ -467,7 +467,7 @@ public class Edges {
                     continue;
                 }
 
-                writer.write(inputLine.trim() + i); writer.newLine();
+                writer.write(inputLine.trim() + " " + i); writer.newLine();
             }
             reader.close();
         }
@@ -514,7 +514,7 @@ public class Edges {
             strArr = inputLine.split(" ");
 
             if (overlaps.containsKey(strArr[0])) {
-                writer.write(inputLine.trim() + i); writer.newLine();
+                writer.write(inputLine.trim() + " " + i); writer.newLine();
             }
         }
         reader.close();
