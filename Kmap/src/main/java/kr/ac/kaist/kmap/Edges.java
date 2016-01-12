@@ -454,16 +454,17 @@ public class Edges {
         edgesFile = new Scanner(new FileReader(input));
         edges = new TreeMap<>();
 
-        System.out.println("[TEST");
-        while (edgesFile.hasNext()) {
-            try {
+        System.out.println("[TEST]");
+        try {
+            while (edgesFile.hasNext()) {
                 edges.put(edgesFile.next(), "");
-            } catch (OutOfMemoryError e) {
-                System.err.println(e);
-                System.out.println("TreeMap size: " + edges.size());
-                edges = null;
-                System.exit(1);
             }
+        } catch (OutOfMemoryError e) {
+            System.err.println(e);
+            System.out.println("TreeMap size: " + edges.size());
+            edges = null;
+            edgesFile.close();
+            System.exit(1);
         }
         System.out.println("Done!");
         System.out.println();
